@@ -1,0 +1,17 @@
+import Button from "./Button";
+
+<Meta title="Test" component={Button} />
+
+# Testing Button
+
+export const Template = (args) => <Button {...args} />;
+
+<Preview>
+  <Story name="button" args={{ label: "working!" }}>
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+# Props
+
+<Props story="button" />
