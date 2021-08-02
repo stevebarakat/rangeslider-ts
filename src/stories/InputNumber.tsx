@@ -1,11 +1,15 @@
-import { useState, useRef } from 'react';
-import styled from 'styled-components';
+import { useState, useRef } from "react";
+import styled from "styled-components";
 
 interface InputNumberProps {
   /**
-   * Is this the principal call to action on the page?
+   * Prevents user from changing the value.
    */
-  readonly?: boolean;
+  readOnly?: boolean;
+  /* 
+   * A string that provides a brief hint to the user as to what kind of information is expected in the field. It should be a word or short phrase that provides a hint as to the expected type of data, rather than an explanation or prompt. The text must not include carriage returns or line feeds. So for example if a field is expected to capture a user's first name, and its label is "First Name", a suitable placeholder might be "e.g. Mustafa". 
+   */
+  placeholder?: string;
   /**
    * What background color to use
    */
@@ -15,21 +19,21 @@ interface InputNumberProps {
    */
   min?: number;
   /**
-  * Maximum number value?
-  */
+   * Maximum number value?
+   */
   max?: number;
   /**
    * How large should the interval be?
    */
   step?: number;
   /**
-  * How large should the number be?
-  */
-  size?: 'small' | 'medium' | 'large';
+   * How large should the number be?
+   */
+  size?: "small" | "medium" | "large";
   /**
    * Label for the input
    */
-  label: string;
+  label?: string;
   /**
    * Optional click handler
    */
@@ -42,13 +46,14 @@ const Wrapper = styled.div`
 `;
 
 const StyledNumberInput = styled.input.attrs({ type: "number" })`
-  width: ${p => p.width + "ch"};
+  width: ${(p) => p.width + "ch"};
   padding: 1rem;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}`;
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
 
 const Button = styled.button`
   width: 50px;
@@ -61,20 +66,21 @@ const Button = styled.button`
 `;
 
 /**
- * Primary UI component for user interaction
+ * Docs
  */
 export const InputNumber = ({
-  readonly = false,
+  readOnly = false,
+  placeholder = "0",
   min = 0,
   max = 100,
   step = 5,
-  size = 'medium',
-  backgroundColor,
-  label,
+  size = "medium",
+  backgroundColor = "#565656",
+  label = "Amount: ",
   ...props
 }: InputNumberProps) => {
-  const [width, setWidth] = useState(0);
-  const inputEl: React.MutableRefObject<null> = useRef(null);
+  const [width, setWidth] = useState(placeholder.toString().length);
+  const inputEl = useRef<HTMLInputElement | null>(null);
 
   return (
     <Wrapper>
@@ -82,31 +88,42 @@ export const InputNumber = ({
       <Button
         tabIndex={0}
         onClick={() => {
-          inputEl.current.stepDown(step);
+          if (!inputEl.current) return;
+          inputEl.current.stepDown();
           setWidth(inputEl.current.value.length);
         }}
-      >-</Button>
+      >
+        -
+      </Button>
       <StyledNumberInput
         ref={inputEl}
-        readOnly={readonly}
+        readOnly={readOnly}
+        placeholder={min.toString()}
         min={min}
         max={max}
-        // step={step}
+        step={step}
         style={{ width: width + "ch" }}
         {...props}
         tabIndex={0}
-        onInput={(e) => {
+        onChange={(e) => {
           const { value } = e.target as HTMLInputElement;
           setWidth(value.length);
+          if (parseFloat(value) >= max) {
+            if (!inputEl.current) return;
+            e.currentTarget.stepUp(0);
+          }
         }}
       />
       <Button
         tabIndex={0}
         onClick={() => {
-          inputEl.current.stepUp(step);
+          if (!inputEl.current) return;
+          inputEl.current.stepUp();
           setWidth(inputEl.current.value.length);
         }}
-      >+</Button>
+      >
+        +
+      </Button>
     </Wrapper>
   );
 };
