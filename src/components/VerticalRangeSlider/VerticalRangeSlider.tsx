@@ -8,7 +8,6 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const Wrapper = styled.div<{ maxLabelLength?: number }>`
-  border: 1px dotted red;
   padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
 `;
 
@@ -225,24 +224,24 @@ interface VerticalRangeSliderProps {
 }
 
 export const VerticalRangeSlider = ({
-  initialValue,
-  min,
-  max,
-  decimals,
-  step,
-  showTicks,
-  snap,
-  customLabels,
-  showLabel,
-  prefix,
-  suffix,
-  primaryColorLight,
-  primaryColor,
-  height,
+  initialValue = 50,
+  min = 0,
+  max = 100,
+  decimals = 0,
+  step = 10,
+  showTicks = true,
+  snap = true,
+  customLabels = [],
+  showLabel = true,
+  prefix = "",
+  suffix = "",
+  primaryColorLight = "#FF0000",
+  primaryColor = "black",
+  height = 400
 }: VerticalRangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null)
   const outputEl = useRef<HTMLElement | null>(null)
-  const ticksEl = useRef<HTMLElement | null>(null);
+  const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
@@ -262,7 +261,7 @@ export const VerticalRangeSlider = ({
       showTicks &&
         showLabel &&
         tickText !== undefined && labelList.push(tickText);
-        console.log(labelList);
+      console.log(labelList);
     }
     if (!labelList) return;
     setMaxLabelLength(Math.max(...labelList));
@@ -270,7 +269,7 @@ export const VerticalRangeSlider = ({
     setOutputWidth(outputEl.current?.clientHeight);
   }, [min, max, value, showLabel, showTicks]);
 
-  
+
   // For collecting tick marks
   let markers = [];
   if (customLabels?.length !== 0) {
@@ -350,7 +349,7 @@ export const VerticalRangeSlider = ({
         return;
     }
   }
-  
+
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
       <RangeWrapWrap outputWidth={outputWidth}>

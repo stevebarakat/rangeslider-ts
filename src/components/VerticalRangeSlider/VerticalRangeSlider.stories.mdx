@@ -1,0 +1,45 @@
+import { ArgsTable } from '@storybook/addon-docs' 
+import { Meta, Story, Preview } from "@storybook/addon-docs/blocks";
+import { VerticalRangeSlider } from "./VerticalRangeSlider";
+
+<Meta title="VerticalRangeSlider" component={VerticalRangeSlider} />
+
+
+export const Template = (args) => <VerticalRangeSlider {...args} />;
+
+# VerticalRangeSlider
+## A number input component.
+lorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sit.
+<ArgsTable of={VerticalRangeSlider} />
+
+# Extended Syntax - Tables
+--- 
+
+| Left | Center | Right |
+| :--- | :----: | ----: |
+| 1    | 2      | 3     |
+
+
+# Extended Syntax - Automatic URLs
+--- 
+
+[My Channel](www.YouTube.com/CodingTutorials360)
+
+www.YouTube.com/CodingTutorials360
+
+`www.YouTube.com/CodingTutorials360 `
+
+# Extended Syntax - Tasks List
+--- 
+
+- [ ] Did you run the tests?
+- [x] Did you lint the project?
+
+<Preview>
+  <Story name="Default" >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+
+<Props story="number" />
