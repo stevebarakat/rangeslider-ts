@@ -178,7 +178,13 @@ interface RangeSliderProps {
   */
   snap: boolean;
   /**
-    For creating custom labels. 
+    For creating custom labels like so:<code> [
+    { 0: "low" },
+    { 50: "medium" },
+    { 100: "high"}
+  ]</code> 
+  
+  <i>Custom labels replace default labels!</i>
   */
   customLabels: Array<Record<number, string>>;
   /**

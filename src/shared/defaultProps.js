@@ -5,11 +5,7 @@ export const defaultProps = {
   step: 10,
   showTicks: true,
   snap: true,
-  customLabels: [
-    { 0: "lfgdfdw" },
-    { 50: "mehfium" },
-    { 100: "hgfddgdfdfgdfgh"}
-  ],
+  customLabels: [{ 0: "low" }, { 50: "medium" }, { 100: "high" }],
   showLabel: true,
   prefix: "",
   suffix: "",
