@@ -1,6 +1,7 @@
 import { RangeSlider } from './components/RangeSlider/RangeSlider';
 import { VerticalRangeSlider } from './components/VerticalRangeSlider/VerticalRangeSlider';
 import { DualRangeSlider } from './components/DualRangeSlider/DualRangeSlider';
+import { DualVerticalRangeSlider } from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
 
 function App() {
   return (
@@ -31,14 +32,16 @@ function App() {
         showTicks={true}
         snap={true}
         customLabels={[
-          { 0: "zero" }, { 50: "fifty" }
+          { 0: "low" },
+          { 50: "medium" },
+          { 100: "high" }
         ]}
         showLabel={true}
         prefix=""
         suffix=""
         primaryColorLight="gray"
         primaryColor="black"
-        height={800}
+        height={400}
       />
       <DualRangeSlider
         initialLowerValue={20}
@@ -58,9 +61,31 @@ function App() {
         prefix=""
         suffix=""
         rotateLabel={false}
-        primaryColor="hsl(196, 100%, 50%)"
-        primaryColorLight="hsl(196, 100%, 70%)"
-        width={1200}
+        primaryColor="black"
+        primaryColorLight="gray"
+        width={800}
+      />
+      <DualVerticalRangeSlider
+        initialLowerValue={20}
+        initialUpperValue={40}
+        min={0}
+        max={100}
+        decimals={0}
+        step={10}
+        snap={true}
+        showTicks={true}
+        customLabels={[
+          { 0: "low" },
+          { 50: "medium" },
+          { 100: "high" }
+        ]}
+        showLabel={true}
+        prefix=""
+        suffix=""
+        rotateLabel={false}
+        primaryColor="black"
+        primaryColorLight="gray"
+        height={400}
       />
     </div>
   );

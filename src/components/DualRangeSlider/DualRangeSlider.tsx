@@ -211,6 +211,7 @@ interface DualRangeSliderProps {
   */
   width: number;
 }
+
 export const DualRangeSlider = ({
   initialLowerValue = 20,
   initialUpperValue = 80,
