@@ -1,5 +1,6 @@
 import { RangeSlider } from './components/RangeSlider/RangeSlider';
 import { VerticalRangeSlider } from './components/VerticalRangeSlider/VerticalRangeSlider';
+import { DualRangeSlider } from './components/DualRangeSlider/DualRangeSlider';
 
 function App() {
   return (
@@ -39,7 +40,28 @@ function App() {
         primaryColor="black"
         height={800}
       />
-
+      <DualRangeSlider
+        initialLowerValue={20}
+        initialUpperValue={40}
+        min={0}
+        max={100}
+        decimals={0}
+        step={10}
+        snap={true}
+        showTicks={true}
+        customLabels={[
+          { 0: "low" },
+          { 50: "medium" },
+          { 100: "high" }
+        ]}
+        showLabel={true}
+        prefix=""
+        suffix=""
+        rotateLabel={false}
+        primaryColor="hsl(196, 100%, 50%)"
+        primaryColorLight="hsl(196, 100%, 70%)"
+        width={1200}
+      />
     </div>
   );
 }
