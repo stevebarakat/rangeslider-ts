@@ -82,7 +82,6 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
         primaryColor="black"
         primaryColorLight="gray"
         height={400}

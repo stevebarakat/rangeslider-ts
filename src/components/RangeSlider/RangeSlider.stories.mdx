@@ -1,44 +1,41 @@
-import { ArgsTable } from '@storybook/addon-docs';
+import { ArgsTable } from "@storybook/addon-docs";
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
 import { RangeSlider } from "./RangeSlider";
 
-<Meta title="RangeSlider" component={RangeSlider} />
-
+<Meta
+  title="RangeSlider"
+  component={RangeSlider}
+  argTypes={{
+    label: {
+      name: "label",
+      type: { name: "string", required: false },
+      description: "A description goes here.",
+      defaultValue: "I'm the default value!",
+      table: {
+        type: { summary: "string" },
+        defaultValue: { summary: "Hello" },
+      },
+      control: {
+        type: "color",
+      },
+    },
+  }}
+/>
 
 export const Template = (args) => <RangeSlider {...args} />;
 
 # RangeSlider
+
 ## A number input component.
+
 lorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sit.
+
 <ArgsTable of={RangeSlider} />
 
-# Extended Syntax - Tables
---- 
-
-| Left | Center | Right |
-| :--- | :----: | ----: |
-| 1    | 2      | 3     |
-
-
-# Extended Syntax - Automatic URLs
---- 
-
-[My Channel](www.YouTube.com/CodingTutorials360)
-
-www.YouTube.com/CodingTutorials360
-
-`www.YouTube.com/CodingTutorials360 `
-
-# Extended Syntax - Tasks List
---- 
-
-- [ ] Did you run the tests?
-- [x] Did you lint the project?
-
 <Preview>
-  <Story name="Default" >
-    {Template.bind({})}
-  </Story>
+  <Story name="Default">{Template.bind({})}</Story>
 </Preview>
 
+# Props
 
-<Props story="number" />
+<Props story="Default" />

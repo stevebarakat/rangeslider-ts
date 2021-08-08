@@ -216,10 +216,6 @@ interface DualVerticalRangeSliderProps {
   */
   suffix?: string;
   /**
-    The amount in degrees to rotate the labels.
-  */
-  rotateLabel?: boolean;
-  /**
     The focus color. 
   */
   primaryColorLight: string;
@@ -242,11 +238,14 @@ export const DualVerticalRangeSlider = ({
   step = 10,
   showTicks = true,
   snap = true,
-  customLabels = [],
+  customLabels=[
+    { 0: "low" },
+    { 50: "medium" },
+    { 100: "high" }
+  ],
   showLabel = true,
   prefix = "",
   suffix = "",
-  rotateLabel = false,
   primaryColorLight = "grey",
   primaryColor = "black",
   height = 400
