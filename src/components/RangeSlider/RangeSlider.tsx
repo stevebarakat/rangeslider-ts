@@ -200,7 +200,7 @@ interface RangeSliderProps {
   /**
     The focus color. 
   */
-  primaryColorLight: string;
+  blurColor: string;
   /**
     The blur color. 
   */
@@ -224,7 +224,7 @@ export const RangeSlider = ({
   prefix = "",
   suffix = "",
   rotateLabel = false,
-  primaryColorLight = "grey",
+  blurColor = "grey",
   primaryColor = "black",
   width = 800
 }: RangeSliderProps) => {
@@ -236,7 +236,7 @@ export const RangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
-  blurColor = primaryColorLight;
+  blurColor = blurColor;
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));

@@ -1,26 +1,10 @@
 import { ArgsTable } from "@storybook/addon-docs";
+import { useArgTypes } from "@storybook/api";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
 import { RangeSlider } from "./RangeSlider";
+// const { argTypes } = useArgTypes();
 
-<Meta
-  title="RangeSlider"
-  component={RangeSlider}
-  argTypes={{
-    label: {
-      name: "label",
-      type: { name: "string", required: false },
-      description: "A description goes here.",
-      defaultValue: "I'm the default value!",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Hello" },
-      },
-      control: {
-        type: "color",
-      },
-    },
-  }}
-/>
+<Meta title="RangeSlider" component={RangeSlider} />
 
 export const Template = (args) => <RangeSlider {...args} />;
 
@@ -33,7 +17,28 @@ lorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor sitlorem ipsum dolor
 <ArgsTable of={RangeSlider} />
 
 <Preview>
-  <Story name="Default">{Template.bind({})}</Story>
+  <Story
+    name="Default"
+    args={{
+      initialValue: 50,
+      min: 0,
+      max: 100,
+      decimals: 0,
+      step: 10,
+      showTicks: true,
+      snap: true,
+      customLabels: [],
+      showLabel: true,
+      prefix: "",
+      suffix: "",
+      rotateLabel: false,
+      blurColor: "grey",
+      primaryColor: "black",
+      width: 800,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
 </Preview>
 
 # Props
