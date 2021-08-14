@@ -30,7 +30,7 @@ const RangeOutput = styled.output<{ focused?: boolean }>`
     border: ${(p) =>
     p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
-    color: ${(p) => (p.focused ? whiteColor : blackColor)};
+    color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
     background: ${(p) => (p.focused ? focusColor : whiteColor)};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5rem 0.75rem;
@@ -79,8 +79,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 
   &::-webkit-slider-thumb {
     position: relative;
-    width: ${p => p.thickTrack ? "3em" : "1em"};
-    height: ${p => p.thickTrack ? "3em" : "1em"};
+    width: ${p => p.thickTrack ? "3em" : "1.25em"};
+    height: ${p => p.thickTrack ? "3em" : "1.25em"};
     border-radius: 50%;
     border: ${p => p.thickTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.thickTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
@@ -88,33 +88,33 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
-      p.thickTrack ? !p.focused
+    p.thickTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : focusColor
-    };
-      
+      };
     }
-  &::-moz-range-thumb {
-    position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
-    border-radius: 50%;
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
 
+    &::-moz-range-thumb {
+    position: relative;
+    width: ${p => p.thickTrack ? "3em" : "1.25em"};
+    height: ${p => p.thickTrack ? "3em" : "1.25em"};
+    border-radius: 50%;
+    border: ${p => p.thickTrack ? `1px solid ${blackColor}` : "none"};
+    box-shadow: ${p => p.thickTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     cursor: grab;
-    appearance: none;
-    margin-top: -10px;
+    -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
-    !p.focused
+    p.thickTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-  }
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : focusColor
+      };
+    }
 `;
 
-const Ticks = styled.div<{thickTrack?: boolean}>`
+const Ticks = styled.div<{ thickTrack?: boolean }>`
   display: flex;
   justify-content: space-between;
   margin: 20px;
@@ -136,7 +136,7 @@ const Tick = styled.div<{
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
   div {
     width: 0;
-    color: ${blackColor};
+    color: var(--labelColor);
     transform-origin: top center;
     margin-top: 0.5rem;
     margin-left: ${(p) =>
@@ -223,6 +223,10 @@ interface RangeSliderProps {
     The width of the range track.
   */
   thickTrack?: boolean
+  /**
+The width of the range track.
+*/
+  labelColor?: string
 }
 
 export const RangeSlider = ({
@@ -242,6 +246,7 @@ export const RangeSlider = ({
   primaryColor = "black",
   width = 800,
   thickTrack = false,
+  labelColor = "black",
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef(null);
@@ -286,6 +291,7 @@ export const RangeSlider = ({
           markers.push(
             <Tick
               key={i}
+              style={{ "--labelColor": labelColor } as React.CSSProperties}
               labelLength={labelLength}
               showLabel={showLabel}
               rotateLabel={rotateLabel}
@@ -355,12 +361,12 @@ export const RangeSlider = ({
           isFocused
             ? {
               background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2
+                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 0.75
                 }px), hsl(210, 52%, 93%) 100%)`
             }
             : {
               background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2
+                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 0.75
                 }px), hsl(210, 52%, 93%) 100%)`
             }
         }
@@ -368,7 +374,7 @@ export const RangeSlider = ({
 
       <RangeOutput
         focused={isFocused}
-        style={{ left: thickTrack? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)` }}
+        style={{ left: thickTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
       >
         <span>
           {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
