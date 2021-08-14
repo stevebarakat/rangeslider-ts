@@ -2,7 +2,6 @@ import { RangeSlider } from './components/RangeSlider/RangeSlider';
 import { VerticalRangeSlider } from './components/VerticalRangeSlider/VerticalRangeSlider';
 import { DualRangeSlider } from './components/DualRangeSlider/DualRangeSlider';
 import { DualVerticalRangeSlider } from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
-import './shared/global.css';
 
 function App() {
   return (
