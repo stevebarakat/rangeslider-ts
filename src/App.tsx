@@ -2,6 +2,7 @@ import { RangeSlider } from './components/RangeSlider/RangeSlider';
 import { VerticalRangeSlider } from './components/VerticalRangeSlider/VerticalRangeSlider';
 import { DualRangeSlider } from './components/DualRangeSlider/DualRangeSlider';
 import { DualVerticalRangeSlider } from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
+import './shared/global.css';
 
 function App() {
   return (
@@ -11,17 +12,18 @@ function App() {
         min={0}
         max={100}
         decimals={0}
-        step={5}
+        step={50}
         showTicks={true}
-        snap={true}
+        snap={false}
         customLabels={[{ 0: "low" }, { 50: "medium" }, { 100: "high" }]}
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={true}
+        rotateLabel={false}
         blurColor="gray"
         primaryColor="black"
         width={800}
+        thickTrack={false}
       />
       <VerticalRangeSlider
         initialValue={50}

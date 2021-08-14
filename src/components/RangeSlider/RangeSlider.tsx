@@ -28,7 +28,7 @@ const RangeOutput = styled.output<{ focused?: boolean }>`
   white-space: nowrap;
   span {
     border: ${(p) =>
-      p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
     color: ${(p) => (p.focused ? whiteColor : blackColor)};
     background: ${(p) => (p.focused ? focusColor : whiteColor)};
@@ -50,24 +50,25 @@ const RangeOutput = styled.output<{ focused?: boolean }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean }>`
+const Progress = styled.div<{ focused: boolean, thickTrack: boolean }>`
   position: absolute;
-  border-radius: 15px;
+  border-radius: 100px;
   box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
     inset 2px 2px 2px rgba(0, 0, 0, 0.24);
-  height: 15px;
+  height: ${p => p.thickTrack ? "15px" : "5px"};
   width: 100%;
   z-index: 0;
 `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" })<{
-  focused: boolean;
+const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) <{
+  focused: boolean,
+  thickTrack: boolean,
 }>`
   appearance: none;
   cursor: pointer;
   margin: 0;
   width: 100%;
-  height: 15px;
+  height: ${p => p.thickTrack ? "15px" : "5px"};
   position: absolute;
   z-index: 2;
   background: transparent;
@@ -78,20 +79,22 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" })<
 
   &::-webkit-slider-thumb {
     position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
+    width: ${p => p.thickTrack ? "3em" : "1em"};
+    height: ${p => p.thickTrack ? "3em" : "1em"};
     border-radius: 50%;
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-
+    border: ${p => p.thickTrack ? `1px solid ${blackColor}` : "none"};
+    box-shadow: ${p => p.thickTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
-      !p.focused
-        ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-        : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-  }
+      p.thickTrack ? !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : focusColor
+    };
+      
+    }
   &::-moz-range-thumb {
     position: relative;
     height: 3em;
@@ -105,16 +108,17 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" })<
     margin-top: -10px;
     z-index: 50;
     background: ${(p) =>
-      !p.focused
-        ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-        : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+    !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
   }
 `;
 
-const Ticks = styled.div`
+const Ticks = styled.div<{thickTrack?: boolean}>`
   display: flex;
   justify-content: space-between;
-  margin: 32px 20px 20px;
+  margin: 20px;
+  margin-top: ${p => p.thickTrack ? "32px" : "12px"}
 `;
 const Tick = styled.div<{
   showTicks?: boolean;
@@ -136,9 +140,9 @@ const Tick = styled.div<{
     transform-origin: top center;
     margin-top: 0.5rem;
     margin-left: ${(p) =>
-      !p.rotateLabel && p.labelLength
-        ? (p.labelLength / 2) * -1 + "ch"
-        : "0.5rem"};
+    !p.rotateLabel && p.labelLength
+      ? (p.labelLength / 2) * -1 + "ch"
+      : "0.5rem"};
     transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
     white-space: nowrap;
   }
@@ -215,6 +219,10 @@ interface RangeSliderProps {
     The width of the range slider.
   */
   width?: number;
+  /**
+    The width of the range track.
+  */
+  thickTrack?: boolean
 }
 
 export const RangeSlider = ({
@@ -232,7 +240,8 @@ export const RangeSlider = ({
   rotateLabel = false,
   blurColor = "grey",
   primaryColor = "black",
-  width = 800
+  width = 800,
+  thickTrack = false,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef(null);
@@ -272,18 +281,20 @@ export const RangeSlider = ({
           }
           return null;
         });
-        if (customTickText !== null) labelLength = customTickText[0]?.length;
-        markers.push(
-          <Tick
-            key={i}
-            labelLength={labelLength}
-            showLabel={showLabel}
-            rotateLabel={rotateLabel}
-            showTicks={showTicks}
-          >
-            {showLabel && <div>{customTickText}</div>}
-          </Tick>
-        );
+        if (showLabel) {
+          if (customTickText !== null) labelLength = customTickText[0]?.length;
+          markers.push(
+            <Tick
+              key={i}
+              labelLength={labelLength}
+              showLabel={showLabel}
+              rotateLabel={rotateLabel}
+              showTicks={showTicks}
+            >
+              {showLabel && <div>{customTickText}</div>}
+            </Tick>
+          );
+        }
       }
     }
   } else {
@@ -338,29 +349,26 @@ export const RangeSlider = ({
   return (
     <RangeWrap style={{ width: width }}>
       <Progress
+        thickTrack={thickTrack}
         focused={isFocused}
         style={
           isFocused
             ? {
-                background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${
-                  newPosition * 2
-                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${
-                  newPosition * 2
+              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2
                 }px), hsl(210, 52%, 93%) 100%)`
-              }
+            }
             : {
-                background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${
-                  newPosition * 2
-                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${
-                  newPosition * 2
+              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
+                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2
                 }px), hsl(210, 52%, 93%) 100%)`
-              }
+            }
         }
       />
 
       <RangeOutput
         focused={isFocused}
-        style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}
+        style={{ left: thickTrack? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)` }}
       >
         <span>
           {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
@@ -386,6 +394,7 @@ export const RangeSlider = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         focused={isFocused}
+        thickTrack={thickTrack}
       />
       <Ticks ref={ticksEl}>{marks}</Ticks>
     </RangeWrap>

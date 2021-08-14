@@ -139,7 +139,6 @@ let newValue2 = 0;
 let newPosition1 = 0;
 let newPosition2 = 0;
 let focusColor = "";
-let blurColor = "";
 
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
