@@ -92,7 +92,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : focusColor
-      };
+  };
     }
 
     &::-moz-range-thumb {
@@ -110,11 +110,11 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : focusColor
-      };
+  };
     }
 `;
 
-const Ticks = styled.div<{ thickTrack?: boolean }>`
+const Ticks = styled.div<{ thickTrack: boolean }>`
   display: flex;
   justify-content: space-between;
   margin: 20px;
@@ -222,11 +222,16 @@ interface RangeSliderProps {
   /**
     The width of the range track.
   */
-  thickTrack?: boolean
+  thickTrack?: boolean;
   /**
-The width of the range track.
+The color of the labels.
 */
-  labelColor?: string
+  labelColor?: string;
+  /**
+Show or hide tooltip.
+*/
+  showTooltip?: boolean;
+
 }
 
 export const RangeSlider = ({
@@ -247,6 +252,7 @@ export const RangeSlider = ({
   width = 800,
   thickTrack = false,
   labelColor = "black",
+  showTooltip = false,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef(null);
@@ -372,14 +378,14 @@ export const RangeSlider = ({
         }
       />
 
-      <RangeOutput
+      {showTooltip && <RangeOutput
         focused={isFocused}
         style={{ left: thickTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
       >
         <span>
           {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
         </span>
-      </RangeOutput>
+      </RangeOutput>}
       <StyledRangeSlider
         aria-label="Basic Example"
         aria-orientation="horizontal"
@@ -402,7 +408,7 @@ export const RangeSlider = ({
         focused={isFocused}
         thickTrack={thickTrack}
       />
-      <Ticks ref={ticksEl}>{marks}</Ticks>
+      <Ticks ref={ticksEl} thickTrack={thickTrack}>{marks}</Ticks>
     </RangeWrap>
   );
 };
