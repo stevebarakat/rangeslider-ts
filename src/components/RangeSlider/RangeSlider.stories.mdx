@@ -2,7 +2,6 @@ import { ArgsTable } from "@storybook/addon-docs";
 import { useArgTypes } from "@storybook/api";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
 import { RangeSlider } from "./RangeSlider";
-// const { argTypes } = useArgTypes();
 
 <Meta
   title="RangeSlider"
@@ -28,18 +27,6 @@ export const Template = (args) => <RangeSlider {...args} />;
   values.
 </p>
 
----
-
-### Default Parameters
-
-<p className="mdp">The values used if not set by the user.</p>
-
-<ArgsTable of={RangeSlider} />
-
-#### Basic Configuration
-
-Default labels, not rotated, snapping, 10 steps.
-
 <Preview>
   <Story
     name="Basic"
@@ -64,6 +51,9 @@ Default labels, not rotated, snapping, 10 steps.
     {Template.bind({})}
   </Story>
 </Preview>
+
+#### Default Configuration
+<p className="mdp">Default labels, not rotated, snapping, 10 steps. The values used if not set by the user.</p>
 
 <Props story="Basic" />
 

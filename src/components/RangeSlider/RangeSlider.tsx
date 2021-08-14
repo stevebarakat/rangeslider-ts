@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
-let blurColor = "";
 
 // Styles
 
@@ -60,7 +59,7 @@ const Progress = styled.div<{ focused: boolean }>`
   z-index: 0;
 `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range" })<{
+const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" })<{
   focused: boolean;
 }>`
   appearance: none;
@@ -186,11 +185,11 @@ interface RangeSliderProps {
   
   <i>Custom labels replace default labels!</i>
   */
-  customLabels: Array<Record<number, string>>;
+  customLabels?: Array<Record<number, string>>;
   /**
     Show or hide labels.
   */
-  showLabel: boolean;
+  showLabel?: boolean;
   /**
     Optional text displayed before value. 
   */
@@ -206,15 +205,15 @@ interface RangeSliderProps {
   /**
     The focus color. 
   */
-  blurColor: string;
+  blurColor?: string;
   /**
     The blur color. 
   */
-  primaryColor: string;
+  primaryColor?: string;
   /**
     The width of the range slider.
   */
-  width: number;
+  width?: number;
 }
 
 export const RangeSlider = ({
@@ -242,7 +241,6 @@ export const RangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
-  blurColor = blurColor;
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
@@ -313,7 +311,6 @@ export const RangeSlider = ({
   const marks = markers.map((marker) => marker);
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    // Check if modifier key is pressed
     const cmd = e.metaKey;
     const ctrl = e.ctrlKey;
 
@@ -369,6 +366,11 @@ export const RangeSlider = ({
         </span>
       </RangeOutput>
       <StyledRangeSlider
+        aria-label="Basic Example"
+        aria-orientation="horizontal"
+        aria-valuenow={value}
+        aria-valuemin={min}
+        aria-valuemax={max}
         ref={rangeEl}
         min={min}
         max={max}

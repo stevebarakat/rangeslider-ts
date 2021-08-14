@@ -1,9 +1,9 @@
 {
-  "name": "cra-controls",
+  "name": "rangeslider-storybok-ts",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
@@ -61,6 +61,7 @@
     "@storybook/node-logger": "^6.4.0-alpha.22",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.6",
-    "babel-loader": "8.1.0"
+    "babel-loader": "8.1.0",
+    "webpack": "4.44.2"
   }
 }
