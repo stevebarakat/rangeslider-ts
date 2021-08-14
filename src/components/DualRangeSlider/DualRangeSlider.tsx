@@ -201,7 +201,7 @@ interface DualRangeSliderProps {
   /**
     The focus color. 
   */
-  primaryColorLight: string;
+  blurColor: string;
   /**
     The blur color. 
   */
@@ -226,7 +226,7 @@ export const DualRangeSlider = ({
   prefix = "",
   suffix = "",
   rotateLabel = false,
-  primaryColorLight = "grey",
+  blurColor = "grey",
   primaryColor = "black",
   width = 800
 }: DualRangeSliderProps) => {
@@ -241,7 +241,7 @@ export const DualRangeSlider = ({
   const [newUpperVal, setNewUpperVal] = useState(0);
 
   focusColor = primaryColor;
-  blurColor = primaryColorLight;
+  blurColor = blurColor;
 
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));

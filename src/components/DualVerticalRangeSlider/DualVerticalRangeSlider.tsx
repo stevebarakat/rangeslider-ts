@@ -10,14 +10,18 @@ let blurColor = "";
 const blackColor = "#999";
 const whiteColor = "white";
 
-const RangeWrapWrap = styled.div<{maxLabelLength: number, outputWidth: number, showTicks: boolean, heightVal: number}>`
+const Wrapper = styled.div<{ maxLabelLength?: number }>`
+  padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
+`;
+
+const RangeWrapWrap = styled.div<{ maxLabelLength: number, outputWidth: number, showTicks: boolean, heightVal: number }>`
   width: ${p => p.showTicks ?
     p.maxLabelLength + p.outputWidth + 125 + "px" :
     p.maxLabelLength + 60 + "px"
   };
 `;
 
-const RangeWrap = styled.div<{heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
+const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
   width: ${p => p.heightVal + "px"};
   margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
   transform: rotate(270deg);
@@ -28,7 +32,7 @@ const RangeWrap = styled.div<{heightVal: number, outputWidth: number, maxLabelLe
   font-family: sans-serif;
 `;
 
-const RangeOutput = styled.output<{focused: boolean}>`
+const RangeOutput = styled.output<{ focused: boolean }>`
   width: 0;
   user-select: none;
   position: absolute;
@@ -71,7 +75,7 @@ const Progress = styled.div`
     margin: 20px 0 0 0;
   `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range" })<{focused: boolean}>`
+const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: boolean }>`
   pointer-events: none;
   cursor: default;
   appearance: none;
@@ -145,7 +149,7 @@ const Ticks = styled.div`
   color: ${blackColor};
 `;
 
-const Tick = styled.div<{maxLabelLength: number, showLabel: boolean}>`
+const Tick = styled.div<{ maxLabelLength: number, showLabel: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -218,7 +222,7 @@ interface DualVerticalRangeSliderProps {
   /**
     The focus color. 
   */
-  primaryColorLight: string;
+  blurColor: string;
   /**
     The blur color. 
   */
@@ -238,7 +242,7 @@ export const DualVerticalRangeSlider = ({
   step = 10,
   showTicks = true,
   snap = true,
-  customLabels=[
+  customLabels = [
     { 0: "low" },
     { 50: "medium" },
     { 100: "high" }
@@ -246,7 +250,7 @@ export const DualVerticalRangeSlider = ({
   showLabel = true,
   prefix = "",
   suffix = "",
-  primaryColorLight = "grey",
+  blurColor = "grey",
   primaryColor = "black",
   height = 400
 }: DualVerticalRangeSliderProps) => {
@@ -267,7 +271,7 @@ export const DualVerticalRangeSlider = ({
   newPosition2 = 10 - newValue2 * 0.2;
 
   focusColor = primaryColor;
-  blurColor = primaryColorLight;
+  blurColor = blurColor;
 
   // useEffect(() => {
   //   let labelList = [];
@@ -289,7 +293,7 @@ export const DualVerticalRangeSlider = ({
       showTicks &&
         showLabel &&
         tickText !== undefined && labelList.push(tickText);
-        setOutputWidth(outputEl.current!.clientHeight);
+      setOutputWidth(outputEl.current!.clientHeight);
       console.log(labelList);
     }
     setMaxLabelLength(Math.max(...labelList));
@@ -366,91 +370,93 @@ export const DualVerticalRangeSlider = ({
   };
 
   return (
-    <RangeWrapWrap
-      outputWidth={outputWidth}
-      showTicks={showTicks}
-      heightVal={height}
-      maxLabelLength={maxLabelLength}
-    >
-      <RangeWrap
+    <Wrapper maxLabelLength={maxLabelLength}>
+      <RangeWrapWrap
         outputWidth={outputWidth}
         showTicks={showTicks}
         heightVal={height}
         maxLabelLength={maxLabelLength}
       >
-        <Progress
-          style={{
-            background: progressFocused ?
-              `-webkit-linear-gradient(left,  
+        <RangeWrap
+          outputWidth={outputWidth}
+          showTicks={showTicks}
+          heightVal={height}
+          maxLabelLength={maxLabelLength}
+        >
+          <Progress
+            style={{
+              background: progressFocused ?
+                `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
               ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-              :
-              `-webkit-linear-gradient(left,  
+                :
+                `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
               ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-          }}
-        />
+            }}
+          />
 
-        {/* UPPER RANGE */}
-        <RangeOutput
-          ref={outputEl}
-          focused={progressFocused}
-          style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex={0}
-          ref={upperRange}
-          type="range"
-          min={min}
-          max={max}
-          value={upperVal}
-          step={snap ? step : 0}
-          focused={upperFocused}
-          onFocus={() => {
-            setUpperFocused(true);
-            setProgressFocused(true);
-          }}
-          onBlur={() => setProgressFocused(false)}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setUpperVal(valueAsNumber);
-          }}
-        />
+          {/* UPPER RANGE */}
+          <RangeOutput
+            ref={outputEl}
+            focused={progressFocused}
+            style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
+            <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
+          </RangeOutput>
+          <StyledRangeSlider
+            tabIndex={0}
+            ref={upperRange}
+            type="range"
+            min={min}
+            max={max}
+            value={upperVal}
+            step={snap ? step : 0}
+            focused={upperFocused}
+            onFocus={() => {
+              setUpperFocused(true);
+              setProgressFocused(true);
+            }}
+            onBlur={() => setProgressFocused(false)}
+            onInput={(e) => {
+              const { valueAsNumber } = e.target as HTMLInputElement;
+              setUpperVal(valueAsNumber);
+            }}
+          />
 
-        {/* LOWER RANGE */}
-        <RangeOutput
-          focused={progressFocused}
-          style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex={0}
-          ref={lowerRange}
-          type="range"
-          min={min}
-          max={max}
-          value={lowerVal}
-          step={snap ? step : 0}
-          focused={lowerFocused}
-          onFocus={() => {
-            setLowerFocused(true);
-            setProgressFocused(true);
-          }}
-          onBlur={() => setProgressFocused(false)}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setLowerVal(valueAsNumber);
-          }}
-        />
+          {/* LOWER RANGE */}
+          <RangeOutput
+            focused={progressFocused}
+            style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+            <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
+          </RangeOutput>
+          <StyledRangeSlider
+            tabIndex={0}
+            ref={lowerRange}
+            type="range"
+            min={min}
+            max={max}
+            value={lowerVal}
+            step={snap ? step : 0}
+            focused={lowerFocused}
+            onFocus={() => {
+              setLowerFocused(true);
+              setProgressFocused(true);
+            }}
+            onBlur={() => setProgressFocused(false)}
+            onInput={(e) => {
+              const { valueAsNumber } = e.target as HTMLInputElement;
+              setLowerVal(valueAsNumber);
+            }}
+          />
 
 
-        {showTicks && <Ticks ref={tickEl}>{marks}</Ticks>}
-      </RangeWrap>
-    </RangeWrapWrap>
+          {showTicks && <Ticks ref={tickEl}>{marks}</Ticks>}
+        </RangeWrap>
+      </RangeWrapWrap>
+    </Wrapper>
   );
 };

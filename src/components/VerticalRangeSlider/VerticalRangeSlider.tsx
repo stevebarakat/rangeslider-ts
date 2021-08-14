@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
-let blurColor = "";
 
 const whiteColor = "white";
 const blackColor = "#999";
@@ -11,15 +10,19 @@ const Wrapper = styled.div<{ maxLabelLength?: number }>`
   padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
 `;
 
-const RangeWrapWrap = styled.div<{ outputWidth: number; }>`
-  width: 100px;
+const RangeWrapWrap = styled.div<{ maxLabelLength: number, outputWidth: number, showTicks: boolean, heightVal: number }>`
+  width: ${p => p.showTicks ?
+    p.maxLabelLength + p.outputWidth + 125 + "px" :
+    p.maxLabelLength + 60 + "px"
+  };
 `;
 
-const RangeWrap = styled.div<{ heightVal: number, maxLabelLength: number; }>`
-  width: ${(p) => p.heightVal + "px"};
+const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
+  width: ${p => p.heightVal + "px"};
+  margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
   transform: rotate(270deg);
   transform-origin: top left;
-  margin-top: ${(p) => p.heightVal + "px"};
+  margin-top: ${p => p.heightVal + "px"};
   left: 0;
   top: 0;
   font-family: sans-serif;
@@ -212,7 +215,7 @@ interface VerticalRangeSliderProps {
   /**
     The focus color. 
   */
-  primaryColorLight: string;
+  blurColor: string;
   /**
     The blur color. 
   */
@@ -235,7 +238,7 @@ export const VerticalRangeSlider = ({
   showLabel = true,
   prefix = "",
   suffix = "",
-  primaryColorLight = "#FF0000",
+  blurColor = "#FF0000",
   primaryColor = "black",
   height = 400
 }: VerticalRangeSliderProps) => {
@@ -249,7 +252,7 @@ export const VerticalRangeSlider = ({
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 10;
   focusColor = primaryColor;
-  blurColor = primaryColorLight;
+  blurColor = blurColor;
   const newPosition = Number(10 - newValue * 0.2);
 
   useEffect(() => {
@@ -352,8 +355,18 @@ export const VerticalRangeSlider = ({
 
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
-      <RangeWrapWrap outputWidth={outputWidth}>
-        <RangeWrap heightVal={height} maxLabelLength={maxLabelLength}>
+      <RangeWrapWrap
+        outputWidth={outputWidth}
+        showTicks={showTicks}
+        heightVal={height}
+        maxLabelLength={maxLabelLength}
+      >
+        <RangeWrap
+          outputWidth={outputWidth}
+          showTicks={showTicks}
+          heightVal={height}
+          maxLabelLength={maxLabelLength}
+        >
           <RangeOutput
             ref={outputEl}
             focused={isFocused}

@@ -18,8 +18,8 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
-        primaryColorLight="gray"
+        rotateLabel={true}
+        blurColor="gray"
         primaryColor="black"
         width={800}
       />
@@ -39,7 +39,7 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        primaryColorLight="gray"
+        blurColor="gray"
         primaryColor="black"
         height={400}
       />
@@ -62,7 +62,7 @@ function App() {
         suffix=""
         rotateLabel={false}
         primaryColor="black"
-        primaryColorLight="gray"
+        blurColor="gray"
         width={800}
       />
       <DualVerticalRangeSlider
@@ -83,7 +83,7 @@ function App() {
         prefix=""
         suffix=""
         primaryColor="black"
-        primaryColorLight="gray"
+        blurColor="gray"
         height={400}
       />
     </div>

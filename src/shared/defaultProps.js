@@ -10,5 +10,5 @@ export const defaultProps = {
   prefix: "",
   suffix: "",
   primaryColor: "hsl(196, 100%, 48%)",
-  primaryColorLight: "hsl(196, 100%, 70%)",
+  blurColor: "hsl(196, 100%, 70%)",
 };

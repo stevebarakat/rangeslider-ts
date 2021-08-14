@@ -11,6 +11,7 @@ const blackColor = "#999";
 const RangeWrap = styled.div`
   position: relative;
   padding-top: 3.75rem;
+  padding-bottom: 1.75rem;
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
