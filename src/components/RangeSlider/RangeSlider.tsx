@@ -91,7 +91,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     p.thickTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : focusColor
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
   };
     }
 
@@ -370,8 +370,13 @@ export const RangeSlider = ({
                 }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 0.75
                 }px), hsl(210, 52%, 93%) 100%)`
             }
-            : {
+            : thickTrack ? {
               background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
+                }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 0.75
+                }px), hsl(210, 52%, 93%) 100%)`
+            } :
+            {
+              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
                 }px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 0.75
                 }px), hsl(210, 52%, 93%) 100%)`
             }
