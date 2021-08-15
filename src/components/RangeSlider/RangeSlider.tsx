@@ -91,8 +91,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 
   &::-webkit-slider-thumb {
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.25em"};
-    height: ${p => p.wideTrack ? "3em" : "1.25em"};
+    width: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
@@ -109,8 +109,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 
   &::-moz-range-thumb {
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.25em"};
-    height: ${p => p.wideTrack ? "3em" : "1.25em"};
+    width: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};

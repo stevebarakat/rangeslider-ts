@@ -38,13 +38,13 @@ const RangeWrap = styled.div<{
   font-family: sans-serif;
 `;
 
-const RangeOutput = styled.output<{ focused: boolean }>`
+const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   width: 0;
   user-select: none;
   position: absolute;
   display: flex;
   justify-content: flex-start;
-  margin-top: 1.5rem;
+  margin-top: ${p => p.wideTrack ? "2.5em" : "1.5em" };
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
@@ -89,22 +89,23 @@ const RangeOutput = styled.output<{ focused: boolean }>`
 const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
-    inset 2px 2px 2px rgba(0, 0, 0, 0.24);
-  height: ${(p) => (p.wideTrack ? "15px" : "5px")};
+  /* box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
+    inset 2px 2px 2px rgba(0, 0, 0, 0.24); */
+  height: ${(p) => (p.wideTrack ? "14px" : "7px")};
   width: 100%;
   z-index: 0;
-`;
+  `;
 
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
 }) <{ focused: boolean; wideTrack: boolean; heightVal: number }>`
+border: 1px solid #999;
   cursor: pointer;
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "15px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "5px"};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -116,8 +117,8 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.25em"};
-    height: ${p => p.wideTrack ? "3em" : "1.25em"};
+    width: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
@@ -127,7 +128,7 @@ const StyledRangeSlider = styled.input.attrs({
     p.wideTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
   }
   }
   
@@ -135,8 +136,8 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.25em"};
-    height: ${p => p.wideTrack ? "3em" : "1.25em"};
+    width: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
@@ -422,33 +423,34 @@ export const VerticalRangeSlider = ({
           maxLabelLength={maxLabelLength}
         >
           <Progress
-        wideTrack={wideTrack}
-        focused={isFocused}
-        style={
-          isFocused
-            ? {
-              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                }px), ${whiteColor} 100%)`
+            wideTrack={wideTrack}
+            focused={isFocused}
+            style={
+              isFocused
+                ? {
+                  background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                    }px), ${whiteColor} 100%)`
+                }
+                : wideTrack ? {
+                  background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
+                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                    }px), ${whiteColor} 100%)`
+                } :
+                  {
+                    background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                      }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                      }px), ${whiteColor} 100%)`
+                  }
             }
-            : wideTrack ? {
-              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                }px), ${whiteColor} 100%)`
-            } :
-              {
-                background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                  }px), ${whiteColor} 100%)`
-              }
-        }
-      />
+          />
           <RangeOutput
             ref={outputEl}
             focused={isFocused}
+            wideTrack={wideTrack}
             className="disable-select"
             style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
-            >
+          >
             <span>
               {prefix +
                 numberWithCommas(value.toFixed(decimals)) +

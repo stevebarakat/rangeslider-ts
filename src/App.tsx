@@ -41,9 +41,11 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        blurColor="gray"
-        primaryColor="black"
+        blurColor="pink"
+        primaryColor="lightblue"
         height={400}
+        wideTrack={true}
+        showTooltip={true}
       />
       <DualRangeSlider
         initialLowerValue={20}
