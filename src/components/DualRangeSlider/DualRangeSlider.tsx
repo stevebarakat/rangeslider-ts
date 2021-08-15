@@ -405,7 +405,7 @@ export const DualRangeSlider = ({
             background: lowerFocused || upperFocused ?
               `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})` :
               wideTrack ? `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${blurColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})`
-                : `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})`
+                : `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})`
           }}
         />
 

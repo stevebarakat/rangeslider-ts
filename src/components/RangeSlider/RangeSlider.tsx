@@ -105,9 +105,9 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
   };
-    }
+  }
 
-    &::-moz-range-thumb {
+  &::-moz-range-thumb {
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.25em"};
     height: ${p => p.wideTrack ? "3em" : "1.25em"};
@@ -121,9 +121,10 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     p.wideTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : focusColor
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
   };
-    }
+  }
+
 `;
 
 const Ticks = styled.div<{ wideTrack: boolean }>`
@@ -387,11 +388,11 @@ export const RangeSlider = ({
                 }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
                 }px), ${whiteColor} 100%)`
             } :
-            {
-              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                }px), ${whiteColor} 100%)`
-            }
+              {
+                background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} 100%)`
+              }
         }
       />
 
