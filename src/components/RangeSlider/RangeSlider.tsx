@@ -17,7 +17,7 @@ const RangeWrap = styled.div`
   user-select: none;
 `;
 
-const RangeOutput = styled.output<{ focused?: boolean }>`
+const RangeOutput = styled.output<{ focused: boolean }>`
   margin-top: -3.75rem;
   width: 0;
   position: absolute;

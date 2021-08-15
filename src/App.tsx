@@ -12,17 +12,18 @@ function App() {
         max={100}
         decimals={0}
         step={50}
-        showTicks={true}
+        showTicks={false}
         snap={false}
         customLabels={[{ 0: "low" }, { 50: "medium" }, { 100: "high" }]}
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
+        rotateLabel={true}
         blurColor="gray"
         primaryColor="black"
         width={800}
         thickTrack={false}
+        showTooltip={true}
       />
       <VerticalRangeSlider
         initialValue={50}
@@ -61,10 +62,12 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
+        rotateLabel={true}
         primaryColor="black"
         blurColor="gray"
         width={800}
+        thickTrack={false}
+        showTooltip={true}
       />
       <DualVerticalRangeSlider
         initialLowerValue={20}

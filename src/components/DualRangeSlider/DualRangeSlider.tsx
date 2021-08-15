@@ -51,85 +51,103 @@ const RangeOutput = styled.output<{ focused: boolean; }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean; }>`
-  z-index: 0;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-  border-radius: 15px;
+const Progress = styled.div<{ focused: boolean, thickTrack: boolean }>`
+  position: absolute;
+  border-radius: 100px;
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
+    inset 2px 2px 2px rgba(0, 0, 0, 0.24);
+  height: ${p => p.thickTrack ? "15px" : "5px"};
   width: 100%;
-  height: 15px;
+  z-index: 0;
 `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: boolean; }>`
+const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) <{
+  focused: boolean,
+  thickTrack: boolean,
+}>`
   appearance: none;
   cursor: pointer;
   pointer-events: none;
   margin: 0;
   width: 100%;
-  height: 15px;
-  border-radius: 15px;
-  border: 0;
+  height: ${p => p.thickTrack ? "15px" : "5px"};
   position: absolute;
   z-index: 2;
   background: transparent;
   &:focus {
     outline: none;
   }
+  padding-right: 2rem;
+
   &::-webkit-slider-thumb {
+    pointer-events: all;
     position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
+    width: ${p => p.thickTrack ? "3em" : "1.25em"};
+    height: ${p => p.thickTrack ? "3em" : "1.25em"};
     border-radius: 50%;
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    border: ${p => p.thickTrack ? `1px solid ${blackColor}` : "none"};
+    box-shadow: ${p => p.thickTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
-    margin-top: -2.5em;
-    pointer-events: all;
-    background: ${p => !p.focused ?
-    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+    background: ${(p) =>
+    p.thickTrack ? !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+  }
+  }
+
+    &::-moz-range-thumb {
+      pointer-events: all;
+      position: relative;
+      width: ${p => p.thickTrack ? "3em" : "1.25em"};
+      height: ${p => p.thickTrack ? "3em" : "1.25em"};
+      border-radius: 50%;
+      border: ${p => p.thickTrack ? `1px solid ${blackColor}` : "none"};
+      box-shadow: ${p => p.thickTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
+      cursor: grab;
+      -webkit-appearance: none;
+      z-index: 50;
+      background: ${(p) =>
+    p.thickTrack ? !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : focusColor
   };
-}
-  &::-moz-range-thumb {
-    position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
-    border-radius: 50%;
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-    cursor: grab;
-    appearance: none;
-    margin-top: -2.5em;
-    pointer-events: all;
-    z-index: 50;
-    background: ${p => !p.focused ?
-    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-  };
-}
+  }
 `;
 
-const Ticks = styled.div<{ rotateLabel: boolean; }>`
+const Ticks = styled.div<{ thickTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: 15px 20px 0;
-  margin-bottom: ${p => p.rotateLabel && "-20px"}
+  margin: 20px;
+  margin-top: ${p => p.thickTrack ? "32px" : "12px"}
 `;
-
-const Tick = styled.div<{ rotateLabel: boolean; labelLength: number; showLabel: boolean; showTicks: boolean; }>`
+const Tick = styled.div<{
+  showTicks?: boolean;
+  showLabel?: boolean;
+  rotateLabel?: boolean;
+  labelLength?: number | undefined;
+}>`
   position: relative;
   width: 1px;
-  height: 5px;
+  height: ${(p) => (p.showTicks ? "5px" : "0")};
   background: ${blackColor};
-  margin-bottom: ${p => p.rotateLabel && `${p.labelLength / 2}ch`};
-  div{
+  margin-bottom: ${(p) =>
+    p.showLabel &&
+    p.rotateLabel &&
+    `${p.labelLength !== undefined && p.labelLength / 2}ch`};
+  div {
     width: 0;
-    color: ${blackColor};
+    color: var(--labelColor);
     transform-origin: top center;
     margin-top: 0.5rem;
-    margin-left: ${p => !p.rotateLabel ? p.labelLength / 2.5 * -1 + "ch" : "0.5rem"};
-    transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
+    margin-left: ${(p) =>
+    !p.rotateLabel && p.labelLength
+      ? (p.labelLength / 2) * -1 + "ch"
+      : "0.5rem"};
+    transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
     white-space: nowrap;
   }
 `;
@@ -209,6 +227,19 @@ interface DualRangeSliderProps {
     The width of the range slider.
   */
   width: number;
+  /**
+  The width of the range track.
+*/
+  thickTrack?: boolean;
+  /**
+The color of the labels.
+*/
+  labelColor?: string;
+  /**
+Show or hide tooltip.
+*/
+  showTooltip?: boolean;
+
 }
 
 export const DualRangeSlider = ({
@@ -227,10 +258,13 @@ export const DualRangeSlider = ({
   rotateLabel = false,
   blurColor = "grey",
   primaryColor = "black",
-  width = 800
+  width = 800,
+  thickTrack = false,
+  labelColor = "black",
+  showTooltip = false,
 }: DualRangeSliderProps) => {
-  const lowerRange = useRef(null);
-  const upperRange = useRef(null);
+  const lowerRange = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const upperRange = useRef() as React.MutableRefObject<HTMLInputElement>;
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
@@ -353,22 +387,26 @@ export const DualRangeSlider = ({
     >
       <RangeWrap style={{ width: width }}>
         <Progress
-          focused={lowerFocused || upperFocused}
+          thickTrack={thickTrack}
+          focused={upperFocused || lowerFocused}
           style={{
             background: lowerFocused || upperFocused ?
               `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})` :
-              `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})`
+              thickTrack ? `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})`
+                : `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})`
           }}
         />
 
         {/* LOWER RANGE */}
-        <RangeOutput
+
+        {showTooltip && <RangeOutput
           focused={lowerFocused}
-          style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
-          className="range-value"
+          style={{ left: thickTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
-          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
+          <span>
+            {prefix + numberWithCommas(lowerVal?.toFixed(decimals)) + suffix}
+          </span>
+        </RangeOutput>}
         <StyledRangeSlider
           tabIndex={2}
           ref={lowerRange}
@@ -384,33 +422,41 @@ export const DualRangeSlider = ({
             setLowerVal(valueAsNumber);
           }}
           focused={lowerFocused}
+          thickTrack={thickTrack}
         />
 
         {/* UPPER RANGE */}
-        <RangeOutput
+
+        {showTooltip && <RangeOutput
           focused={upperFocused}
-          style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
-          className="range-value"
+          style={{ left: thickTrack ? `calc(${newUpperVal}% + ${newPosition2 * 2}px)` : `calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
-          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
+          <span>
+            {prefix + numberWithCommas(upperVal?.toFixed(decimals)) + suffix}
+          </span>
+        </RangeOutput>}
         <StyledRangeSlider
-          tabIndex={1}
+          aria-label="Basic Example"
+          aria-orientation="horizontal"
+          aria-valuenow={upperVal}
+          aria-valuemin={min}
+          aria-valuemax={max}
           ref={upperRange}
-          type="range"
           min={min}
           max={max}
-          value={upperVal}
           step={snap ? step : 0}
+          value={upperVal > max ? max : upperVal?.toFixed(decimals)}
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
-          onInput={e => {
+          onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;
+            // upperRange.current?.focus();
             setUpperVal(valueAsNumber);
           }}
           focused={upperFocused}
+          thickTrack={thickTrack}
         />
-        {showTicks ? <Ticks ref={ticksEl} rotateLabel={rotateLabel}>{marks}</Ticks> : null}
+        <Ticks ref={ticksEl} thickTrack={thickTrack}>{marks}</Ticks>
       </RangeWrap>
     </Wrapper>
   );
