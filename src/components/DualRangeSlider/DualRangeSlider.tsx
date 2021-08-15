@@ -98,7 +98,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
@@ -106,8 +106,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     p.wideTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 30%,${whiteColor} 35%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 30%,${focusColor} 35%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` 
-    }
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
+  }
   }
 
 
@@ -404,7 +404,7 @@ export const DualRangeSlider = ({
           wideTrack={wideTrack}
           focused={upperFocused || lowerFocused}
           style={{
-            background: lowerFocused || upperFocused ?
+            background: wideTrack ?
               `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
@@ -412,10 +412,10 @@ export const DualRangeSlider = ({
               ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
               :
               `-webkit-linear-gradient(left,  
-              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
-              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+                ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+                ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
           }}
         />
 

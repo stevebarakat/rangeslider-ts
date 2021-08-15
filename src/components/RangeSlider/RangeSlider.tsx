@@ -336,6 +336,7 @@ export const RangeSlider = ({
           Tick && (
             <Tick
               key={i}
+              style={{ "--labelColor": labelColor } as React.CSSProperties}
               labelLength={labelLength}
               rotateLabel={rotateLabel}
               showLabel={showLabel}
