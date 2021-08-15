@@ -63,7 +63,7 @@ const RangeOutput = styled.output<{ focused: boolean; }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
+const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
   height: ${(p) => (p.wideTrack ? "12px" : "5px")};
@@ -90,29 +90,26 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   }
   padding-right: 2rem;
   
+  
   &::-webkit-slider-thumb {
-    margin-top: 2px;
-    &:focus {
-      outline: 1px solid red;
-    }
     pointer-events: all;
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 20%,${whiteColor} 25%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
-      : p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` :
-        `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${blurrColor} 25%,${blurrColor} 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 30%,${whiteColor} 35%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 30%,${focusColor} 35%,${focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` 
+    }
   }
-  }
+
 
     &::-moz-range-thumb {
       pointer-events: all;

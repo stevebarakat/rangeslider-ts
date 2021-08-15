@@ -91,14 +91,14 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   padding-right: 2rem;
 
   &::-webkit-slider-thumb {
-    margin-top: 2px;
+    /* margin-top: 2px; */
     pointer-events: all;
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 1px 5px ${focusColor}` : `none` };
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
@@ -133,8 +133,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "7px"};
-  margin-top: ${p => p.wideTrack ? "32px" : "12px"}
+  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin-top: ${p => p.wideTrack ? "32px" : "18px"}
 `;
 const Tick = styled.div<{
   showTicks?: boolean;
@@ -145,7 +145,7 @@ const Tick = styled.div<{
   position: relative;
   width: 1px;
   height: ${(p) => (p.showTicks ? "5px" : "0")};
-  background: ${blackColor};
+  background: var(--labelColor);
   margin-bottom: ${(p) =>
     p.showLabel &&
     p.rotateLabel &&
@@ -402,7 +402,7 @@ export const RangeSlider = ({
 
       {showTooltip && <RangeOutput
         focused={isFocused}
-        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
+        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
       >
         <span>
           {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}

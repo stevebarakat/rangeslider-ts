@@ -139,7 +139,11 @@ export const bodyStyles = css`
   body {
     box-sizing: border-box;
     font-family: sans-serif;
-    background: hsl(0, 0%, 93%);
+    background: hsl(
+      287.49999999999994,
+      15.384615384615385%,
+      69.41176470588235%
+    );
   }
 
   h2 {

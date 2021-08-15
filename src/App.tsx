@@ -19,8 +19,8 @@ function App() {
         prefix=""
         suffix=""
         rotateLabel={true}
-        blurColor="gray"
-        primaryColor="black"
+        blurColor="pink"
+        primaryColor="lightblue"
         width={800}
         wideTrack={false}
         showTooltip={true}
