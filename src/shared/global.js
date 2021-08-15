@@ -139,6 +139,7 @@ export const bodyStyles = css`
   body {
     box-sizing: border-box;
     font-family: sans-serif;
+    background: hsl(0, 0%, 93%);
   }
 
   h2 {

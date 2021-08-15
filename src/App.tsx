@@ -11,9 +11,9 @@ function App() {
         min={0}
         max={100}
         decimals={0}
-        step={50}
-        showTicks={false}
-        snap={false}
+        step={10}
+        showTicks={true}
+        snap={true}
         customLabels={[{ 0: "low" }, { 50: "medium" }, { 100: "high" }]}
         showLabel={true}
         prefix=""
@@ -22,7 +22,7 @@ function App() {
         blurColor="gray"
         primaryColor="black"
         width={800}
-        thickTrack={false}
+        wideTrack={false}
         showTooltip={true}
       />
       <VerticalRangeSlider
@@ -66,7 +66,7 @@ function App() {
         primaryColor="black"
         blurColor="gray"
         width={800}
-        thickTrack={false}
+        wideTrack={false}
         showTooltip={true}
       />
       <DualVerticalRangeSlider
