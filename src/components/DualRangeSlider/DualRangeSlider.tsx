@@ -146,7 +146,7 @@ const Tick = styled.div<{
   position: relative;
   width: 1px;
   height: ${(p) => (p.showTicks ? "5px" : "0")};
-  background: ${blackColor};
+  background: var(--labelColor);
   margin-bottom: ${(p) =>
     p.showLabel &&
     p.rotateLabel &&
@@ -341,6 +341,7 @@ export const DualRangeSlider = ({
             showLabel={showLabel}
             rotateLabel={rotateLabel}
             showTicks={showTicks}
+            style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -361,6 +362,7 @@ export const DualRangeSlider = ({
               rotateLabel={rotateLabel}
               showLabel={showLabel}
               showTicks={showTicks}
+              style={{ "--labelColor": labelColor } as React.CSSProperties}
             >
               {showLabel && <div>{tickText}</div>}
             </Tick>
@@ -404,18 +406,24 @@ export const DualRangeSlider = ({
           wideTrack={wideTrack}
           focused={upperFocused || lowerFocused}
           style={{
-            background: wideTrack ?
+            background: !wideTrack ?
               `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
               ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
               :
-              `-webkit-linear-gradient(left,  
+              upperFocused || lowerFocused ? `-webkit-linear-gradient(left,  
                 ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+                ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
                 ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+                :
+                `-webkit-linear-gradient(left,  
+                  ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+                  ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
           }}
         />
 

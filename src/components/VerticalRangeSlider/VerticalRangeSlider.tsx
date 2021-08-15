@@ -89,7 +89,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
 const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  height: ${(p) => (p.wideTrack ? "12px" : "6px")};
+  height: ${(p) => (p.wideTrack ? "12px" : "5px")};
   width: 100%;
   z-index: 0;
   border: 1px solid #AAA;
@@ -103,7 +103,7 @@ const StyledRangeSlider = styled.input.attrs({
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "12px" : "6px"};
+  height: ${p => p.wideTrack ? "12px" : "8px"};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -120,7 +120,7 @@ const StyledRangeSlider = styled.input.attrs({
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
@@ -180,7 +180,7 @@ const Tick = styled.div<{
   position: relative;
   justify-content: flex-end;
   width: 1px;
-  background: ${blackColor};
+  background: var(--labelColor);
   height: 5px;
   div {
     writing-mode: vertical-rl;
@@ -351,6 +351,7 @@ export const VerticalRangeSlider = ({
             labelLength={labelLength}
             showLabel={showLabel}
             showTicks={showTicks}
+            style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -370,6 +371,7 @@ export const VerticalRangeSlider = ({
               labelLength={labelLength}
               showLabel={showLabel}
               showTicks={showTicks}
+              style={{ "--labelColor": labelColor } as React.CSSProperties}
             >
               {showLabel && <div>{tickText}</div>}
             </Tick>
