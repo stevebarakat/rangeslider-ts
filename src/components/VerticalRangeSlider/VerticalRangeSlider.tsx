@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 let focusColor = "";
 
-const whiteColor = "white";
+const whiteColor = "#EEE";
 const blackColor = "#999";
 
 const Wrapper = styled.div<{ maxLabelLength?: number }>`
@@ -89,23 +89,21 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
 const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  /* box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
-    inset 2px 2px 2px rgba(0, 0, 0, 0.24); */
-  height: ${(p) => (p.wideTrack ? "14px" : "7px")};
+  height: ${(p) => (p.wideTrack ? "12px" : "6px")};
   width: 100%;
   z-index: 0;
+  border: 1px solid #AAA;
   `;
 
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
 }) <{ focused: boolean; wideTrack: boolean; heightVal: number }>`
-border: 1px solid #999;
   cursor: pointer;
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "12px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "6px"};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -114,6 +112,7 @@ border: 1px solid #999;
   }
 
   &::-webkit-slider-thumb {
+    margin-top: -1px;
     cursor: grab;
     pointer-events: all;
     position: relative;

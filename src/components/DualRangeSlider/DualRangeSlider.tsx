@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // STYLES
 const blackColor = "#999";
-const whiteColor = "white";
+const whiteColor = "#EEE";
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
@@ -63,15 +63,14 @@ const RangeOutput = styled.output<{ focused: boolean; }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
+const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
-    inset 2px 2px 2px rgba(0, 0, 0, 0.24);
-  height: ${p => p.wideTrack ? "15px" : "5px"};
+  height: ${(p) => (p.wideTrack ? "12px" : "5px")};
   width: 100%;
   z-index: 0;
-`;
+  border: 1px solid #AAA;
+  `;
 
 const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) <{
   focused: boolean,
@@ -82,7 +81,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   pointer-events: none;
   margin: 0;
   width: 100%;
-  height: ${p => p.wideTrack ? "15px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "5px"};
   position: absolute;
   z-index: 2;
   background: transparent;
@@ -90,23 +89,28 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     outline: none;
   }
   padding-right: 2rem;
-
+  
   &::-webkit-slider-thumb {
+    margin-top: 2px;
+    &:focus {
+      outline: 1px solid red;
+    }
     pointer-events: all;
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
+    border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 20%,${whiteColor} 25%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
+      : p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` :
+        `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${blurrColor} 25%,${blurrColor} 100%)`
   }
   }
 
@@ -169,6 +173,7 @@ let newValue2 = 0;
 let newPosition1 = 0;
 let newPosition2 = 0;
 let focusColor = "";
+let blurrColor = "";
 
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -286,7 +291,7 @@ export const DualRangeSlider = ({
   const [newUpperVal, setNewUpperVal] = useState(0);
 
   focusColor = primaryColor;
-  blurColor = blurColor;
+  blurrColor = blurColor;
 
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
@@ -403,9 +408,17 @@ export const DualRangeSlider = ({
           focused={upperFocused || lowerFocused}
           style={{
             background: lowerFocused || upperFocused ?
-              `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})` :
-              wideTrack ? `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${blurColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})`
-                : `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`})`
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+              :
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
           }}
         />
 
@@ -413,14 +426,14 @@ export const DualRangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={lowerFocused}
-          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
           <span>
             {prefix + numberWithCommas(lowerVal?.toFixed(decimals)) + suffix}
           </span>
         </RangeOutput>}
         <StyledRangeSlider
-          tabIndex={2}
+          tabIndex={0}
           ref={lowerRange}
           type="range"
           min={min}
@@ -441,13 +454,14 @@ export const DualRangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={upperFocused}
-          style={{ left: wideTrack ? `calc(${newUpperVal}% + ${newPosition2 * 2}px)` : `calc(${newUpperVal}% + ${newPosition2 * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newUpperVal}% + ${newPosition2 * 2}px)` : `calc(${newUpperVal}% + ${newPosition2 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
           <span>
             {prefix + numberWithCommas(upperVal?.toFixed(decimals)) + suffix}
           </span>
         </RangeOutput>}
         <StyledRangeSlider
+          tabIndex={0}
           aria-label="Basic Example"
           aria-orientation="horizontal"
           aria-valuenow={upperVal}
@@ -462,7 +476,6 @@ export const DualRangeSlider = ({
           onBlur={() => setUpperFocused(false)}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;
-            // upperRange.current?.focus();
             setUpperVal(valueAsNumber);
           }}
           focused={upperFocused}

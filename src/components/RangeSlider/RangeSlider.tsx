@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
+let blurrColor = "";
 
 // Styles
 
-const whiteColor = "white";
+const whiteColor = "#EEE";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
@@ -65,11 +66,10 @@ const RangeOutput = styled.output<{ focused: boolean }>`
 const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12),
-    inset 2px 2px 2px rgba(0, 0, 0, 0.24);
-  height: ${p => p.wideTrack ? "15px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "5px"};
   width: 100%;
   z-index: 0;
+  border: 1px solid #AAA;
 `;
 
 const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) <{
@@ -78,9 +78,10 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 }>`
   appearance: none;
   cursor: pointer;
+  border: 1px solid transparent;
   margin: 0;
   width: 100%;
-  height: ${p => p.wideTrack ? "15px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "5px"};
   position: absolute;
   z-index: 2;
   background: transparent;
@@ -90,39 +91,41 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   padding-right: 2rem;
 
   &::-webkit-slider-thumb {
+    margin-top: 2px;
+    pointer-events: all;
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
+    border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 1px 5px ${focusColor}` : `none` };
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-  };
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 30%,${whiteColor} 35%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 30%,${focusColor} 35%,${focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` 
+    }
   }
 
   &::-moz-range-thumb {
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    width: ${p => p.wideTrack ? "3em" : "1.25em"};
+    height: ${p => p.wideTrack ? "3em" : "1.25em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     cursor: grab;
     -webkit-appearance: none;
+    border: 1px solid #AAA;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     z-index: 50;
-    background: ${(p) =>
-    p.wideTrack ? !p.focused
+    background: ${p =>
+    !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-  };
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
   }
 
 `;
@@ -275,6 +278,7 @@ export const RangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
+  blurrColor = blurColor;
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));

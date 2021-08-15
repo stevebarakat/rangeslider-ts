@@ -44,7 +44,7 @@ function App() {
         blurColor="pink"
         primaryColor="lightblue"
         height={400}
-        wideTrack={true}
+        wideTrack={false}
         showTooltip={true}
       />
       <DualRangeSlider
@@ -65,11 +65,12 @@ function App() {
         prefix=""
         suffix=""
         rotateLabel={true}
-        primaryColor="black"
+        primaryColor="#555"
         blurColor="gray"
         width={800}
         wideTrack={false}
         showTooltip={true}
+        labelColor="#555"
       />
       <DualVerticalRangeSlider
         initialLowerValue={20}
