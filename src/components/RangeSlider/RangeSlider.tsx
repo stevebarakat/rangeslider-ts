@@ -2,12 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
-let blurrColor = "";
 
 // Styles
 
 const whiteColor = "#EEE";
 const blackColor = "#999";
+
+const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
+  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 + "ch" : p.firstLabelLength / 3.5 + "ch"};
+`;
 
 const RangeWrap = styled.div`
   position: relative;
@@ -90,15 +94,15 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   }
   padding-right: 2rem;
 
+  
   &::-webkit-slider-thumb {
-    /* margin-top: 2px; */
     pointer-events: all;
     position: relative;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
     cursor: grab;
     -webkit-appearance: none;
     z-index: 50;
@@ -106,8 +110,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
     p.wideTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 30%,${whiteColor} 35%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 30%,${focusColor} 35%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)` 
-    }
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
+  }
   }
 
   &::-moz-range-thumb {
@@ -134,8 +138,8 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
   margin: ${p => p.wideTrack ? "20px" : "10px"};
-  margin-top: ${p => p.wideTrack ? "32px" : "18px"}
-`;
+  margin-top: ${p => p.wideTrack ? "32px" : "18px"};
+`
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabel?: boolean;
@@ -271,14 +275,13 @@ export const RangeSlider = ({
   showTooltip = false,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
-  const ticksEl = useRef(null);
+  const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
-  blurrColor = blurColor;
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
@@ -377,61 +380,67 @@ export const RangeSlider = ({
     }
   }
   return (
-    <RangeWrap style={{ width: width }}>
-      <Progress
-        wideTrack={wideTrack}
-        focused={isFocused}
-        style={
-          isFocused
-            ? {
-              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                }px), ${whiteColor} 100%)`
-            }
-            : wideTrack ? {
-              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                }px), ${whiteColor} 100%)`
-            } :
-              {
+    <Wrapper
+      rotateLabel={rotateLabel}
+      firstLabelLength={showLabel && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
+      lastLabelLength={showLabel && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
+    >
+      <RangeWrap style={{ width: width }}>
+        <Progress
+          wideTrack={wideTrack}
+          focused={isFocused}
+          style={
+            isFocused
+              ? {
                 background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
                   }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
                   }px), ${whiteColor} 100%)`
               }
-        }
-      />
+              : wideTrack ? {
+                background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} 100%)`
+              } :
+                {
+                  background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                    }px), ${whiteColor} 100%)`
+                }
+          }
+        />
 
-      {showTooltip && <RangeOutput
-        focused={isFocused}
-        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
-      >
-        <span>
-          {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
-        </span>
-      </RangeOutput>}
-      <StyledRangeSlider
-        aria-label="Basic Example"
-        aria-orientation="horizontal"
-        aria-valuenow={value}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        ref={rangeEl}
-        min={min}
-        max={max}
-        step={snap ? step : 0}
-        value={value > max ? max : value?.toFixed(decimals)}
-        onInput={(e) => {
-          const { valueAsNumber } = e.target as HTMLInputElement;
-          rangeEl.current?.focus();
-          setValue(valueAsNumber);
-        }}
-        onKeyDown={handleKeyPress}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        focused={isFocused}
-        wideTrack={wideTrack}
-      />
-      <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
-    </RangeWrap>
+        {showTooltip && <RangeOutput
+          focused={isFocused}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
+        >
+          <span>
+            {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
+          </span>
+        </RangeOutput>}
+        <StyledRangeSlider
+          aria-label="Basic Example"
+          aria-orientation="horizontal"
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          ref={rangeEl}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={value > max ? max : value?.toFixed(decimals)}
+          onInput={(e) => {
+            const { valueAsNumber } = e.target as HTMLInputElement;
+            rangeEl.current?.focus();
+            setValue(valueAsNumber);
+          }}
+          onKeyDown={handleKeyPress}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          focused={isFocused}
+          wideTrack={wideTrack}
+        />
+        <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
+      </RangeWrap>
+    </Wrapper>
   );
 };

@@ -44,7 +44,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   display: flex;
   justify-content: flex-start;
-  margin-top: ${p => p.wideTrack ? "2.5em" : "1.5em" };
+  margin-top: ${p => p.wideTrack ? "2.5em" : "2em" };
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
@@ -162,7 +162,7 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "7px"};
+  margin: ${p => p.wideTrack ? "20px" : "10px"};
   margin-top: ${p => p.wideTrack ? "32px" : "12px"};
   position: relative;
   top: -1.2em;

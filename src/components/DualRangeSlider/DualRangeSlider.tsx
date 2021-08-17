@@ -94,6 +94,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
   &::-webkit-slider-thumb {
     pointer-events: all;
     position: relative;
+    top: 1px;
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
@@ -134,8 +135,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range", role: "slider" }) 
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "7px"};
-  margin-top: ${p => p.wideTrack ? "32px" : "12px"};
+  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin-top: ${p => p.wideTrack ? "32px" : "18px"};
 `;
 const Tick = styled.div<{
   showTicks?: boolean;
