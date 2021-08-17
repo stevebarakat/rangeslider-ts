@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
-
 const whiteColor = "#EEE";
 const blackColor = "#999";
 
@@ -111,8 +110,8 @@ const StyledRangeSlider = styled.input.attrs({
     outline: none;
   }
 
+
   &::-webkit-slider-thumb {
-    margin-top: -1px;
     cursor: grab;
     pointer-events: all;
     position: relative;
@@ -120,7 +119,6 @@ const StyledRangeSlider = styled.input.attrs({
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none` };
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
@@ -130,6 +128,16 @@ const StyledRangeSlider = styled.input.attrs({
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
   }
   }
+  
+  &:focus::-webkit-slider-thumb {
+    cursor: grabbing;
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
+    background: ${p =>
+    !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+  }
+ 
   
   &::-moz-range-thumb {
     cursor: grab;
@@ -472,14 +480,14 @@ export const VerticalRangeSlider = ({
             max={max}
             step={snap ? step : 0}
             value={value > max ? max : value.toFixed(decimals)}
-            onClick={() => rangeEl.current?.focus()}
+            // onClick={() => rangeEl.current?.focus()}
             onInput={(e) => {
               const { valueAsNumber } = e.target as HTMLInputElement;
               setValue(valueAsNumber);
             }}
-            onKeyDown={handleKeyPress}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onKeyDown={handleKeyPress}
             focused={isFocused}
             wideTrack={wideTrack}
           />

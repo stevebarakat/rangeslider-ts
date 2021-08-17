@@ -4,7 +4,6 @@ import styled from "styled-components";
 let newPosition1 = 0;
 let newPosition2 = 0;
 let focusColor = "";
-let blurColor = "";
 
 // STYLES
 const blackColor = "#999";
@@ -32,59 +31,77 @@ const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelL
   font-family: sans-serif;
 `;
 
-const RangeOutput = styled.output<{ focused: boolean }>`
+const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   width: 0;
   user-select: none;
   position: absolute;
   display: flex;
   justify-content: flex-start;
-  margin-top: 3.75rem;
+  margin-top: ${p => p.wideTrack ? "2.5em" : "2em"};
   margin-left: -1rem;
-  span{
+  span {
     writing-mode: vertical-lr;
-    border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    border: ${(p) =>
+    p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
-    color: ${p => p.focused ? whiteColor : blackColor};
-    background: ${p => p.focused ? focusColor : whiteColor};
+    color: ${(p) => (p.focused ? whiteColor : blackColor)};
+    background: ${(p) => (p.focused ? focusColor : whiteColor)};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-    padding: 0.5rem;
+    padding: 0.5em;
     white-space: nowrap;
     &::before {
       content: "";
       position: absolute;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
+      width: 0;
+      height: 0;
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid ${blackColor}`};
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
       bottom: 100%;
-      margin-bottom: -2px;
-      margin-left: 1px;
+      margin-left: -4px;
+      margin-top: -1px;
       transform: rotate(180deg);
+      transform-origin: 75%;
+    }&::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `12px solid ${whiteColor}`};
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      bottom: 100%;
+      margin-left: -2px;
+      margin-bottom: -1px;
+      transform: rotate(180deg);
+      transform-origin: 75%;
     }
   }
 `;
 
-const Progress = styled.div`
-  z-index: 0;
-  border-radius: 15px;
-  width: 100%;
-  display: block;
-  height: 15px;
-  position: absolute;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
-    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-    margin: 20px 0 0 0;
-  `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: boolean }>`
-  pointer-events: none;
+const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
+  position: absolute;
+  border-radius: 100px;
+  height: ${(p) => (p.wideTrack ? "12px" : "5px")};
+  width: 100%;
+  z-index: 0;
+  border: 1px solid #AAA;
+`;
+
+const StyledRangeSlider = styled.input.attrs({
+  type: "range",
+  role: "slider",
+}) <{ focused: boolean; wideTrack: boolean; heightVal: number }>`
   cursor: default;
+  pointer-events: none;
   appearance: none;
   position: absolute;
   width: 100%;
-  height: 15px;
+  height: ${p => p.wideTrack ? "12px" : "8px"};
   border-radius: 15px;
   background: transparent;
-  margin: 20px 0 0 0;
+  margin: 0;
   &:focus {
     outline: none;
   }
@@ -93,19 +110,29 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
     cursor: grab;
     pointer-events: all;
     position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
+    width: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     -webkit-appearance: none;
     z-index: 50;
+    background: ${(p) =>
+    p.wideTrack ? !p.focused
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
+  }
+  }
+  
+  &:focus::-webkit-slider-thumb {
+    cursor: grabbing;
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
     background: ${p =>
-    p.focused
+    !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
   }
-
+  
   &::-moz-range-thumb {
     cursor: grab;
     pointer-events: all;
@@ -123,14 +150,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
       : `-moz-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
   }
 
-  &:focus::-webkit-slider-thumb {
-    cursor: grabbing;
-    background: ${p =>
-    !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-  }
-
   &:focus::-moz-range-thumb {
     cursor: grabbing;
     background: ${p =>
@@ -140,31 +159,50 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
   }
 `;
 
-const Ticks = styled.div`
-  cursor: default;
+const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin-right: 1.2rem;
-  margin-left: 1.2rem;
-  color: ${blackColor};
+  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin-top: ${p => p.wideTrack ? "32px" : "12px"};
+  position: relative;
+  top: -1.2em;
 `;
 
-const Tick = styled.div<{ maxLabelLength: number, showLabel: boolean }>`
+const Tick = styled.div<{
+  showTicks?: boolean;
+  showLabel?: boolean;
+  rotateLabel?: boolean;
+  labelLength?: number | undefined;
+  focused?: boolean;
+  maxLabelLength: number
+}>`
   display: flex;
   flex-direction: column;
   position: relative;
   justify-content: flex-end;
   width: 1px;
-  background: ${blackColor};
+  background: var(--labelColor);
   height: 5px;
   div {
     writing-mode: vertical-rl;
     margin-left: 0.65em;
     margin-bottom: 0.5rem;
     white-space: nowrap;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: ${(p) => (p.focused ? `12px solid ${focusColor}` : `0px`)};
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      margin-top: -1px;
+    }
   }
 `;
-
 
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -231,6 +269,19 @@ interface DualVerticalRangeSliderProps {
     The width of the range slider.
   */
   height: number;
+  /**
+The width of the range track.
+*/
+  wideTrack?: boolean;
+  /**
+  The color of the labels.
+  */
+  labelColor?: string;
+  /**
+  Show or hide tooltip.
+  */
+  showTooltip?: boolean;
+
 }
 
 export const DualVerticalRangeSlider = ({
@@ -252,7 +303,10 @@ export const DualVerticalRangeSlider = ({
   suffix = "",
   blurColor = "grey",
   primaryColor = "black",
-  height = 400
+  height = 400,
+  wideTrack = false,
+  labelColor = "black",
+  showTooltip = false,
 }: DualVerticalRangeSliderProps) => {
   const lowerRange = useRef<HTMLInputElement | null>(null);
   const upperRange = useRef<HTMLInputElement | null>(null);
@@ -271,7 +325,6 @@ export const DualVerticalRangeSlider = ({
   newPosition2 = 10 - newValue2 * 0.2;
 
   focusColor = primaryColor;
-  blurColor = blurColor;
 
   // useEffect(() => {
   //   let labelList = [];
@@ -384,6 +437,8 @@ export const DualVerticalRangeSlider = ({
           maxLabelLength={maxLabelLength}
         >
           <Progress
+            wideTrack={wideTrack}
+            focused={upperFocused || lowerFocused}
             style={{
               background: progressFocused ?
                 `-webkit-linear-gradient(left,  
@@ -404,57 +459,77 @@ export const DualVerticalRangeSlider = ({
           <RangeOutput
             ref={outputEl}
             focused={progressFocused}
+            wideTrack={wideTrack}
             style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
             <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
           </RangeOutput>
           <StyledRangeSlider
+            aria-label="Basic Example"
+            aria-orientation="horizontal"
+            aria-valuenow={upperVal}
+            aria-valuemin={min}
+            aria-valuemax={max}
             tabIndex={0}
+            heightVal={300}
             ref={upperRange}
-            type="range"
             min={min}
             max={max}
-            value={upperVal}
             step={snap ? step : 0}
-            focused={upperFocused}
+            value={upperVal > max ? max : upperVal.toFixed(decimals)}
             onFocus={() => {
               setUpperFocused(true);
               setProgressFocused(true);
             }}
-            onBlur={() => setProgressFocused(false)}
+            onBlur={() => {
+              setUpperFocused(false);
+              setProgressFocused(false);
+            }}
             onInput={(e) => {
               const { valueAsNumber } = e.target as HTMLInputElement;
               setUpperVal(valueAsNumber);
             }}
+            focused={upperFocused}
+            wideTrack={wideTrack}
           />
 
           {/* LOWER RANGE */}
           <RangeOutput
             focused={progressFocused}
+            wideTrack={wideTrack}
             style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
             <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
           </RangeOutput>
           <StyledRangeSlider
+            aria-label="Basic Example"
+            aria-orientation="horizontal"
+            aria-valuenow={lowerVal}
+            aria-valuemin={min}
+            aria-valuemax={max}
             tabIndex={0}
+            heightVal={300}
             ref={lowerRange}
-            type="range"
             min={min}
             max={max}
-            value={lowerVal}
             step={snap ? step : 0}
-            focused={lowerFocused}
+            value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
             onFocus={() => {
               setLowerFocused(true);
               setProgressFocused(true);
             }}
-            onBlur={() => setProgressFocused(false)}
+            onBlur={() => {
+              setLowerFocused(false);
+              setProgressFocused(false);
+            }}
             onInput={(e) => {
               const { valueAsNumber } = e.target as HTMLInputElement;
               setLowerVal(valueAsNumber);
             }}
+            focused={lowerFocused}
+            wideTrack={wideTrack}
           />
 
 
-          {showTicks && <Ticks ref={tickEl}>{marks}</Ticks>}
+          {showTicks && <Ticks ref={tickEl} wideTrack={wideTrack}>{marks}</Ticks>}
         </RangeWrap>
       </RangeWrapWrap>
     </Wrapper>
