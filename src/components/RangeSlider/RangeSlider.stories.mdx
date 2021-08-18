@@ -6,18 +6,6 @@ import { RangeSlider } from "./RangeSlider";
 <Meta
   title="RangeSlider"
   component={RangeSlider}
-  argTypes={{
-    customLabels: {
-      name: "customLabels",
-      description: "- Did you run the tests? \n - Did you lint the project",
-    },
-    control: {
-      type: "object",
-      customLabels: {
-        
-      }
-    }
-  }}
 />
 
 export const Template = (args) => <RangeSlider {...args} />;
@@ -33,35 +21,26 @@ export const Template = (args) => <RangeSlider {...args} />;
   values.
 </p>
 
+
 <Preview>
   <Story
-    name="Basic"
+    name="Default: Thick"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
-      showTicks: true,
-      snap: true,
-      customLabels: [],
-      showLabel: false,
-      prefix: "",
-      suffix: "",
-      rotateLabel: false,
-      blurColor: "grey",
       primaryColor: "black",
-      width: 950,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
 
-#### Default Configuration
-<p className="mdp">Default labels, not rotated, snapping, 10 steps. The values used if not set by the user.</p>
+### Default Configuration
 
-<Props story="Basic" />
+<p className="mdp">
+  Default labels, not rotated, snapping, 10 steps. The values used if not set by
+  the user.
+</p>
+
+<Props story="Default: Thick" />
 
 #### Configuration Two
 

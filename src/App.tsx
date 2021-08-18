@@ -6,7 +6,7 @@ import { DualVerticalRangeSlider } from './components/DualVerticalRangeSlider/Du
 function App() {
   return (
     <div>
-      <RangeSlider
+      {/* <RangeSlider
         initialValue={50}
         min={0}
         max={100}
@@ -98,7 +98,7 @@ function App() {
         height={400}
         showTooltip={true}
         labelColor="#111222"
-      />
+      /> */}
     </div>
   );
 }

@@ -98,8 +98,9 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    top: ${p => p.wideTrack ? 0 : "-1.5px"};
+    width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
     -webkit-appearance: none;
@@ -109,18 +110,16 @@ const StyledRangeSlider = styled.input.attrs({
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
-  }
+    }
   }
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px #FF0000` : `none`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
   }
- 
   
   &::-moz-range-thumb {
     cursor: grab;
@@ -138,7 +137,7 @@ const StyledRangeSlider = styled.input.attrs({
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-  }
+    }
   }
   
 `;
@@ -186,27 +185,27 @@ interface RangeSliderProps {
   /**
     The initial value.
   */
-  initialValue: number;
+  initialValue?: number;
   /**
     The minimum value.
   */
-  min: number;
+  min?: number;
   /**
     The maximum value. 
   */
-  max: number;
+  max?: number;
   /**
     The amount of decimal points to be rounded to. 
   */
-  decimals: number;
+  decimals?: number;
   /**
     The invterval between ticks.
   */
-  step: number;
+  step?: number;
   /**
     Snap to ticks or scroll smoothly.
    */
-  snap: boolean;
+  snap?: boolean;
   /**
   For creating custom labels like so:<code> [
     { 0: "low" },
@@ -220,11 +219,11 @@ interface RangeSliderProps {
   /**
     Show or hide labels.
   */
-    showLabel?: boolean;
-    /**
-      Show or hide tick marks.
-   */
-  showTicks: boolean;
+  showLabel?: boolean;
+  /**
+    Show or hide tick marks.
+ */
+  showTicks?: boolean;
   /**
     Optional text displayed before value. 
   */
@@ -265,24 +264,24 @@ Show or hide tooltip.
 }
 
 export const RangeSlider = ({
-  initialValue = 50,
-  min = 0,
-  max = 100,
-  decimals = 0,
-  step = 10,
-  showTicks = true,
-  snap = true,
-  customLabels = [],
-  showLabel = true,
-  prefix = "",
-  suffix = "",
-  rotateLabel = false,
-  blurColor = "grey",
-  primaryColor = "black",
-  width = 800,
-  wideTrack = false,
-  labelColor = "black",
-  showTooltip = false,
+  initialValue=50,
+  min=0,
+  max=100,
+  decimals,
+  step,
+  showTicks,
+  snap,
+  customLabels,
+  showLabel,
+  prefix,
+  suffix,
+  rotateLabel,
+  blurColor,
+  primaryColor="black",
+  width,
+  wideTrack,
+  labelColor,
+  showTooltip,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -292,15 +291,15 @@ export const RangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
-  
+
   // Make sure min never exceds max
-    if (min > max) {
-      min = max;
-    }
-    // Make sure max is never less than min
-    if (max < min) {
-      max = min;
-    }
+  if (min > max) {
+    min = max;
+  }
+  // Make sure max is never less than min
+  if (max < min) {
+    max = min;
+  }
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));

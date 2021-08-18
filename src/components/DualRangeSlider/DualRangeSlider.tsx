@@ -107,7 +107,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px #FF0000` : `none`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
@@ -294,6 +293,7 @@ export const DualRangeSlider = ({
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerFocused, setLowerFocused] = useState(false);
   const [upperFocused, setUpperFocused] = useState(false);
+  const factor = (max - min) / 5;
   const [newLowerVal, setNewLowerVal] = useState(0);
   const [newUpperVal, setNewUpperVal] = useState(0);
 
@@ -404,6 +404,33 @@ export const DualRangeSlider = ({
     }
   }
 
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    const cmd = e.metaKey;
+    const ctrl = e.ctrlKey;
+    const upper = e.currentTarget.id === "upper";
+    console.log(upper)
+
+    if (cmd || ctrl) {
+      switch (e.code) {
+        case "ArrowLeft": //Left
+          upper && setUpperVal(upperVal - factor);
+          !upper && setLowerVal(lowerVal - factor);
+          return;
+        case "ArrowDown": //Down
+          upper && setUpperVal(upperVal - factor);
+          !upper && setLowerVal(lowerVal - factor); return;
+        case "ArrowUp": //Up
+          upper && setUpperVal(upperVal + factor);
+          !upper && setLowerVal(lowerVal + factor); return;
+        case "ArrowRight": //Right
+          upper && setUpperVal(upperVal + factor);
+          !upper && setLowerVal(lowerVal + factor); return;
+        default:
+          return;
+      }
+    }
+  }
+
   return (
     <Wrapper
       rotateLabel={rotateLabel}
@@ -464,6 +491,7 @@ export const DualRangeSlider = ({
             const { valueAsNumber } = e.target as HTMLInputElement;
             setUpperVal(valueAsNumber);
           }}
+          onKeyDown={handleKeyPress}
           focused={upperFocused}
           wideTrack={wideTrack}
         />
@@ -492,6 +520,7 @@ export const DualRangeSlider = ({
             const { valueAsNumber } = e.target as HTMLInputElement;
             setLowerVal(valueAsNumber);
           }}
+          onKeyDown={handleKeyPress}
           focused={lowerFocused}
           wideTrack={wideTrack}
         />

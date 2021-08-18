@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 let focusColor = "";
-const whiteColor = "#EEE";
+const whiteColor = "#FFF";
 const blackColor = "#999";
 
 const Wrapper = styled.div<{ maxLabelLength?: number }>`
@@ -274,7 +274,7 @@ export const VerticalRangeSlider = ({
   showLabel = true,
   prefix = "",
   suffix = "",
-  blurColor = "#FF0000",
+  blurColor = "grey",
   primaryColor = "black",
   height = 400,
   wideTrack = false,
@@ -292,7 +292,7 @@ export const VerticalRangeSlider = ({
   const factor = (max - min) / 5;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
-  
+
   // Make sure min never exceds max
   if (min > max) {
     min = max;
@@ -405,12 +405,6 @@ export const VerticalRangeSlider = ({
 
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
-      {/* <RangeWrapWrap
-        outputWidth={outputWidth}
-        showTicks={showTicks}
-        heightVal={height}
-        maxLabelLength={maxLabelLength}
-      > */}
       <RangeWrap
         outputWidth={outputWidth}
         showTicks={showTicks}
@@ -439,7 +433,7 @@ export const VerticalRangeSlider = ({
                 }
           }
         />
-        <RangeOutput
+        {showTooltip && <RangeOutput
           ref={outputEl}
           focused={isFocused}
           wideTrack={wideTrack}
@@ -451,7 +445,7 @@ export const VerticalRangeSlider = ({
               " " +
               suffix}
           </span>
-        </RangeOutput>
+        </RangeOutput>}
         <StyledRangeSlider
           aria-label="Basic Example"
           aria-orientation="horizontal"
@@ -478,7 +472,6 @@ export const VerticalRangeSlider = ({
         />
         <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
       </RangeWrap>
-      {/* </RangeWrapWrap> */}
     </Wrapper>
   );
 };

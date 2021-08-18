@@ -120,7 +120,6 @@ const StyledRangeSlider = styled.input.attrs({
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px #FF0000` : `none`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
@@ -413,7 +412,6 @@ export const DualVerticalRangeSlider = ({
     }
   };
 
-
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     const cmd = e.metaKey;
     const ctrl = e.ctrlKey;
@@ -422,28 +420,24 @@ export const DualVerticalRangeSlider = ({
 
     if (cmd || ctrl) {
       switch (e.code) {
-        case "Escape": //Esc
-          // rangeEl.current.blur();
-          return;
         case "ArrowLeft": //Left
           upper && setUpperVal(upperVal - factor);
           !upper && setLowerVal(lowerVal - factor);
           return;
         case "ArrowDown": //Down
-        upper && setUpperVal(upperVal - factor);
-        !upper && setLowerVal(lowerVal - factor);          return;
+          upper && setUpperVal(upperVal - factor);
+          !upper && setLowerVal(lowerVal - factor); return;
         case "ArrowUp": //Up
-        upper && setUpperVal(upperVal + factor);
-        !upper && setLowerVal(lowerVal + factor);          return;
+          upper && setUpperVal(upperVal + factor);
+          !upper && setLowerVal(lowerVal + factor); return;
         case "ArrowRight": //Right
-        upper && setUpperVal(upperVal + factor);
-        !upper && setLowerVal(lowerVal + factor);          return;
+          upper && setUpperVal(upperVal + factor);
+          !upper && setLowerVal(lowerVal + factor); return;
         default:
           return;
       }
     }
   }
-
 
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
