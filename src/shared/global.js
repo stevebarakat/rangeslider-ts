@@ -135,6 +135,14 @@ export const bodyStyles = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
 
   body {
     box-sizing: border-box;

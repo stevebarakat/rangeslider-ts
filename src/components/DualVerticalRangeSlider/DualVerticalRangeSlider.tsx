@@ -13,16 +13,9 @@ const Wrapper = styled.div<{ maxLabelLength?: number }>`
   padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
 `;
 
-const RangeWrapWrap = styled.div<{ maxLabelLength: number, outputWidth: number, showTicks: boolean, heightVal: number }>`
-  width: ${p => p.showTicks ?
-    p.maxLabelLength + p.outputWidth + 125 + "px" :
-    p.maxLabelLength + 60 + "px"
-  };
-`;
-
 const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
   width: ${p => p.heightVal + "px"};
-  margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
+  margin-left: ${p => `${p.maxLabelLength + 1}ch`};
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${p => p.heightVal + "px"};
@@ -41,10 +34,9 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) =>
-    p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    border: ${(p) => p.focused ? `1px solid ${focusColor}` : `1px solid var(--labelColor)`};
     border-radius: 5px;
-    color: ${(p) => (p.focused ? whiteColor : blackColor)};
+    color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
     background: ${(p) => (p.focused ? focusColor : whiteColor)};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
@@ -54,7 +46,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid ${blackColor}`};
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid var(--labelColor)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -181,26 +173,15 @@ const Tick = styled.div<{
   position: relative;
   justify-content: flex-end;
   width: 1px;
-  background: var(--labelColor);
   height: 5px;
-  div {
+  background: ${p => p.showTicks ? "var(--labelColor)" : "transparent"};
+  label {
+    color: var(--labelColor);
+    display: block;
     writing-mode: vertical-rl;
     margin-left: 0.65em;
     margin-bottom: 0.5rem;
     white-space: nowrap;
-    &::before {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-top: ${(p) => (p.focused ? `12px solid ${focusColor}` : `0px`)};
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      top: 100%;
-      left: 50%;
-      margin-left: -6px;
-      margin-top: -1px;
-    }
   }
 `;
 
@@ -305,7 +286,7 @@ export const DualVerticalRangeSlider = ({
   primaryColor = "black",
   height = 400,
   wideTrack = false,
-  labelColor = "black",
+  labelColor = "red",
   showTooltip = false,
 }: DualVerticalRangeSliderProps) => {
   const lowerRange = useRef<HTMLInputElement | null>(null);
@@ -321,63 +302,65 @@ export const DualVerticalRangeSlider = ({
   const [progressFocused, setProgressFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState(0);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
+  const factor = (max - min) / 5;
   newPosition1 = 10 - newValue1 * 0.2;
   newPosition2 = 10 - newValue2 * 0.2;
-
   focusColor = primaryColor;
 
-  // useEffect(() => {
-  //   let labelList = [];
-  //   const tickList = tickEl.current?.children;
-  //   for (let i = 0; i < tickList?.length; i++) {
-  //     labelList.push(tickList[i].firstChild.innerText?.length);
-  //   }
-  //   setMaxLabelLength(Math.max(...labelList));
-  //   setOutputWidth(outputEl.current?.clientHeight);
-  // }, [min, max]);
+  // Make sure min never exceds max
+  if (min > max) {
+    min = max;
+  }
+  // Make sure max is never less than min
+  if (max < min) {
+    max = min;
+  }
 
   useEffect(() => {
     setNewValue1(Number(((lowerVal - min) * 100) / (max - min)));
     setNewValue2(Number(((upperVal - min) * 100) / (max - min)));
-    const tickList = showTicks ? tickEl.current?.children : null;
-    let labelList = [];
-    for (let i = 0; i < tickList!.length; i++) {
-      const tickText = tickList![i]?.firstChild?.firstChild?.textContent?.length;
-      showTicks &&
+    if (showTicks) {
+      const tickList = showTicks ? tickEl.current?.children : null;
+      let labelList = [];
+      for (let i = 0; i < tickList!.length; i++) {
+        const tickText = tickList![i]?.firstChild?.firstChild?.textContent?.length;
         showLabel &&
-        tickText !== undefined && labelList.push(tickText);
-      setOutputWidth(outputEl.current!.clientHeight);
-      console.log(labelList);
+          tickText !== undefined && labelList.push(tickText);
+        if (!labelList) return;
+        setMaxLabelLength(Math.max(...labelList));
+      }
+      if (!outputEl.current) return;
+      setOutputWidth(outputEl.current?.clientHeight);
     }
-    setMaxLabelLength(Math.max(...labelList));
   }, [min, max, lowerVal, upperVal, showLabel, showTicks]);
 
-
-  newPosition1 = 10 - newValue1 * 0.2;
-  newPosition2 = 10 - newValue2 * 0.2;
-
+  // For collecting tick marks
   let markers = [];
-
   if (customLabels?.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
-        let customTickText = null;
+        let labelLength = 0;
+        let customTickText: string[] = [];
         let tickText = numberWithCommas(i.toFixed(decimals));
+        labelLength = tickText.toString().length;
         customLabels.map((label) => {
-          console.log(Object.values(label)[0]);
           if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
             customTickText = Object.values(label);
           }
           return null;
         });
-
+        if (customTickText !== null) labelLength = customTickText[0]?.length;
         markers.push(
           <Tick
             key={i}
+            labelLength={labelLength}
             maxLabelLength={maxLabelLength}
             showLabel={showLabel}
+            showTicks={showTicks}
+            style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+
           </Tick>
         );
       }
@@ -386,20 +369,27 @@ export const DualVerticalRangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        const labelLength: number = tickText.toString().length;
         markers.push(
-          Tick && <Tick
-            key={i}
-            maxLabelLength={maxLabelLength}
-            showLabel={showLabel}
-          >
-            {showLabel && <div ref={tickEl}>{tickText}</div>}
-          </Tick>
+          Tick && (
+            <Tick
+              key={i}
+              maxLabelLength={maxLabelLength}
+              labelLength={labelLength}
+              showLabel={showLabel}
+              showTicks={showTicks}
+              style={{ "--labelColor": labelColor } as React.CSSProperties}
+            >
+              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+
+            </Tick>
+          )
         );
       }
     }
-  };
+  }
 
-  const marks = markers.map(marker => marker);
+  const marks = markers.map((marker) => marker);
 
   //If the upper value slider is LESS THAN the lower value slider.
   if (upperVal > lowerVal) {
@@ -422,116 +412,150 @@ export const DualVerticalRangeSlider = ({
     }
   };
 
+
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    const cmd = e.metaKey;
+    const ctrl = e.ctrlKey;
+    const upper = e.currentTarget.id === "upper";
+    console.log(upper)
+
+    if (cmd || ctrl) {
+      switch (e.code) {
+        case "Escape": //Esc
+          // rangeEl.current.blur();
+          return;
+        case "ArrowLeft": //Left
+          upper && setUpperVal(upperVal - factor);
+          !upper && setLowerVal(lowerVal - factor);
+          return;
+        case "ArrowDown": //Down
+        upper && setUpperVal(upperVal - factor);
+        !upper && setLowerVal(lowerVal - factor);          return;
+        case "ArrowUp": //Up
+        upper && setUpperVal(upperVal + factor);
+        !upper && setLowerVal(lowerVal + factor);          return;
+        case "ArrowRight": //Right
+        upper && setUpperVal(upperVal + factor);
+        !upper && setLowerVal(lowerVal + factor);          return;
+        default:
+          return;
+      }
+    }
+  }
+
+
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
-      <RangeWrapWrap
+      <RangeWrap
         outputWidth={outputWidth}
         showTicks={showTicks}
         heightVal={height}
         maxLabelLength={maxLabelLength}
       >
-        <RangeWrap
-          outputWidth={outputWidth}
-          showTicks={showTicks}
-          heightVal={height}
-          maxLabelLength={maxLabelLength}
-        >
-          <Progress
-            wideTrack={wideTrack}
-            focused={upperFocused || lowerFocused}
-            style={{
-              background: progressFocused ?
-                `-webkit-linear-gradient(left,  
+        <Progress
+          wideTrack={wideTrack}
+          focused={upperFocused || lowerFocused}
+          style={{
+            background: !wideTrack ?
+              `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
               ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+              :
+              upperFocused || lowerFocused ? `-webkit-linear-gradient(left,  
+                ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+                ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
                 :
                 `-webkit-linear-gradient(left,  
-              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
-              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-            }}
-          />
+                  ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+                  ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+          }}
+        />
 
-          {/* UPPER RANGE */}
-          <RangeOutput
-            ref={outputEl}
-            focused={progressFocused}
-            wideTrack={wideTrack}
-            style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-            <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
-          </RangeOutput>
-          <StyledRangeSlider
-            aria-label="Basic Example"
-            aria-orientation="horizontal"
-            aria-valuenow={upperVal}
-            aria-valuemin={min}
-            aria-valuemax={max}
-            tabIndex={0}
-            heightVal={300}
-            ref={upperRange}
-            min={min}
-            max={max}
-            step={snap ? step : 0}
-            value={upperVal > max ? max : upperVal.toFixed(decimals)}
-            onFocus={() => {
-              setUpperFocused(true);
-              setProgressFocused(true);
-            }}
-            onBlur={() => {
-              setUpperFocused(false);
-              setProgressFocused(false);
-            }}
-            onInput={(e) => {
-              const { valueAsNumber } = e.target as HTMLInputElement;
-              setUpperVal(valueAsNumber);
-            }}
-            focused={upperFocused}
-            wideTrack={wideTrack}
-          />
+        {/* UPPER RANGE */}
+        {showTooltip && <RangeOutput
+          ref={outputEl}
+          focused={progressFocused}
+          wideTrack={wideTrack}
+          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 2}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
+          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
+        </RangeOutput>}
+        <StyledRangeSlider
+          id="upper"
+          aria-label="upper value"
+          aria-orientation="horizontal"
+          aria-valuenow={upperVal}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          tabIndex={0}
+          heightVal={300}
+          ref={upperRange}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={upperVal > max ? max : upperVal.toFixed(decimals)}
+          onKeyDown={handleKeyPress}
+          onFocus={() => {
+            setUpperFocused(true);
+            setProgressFocused(true);
+          }}
+          onBlur={() => {
+            setUpperFocused(false);
+            setProgressFocused(false);
+          }}
+          onInput={(e) => {
+            const { valueAsNumber } = e.target as HTMLInputElement;
+            setUpperVal(valueAsNumber);
+          }}
+          focused={upperFocused}
+          wideTrack={wideTrack}
+        />
 
-          {/* LOWER RANGE */}
-          <RangeOutput
-            focused={progressFocused}
-            wideTrack={wideTrack}
-            style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-            <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
-          </RangeOutput>
-          <StyledRangeSlider
-            aria-label="Basic Example"
-            aria-orientation="horizontal"
-            aria-valuenow={lowerVal}
-            aria-valuemin={min}
-            aria-valuemax={max}
-            tabIndex={0}
-            heightVal={300}
-            ref={lowerRange}
-            min={min}
-            max={max}
-            step={snap ? step : 0}
-            value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
-            onFocus={() => {
-              setLowerFocused(true);
-              setProgressFocused(true);
-            }}
-            onBlur={() => {
-              setLowerFocused(false);
-              setProgressFocused(false);
-            }}
-            onInput={(e) => {
-              const { valueAsNumber } = e.target as HTMLInputElement;
-              setLowerVal(valueAsNumber);
-            }}
-            focused={lowerFocused}
-            wideTrack={wideTrack}
-          />
+        {/* LOWER RANGE */}
+        {showTooltip && <RangeOutput
+          focused={progressFocused}
+          wideTrack={wideTrack}
+          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 2}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
+          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
+        </RangeOutput>}
+        <StyledRangeSlider
+          id="lower"
+          aria-label="lower value"
+          aria-orientation="horizontal"
+          aria-valuenow={lowerVal}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          tabIndex={0}
+          heightVal={300}
+          ref={lowerRange}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
+          onKeyDown={handleKeyPress}
+          onFocus={() => {
+            setLowerFocused(true);
+            setProgressFocused(true);
+          }}
+          onBlur={() => {
+            setLowerFocused(false);
+            setProgressFocused(false);
+          }}
+          onInput={(e) => {
+            const { valueAsNumber } = e.target as HTMLInputElement;
+            setLowerVal(valueAsNumber);
+          }}
+          focused={lowerFocused}
+          wideTrack={wideTrack}
+        />
 
-
-          {showTicks && <Ticks ref={tickEl} wideTrack={wideTrack}>{marks}</Ticks>}
-        </RangeWrap>
-      </RangeWrapWrap>
+        {<Ticks ref={tickEl} wideTrack={wideTrack}>{marks}</Ticks>}
+      </RangeWrap>
     </Wrapper>
   );
 };

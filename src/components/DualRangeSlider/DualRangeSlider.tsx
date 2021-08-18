@@ -102,7 +102,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
-    }
+  }
   }
   
   &:focus::-webkit-slider-thumb {
@@ -161,7 +161,8 @@ const Tick = styled.div<{
     p.showLabel &&
     p.rotateLabel &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
-  div {
+  label {
+    display: block;
     width: 0;
     color: var(--labelColor);
     transform-origin: top center;
@@ -180,7 +181,6 @@ let newValue2 = 0;
 let newPosition1 = 0;
 let newPosition2 = 0;
 let focusColor = "";
-let blurrColor = "";
 
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -212,21 +212,21 @@ interface DualRangeSliderProps {
   */
   step: number;
   /**
-    Show or hide tick marks.
-  */
-  showTicks: boolean;
-  /**
     Snap to ticks or scroll smoothly.
-  */
+   */
   snap: boolean;
   /**
     For creating custom labels. 
-  */
+   */
   customLabels: Array<Record<number, string>>;
   /**
     Show or hide labels.
-  */
+   */
   showLabel: boolean;
+  /**
+    Show or hide tick marks.
+  */
+  showTicks: boolean;
   /**
     Optional text displayed before value. 
   */
@@ -292,14 +292,12 @@ export const DualRangeSlider = ({
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
-  const [progressFocused, setProgressFocused] = useState(false);
   const [lowerFocused, setLowerFocused] = useState(false);
   const [upperFocused, setUpperFocused] = useState(false);
   const [newLowerVal, setNewLowerVal] = useState(0);
   const [newUpperVal, setNewUpperVal] = useState(0);
 
   focusColor = primaryColor;
-  blurrColor = blurColor;
 
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
@@ -338,7 +336,6 @@ export const DualRangeSlider = ({
         let tickText = numberWithCommas(i.toFixed(decimals));
         labelLength = tickText.toString().length;
         customLabels.map((label) => {
-          console.log(Object.values(label)[0]);
           if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
             customTickText = Object.values(label);
           }
@@ -354,7 +351,7 @@ export const DualRangeSlider = ({
             showTicks={showTicks}
             style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
           </Tick>
         );
       }
@@ -375,7 +372,8 @@ export const DualRangeSlider = ({
               showTicks={showTicks}
               style={{ "--labelColor": labelColor } as React.CSSProperties}
             >
-              {showLabel && <div>{tickText}</div>}
+              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+
             </Tick>
           )
         );
@@ -438,34 +436,6 @@ export const DualRangeSlider = ({
           }}
         />
 
-        {/* LOWER RANGE */}
-
-        {showTooltip && <RangeOutput
-          focused={lowerFocused}
-          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
-        >
-          <span>
-            {prefix + numberWithCommas(lowerVal?.toFixed(decimals)) + suffix}
-          </span>
-        </RangeOutput>}
-        <StyledRangeSlider
-          tabIndex={0}
-          ref={lowerRange}
-          type="range"
-          min={min}
-          max={max}
-          value={lowerVal}
-          step={snap ? step : 0}
-          onFocus={() => setLowerFocused(true)}
-          onBlur={() => setLowerFocused(false)}
-          onInput={e => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setLowerVal(valueAsNumber);
-          }}
-          focused={lowerFocused}
-          wideTrack={wideTrack}
-        />
-
         {/* UPPER RANGE */}
 
         {showTooltip && <RangeOutput
@@ -497,6 +467,35 @@ export const DualRangeSlider = ({
           focused={upperFocused}
           wideTrack={wideTrack}
         />
+
+        {/* LOWER RANGE */}
+
+        {showTooltip && <RangeOutput
+          focused={lowerFocused}
+          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
+        >
+          <span>
+            {prefix + numberWithCommas(lowerVal?.toFixed(decimals)) + suffix}
+          </span>
+        </RangeOutput>}
+        <StyledRangeSlider
+          tabIndex={0}
+          ref={lowerRange}
+          type="range"
+          min={min}
+          max={max}
+          value={lowerVal}
+          step={snap ? step : 0}
+          onFocus={() => setLowerFocused(true)}
+          onBlur={() => setLowerFocused(false)}
+          onInput={e => {
+            const { valueAsNumber } = e.target as HTMLInputElement;
+            setLowerVal(valueAsNumber);
+          }}
+          focused={lowerFocused}
+          wideTrack={wideTrack}
+        />
+
         <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
       </RangeWrap>
     </Wrapper>

@@ -31,6 +31,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
   text-align: center;
   font-size: 1rem;
   white-space: nowrap;
+  color: var(--labelColor);
   span {
     border: ${(p) =>
     p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
@@ -162,14 +163,15 @@ const Tick = styled.div<{
     p.showLabel &&
     p.rotateLabel &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
-  div {
+  label {
+    display: block;
     width: 0;
     color: var(--labelColor);
     transform-origin: top center;
     margin-top: 0.5rem;
     margin-left: ${(p) =>
     !p.rotateLabel && p.labelLength
-      ? (p.labelLength / 2) * -1 + "ch"
+      ? (p.labelLength / 2) * -0.5 + "em"
       : "0.5rem"};
     transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
     white-space: nowrap;
@@ -202,27 +204,27 @@ interface RangeSliderProps {
   */
   step: number;
   /**
-    Show or hide tick marks.
-  */
-  showTicks: boolean;
-  /**
     Snap to ticks or scroll smoothly.
-  */
+   */
   snap: boolean;
   /**
-    For creating custom labels like so:<code> [
+  For creating custom labels like so:<code> [
     { 0: "low" },
     { 50: "medium" },
     { 100: "high"}
-  ]</code> 
-  
-  <i>Custom labels replace default labels!</i>
-  */
+    ]</code> 
+    
+    <i>Custom labels replace default labels!</i>
+    */
   customLabels?: Array<Record<number, string>>;
   /**
     Show or hide labels.
   */
-  showLabel?: boolean;
+    showLabel?: boolean;
+    /**
+      Show or hide tick marks.
+   */
+  showTicks: boolean;
   /**
     Optional text displayed before value. 
   */
@@ -290,19 +292,19 @@ export const RangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
+  
+  // Make sure min never exceds max
+    if (min > max) {
+      min = max;
+    }
+    // Make sure max is never less than min
+    if (max < min) {
+      max = min;
+    }
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
-
-  // Make sure min never exceds max
-  if (min > max) {
-    min = max;
-  }
-  // Make sure max is never less than min
-  if (max < min) {
-    max = min;
-  }
 
   // For collecting tick marks
   let markers = [];
@@ -314,7 +316,6 @@ export const RangeSlider = ({
         let tickText = numberWithCommas(i.toFixed(decimals));
         labelLength = tickText.toString().length;
         customLabels.map((label) => {
-          console.log(Object.values(label)[0]);
           if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
             customTickText = Object.values(label);
           }
@@ -331,7 +332,7 @@ export const RangeSlider = ({
               rotateLabel={rotateLabel}
               showTicks={showTicks}
             >
-              {showLabel && <div>{customTickText}</div>}
+              {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
             </Tick>
           );
         }
@@ -353,7 +354,7 @@ export const RangeSlider = ({
               showLabel={showLabel}
               showTicks={showTicks}
             >
-              {showLabel && <div>{tickText}</div>}
+              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
             </Tick>
           )
         );
@@ -387,6 +388,7 @@ export const RangeSlider = ({
         return;
     }
   }
+
   return (
     <Wrapper
       rotateLabel={rotateLabel}

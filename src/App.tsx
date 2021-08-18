@@ -14,16 +14,18 @@ function App() {
         step={10}
         showTicks={true}
         snap={true}
-        customLabels={[{ 0: "low" }, { 50: "medium" }, { 100: "high" }]}
+        customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "high" }]}
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={true}
+        rotateLabel={false}
         blurColor="pink"
         primaryColor="lightblue"
         width={800}
         wideTrack={false}
         showTooltip={true}
+        labelColor="#995252"
+
       />
       <VerticalRangeSlider
         initialValue={50}
@@ -46,6 +48,7 @@ function App() {
         height={400}
         wideTrack={false}
         showTooltip={true}
+        labelColor="#0f0f0f"
       />
       <DualRangeSlider
         initialLowerValue={20}
@@ -64,19 +67,19 @@ function App() {
         showLabel={true}
         prefix=""
         suffix=""
-        rotateLabel={true}
-        primaryColor="#555"
+        rotateLabel={false}
+        primaryColor="#8f3535"
         blurColor="gray"
         width={800}
         wideTrack={false}
         showTooltip={true}
-        labelColor="#555"
+        labelColor="#0c0c0c"
       />
       <DualVerticalRangeSlider
         initialLowerValue={20}
         initialUpperValue={40}
         min={0}
-        max={100}
+        max={500}
         decimals={0}
         step={10}
         snap={true}
@@ -86,12 +89,15 @@ function App() {
           { 50: "medium" },
           { 100: "high" }
         ]}
+        // customLabels={[]}
         showLabel={true}
         prefix=""
         suffix=""
         primaryColor="black"
         blurColor="gray"
         height={400}
+        showTooltip={true}
+        labelColor="#111222"
       />
     </div>
   );

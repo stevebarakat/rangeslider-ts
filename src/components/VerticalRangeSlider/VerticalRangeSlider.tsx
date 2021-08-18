@@ -28,7 +28,7 @@ const RangeWrap = styled.div<{
   showTicks: boolean;
 }>`
   width: ${(p) => p.heightVal + "px"};
-  margin-left: ${(p) => p.showTicks && `${p.maxLabelLength + 1}ch`};
+  margin-left: ${(p) => `${p.maxLabelLength + 1}ch`};
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${(p) => p.heightVal + "px"};
@@ -43,14 +43,13 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   display: flex;
   justify-content: flex-start;
-  margin-top: ${p => p.wideTrack ? "2.5em" : "2em" };
+  margin-top: ${p => p.wideTrack ? "2.5em" : "2em"};
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) =>
-    p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    border: ${(p) => p.focused ? `1px solid ${focusColor}` : `1px solid var(--labelColor)`};
     border-radius: 5px;
-    color: ${(p) => (p.focused ? whiteColor : blackColor)};
+    color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
     background: ${(p) => (p.focused ? focusColor : whiteColor)};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
@@ -60,7 +59,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid ${blackColor}`};
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid var(--labelColor)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -160,13 +159,6 @@ const StyledRangeSlider = styled.input.attrs({
   
 `;
 
-// const Ticks = styled.div<{ wideTrack: boolean }>`
-//   display: flex;
-//   justify-content: space-between;
-//   margin-right: 1.2rem;
-//   margin-left: 1.2rem;
-// `;
-
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
@@ -188,26 +180,15 @@ const Tick = styled.div<{
   position: relative;
   justify-content: flex-end;
   width: 1px;
-  background: var(--labelColor);
   height: 5px;
-  div {
+  background: ${p => p.showTicks ? "var(--labelColor)" : "transparent"};
+  label {
+    color: var(--labelColor);
+    display: block;
     writing-mode: vertical-rl;
-    margin-left: 0.65em;
+    margin-left: 0.5em;
     margin-bottom: 0.5rem;
     white-space: nowrap;
-    &::before {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-top: ${(p) => (p.focused ? `12px solid ${focusColor}` : `0px`)};
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      top: 100%;
-      left: 50%;
-      margin-left: -6px;
-      margin-top: -1px;
-    }
   }
 `;
 
@@ -237,24 +218,24 @@ interface VerticalRangeSliderProps {
   */
   step: number;
   /**
+    Snap to ticks or scroll smoothly.
+   */
+  snap: boolean;
+  /**
+    For creating custom labels. 
+   */
+  customLabels: Array<Record<number, string>>;
+  /**
+    Show or hide labels.
+   */
+  showLabel: boolean;
+  /**
     Show or hide tick marks.
   */
   showTicks: boolean;
   /**
-    Snap to ticks or scroll smoothly.
-  */
-  snap: boolean;
-  /**
-    For creating custom labels. 
-  */
-  customLabels: Array<Record<number, string>>;
-  /**
-    Show or hide labels.
-  */
-  showLabel: boolean;
-  /**
     Optional text displayed before value. 
-  */
+   */
   prefix?: string;
   /**
     Optional text displayed after value.
@@ -277,8 +258,8 @@ interface VerticalRangeSliderProps {
   */
   wideTrack?: boolean;
   /**
-The color of the labels.
-*/
+    The color of the labels.
+  */
   labelColor?: string;
   /**
 Show or hide tooltip.
@@ -295,7 +276,11 @@ export const VerticalRangeSlider = ({
   step = 10,
   showTicks = true,
   snap = true,
-  customLabels = [],
+  customLabels = [
+    { 0: "low" },
+    { 50: "medium" },
+    { 100: "high" }
+  ],
   showLabel = true,
   prefix = "",
   suffix = "",
@@ -317,22 +302,32 @@ export const VerticalRangeSlider = ({
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
+  
+  // Make sure min never exceds max
+  if (min > max) {
+    min = max;
+  }
+  // Make sure max is never less than min
+  if (max < min) {
+    max = min;
+  }
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
-    const tickList = showTicks ? ticksEl.current?.children : null;
-    let labelList = [];
-    for (let i = 0; i < tickList!.length; i++) {
-      const tickText = tickList![i]?.firstChild?.firstChild?.textContent
-        ?.length;
-      showTicks &&
-        showLabel &&
-        tickText !== undefined &&
-        labelList.push(tickText);
-      console.log(labelList);
+    if (showTicks) {
+      const tickList = ticksEl.current?.children;
+      let labelList = [];
+      for (let i = 0; i < tickList!.length; i++) {
+        const tickText = tickList![i]?.firstChild?.firstChild?.textContent
+          ?.length;
+        showTicks &&
+          showLabel &&
+          tickText !== undefined &&
+          labelList.push(tickText);
+      }
+      if (!labelList) return;
+      setMaxLabelLength(Math.max(...labelList));
     }
-    if (!labelList) return;
-    setMaxLabelLength(Math.max(...labelList));
     if (!outputEl.current) return;
     setOutputWidth(outputEl.current?.clientHeight);
   }, [min, max, value, showLabel, showTicks]);
@@ -361,7 +356,8 @@ export const VerticalRangeSlider = ({
             showTicks={showTicks}
             style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+
           </Tick>
         );
       }
@@ -371,7 +367,6 @@ export const VerticalRangeSlider = ({
       for (let i = min; i <= max; i += step) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength: number = tickText.toString().length;
-        console.log(labelLength);
         markers.push(
           Tick && (
             <Tick
@@ -381,7 +376,8 @@ export const VerticalRangeSlider = ({
               showTicks={showTicks}
               style={{ "--labelColor": labelColor } as React.CSSProperties}
             >
-              {showLabel && <div>{tickText}</div>}
+              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+
             </Tick>
           )
         );
@@ -419,81 +415,80 @@ export const VerticalRangeSlider = ({
 
   return (
     <Wrapper maxLabelLength={maxLabelLength}>
-      <RangeWrapWrap
+      {/* <RangeWrapWrap
+        outputWidth={outputWidth}
+        showTicks={showTicks}
+        heightVal={height}
+        maxLabelLength={maxLabelLength}
+      > */}
+      <RangeWrap
         outputWidth={outputWidth}
         showTicks={showTicks}
         heightVal={height}
         maxLabelLength={maxLabelLength}
       >
-        <RangeWrap
-          outputWidth={outputWidth}
-          showTicks={showTicks}
-          heightVal={height}
-          maxLabelLength={maxLabelLength}
-        >
-          <Progress
-            wideTrack={wideTrack}
-            focused={isFocused}
-            style={
-              isFocused
-                ? {
+        <Progress
+          wideTrack={wideTrack}
+          focused={isFocused}
+          style={
+            isFocused
+              ? {
+                background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} 100%)`
+              }
+              : wideTrack ? {
+                background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} 100%)`
+              } :
+                {
                   background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
                     }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
                     }px), ${whiteColor} 100%)`
                 }
-                : wideTrack ? {
-                  background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                    }px), ${whiteColor} 100%)`
-                } :
-                  {
-                    background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                      }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                      }px), ${whiteColor} 100%)`
-                  }
-            }
-          />
-          <RangeOutput
-            ref={outputEl}
-            focused={isFocused}
-            wideTrack={wideTrack}
-            className="disable-select"
-            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
-          >
-            <span>
-              {prefix +
-                numberWithCommas(value.toFixed(decimals)) +
-                " " +
-                suffix}
-            </span>
-          </RangeOutput>
-          <StyledRangeSlider
-            aria-label="Basic Example"
-            aria-orientation="horizontal"
-            aria-valuenow={value}
-            aria-valuemin={min}
-            aria-valuemax={max}
-            tabIndex={0}
-            heightVal={300}
-            ref={rangeEl}
-            min={min}
-            max={max}
-            step={snap ? step : 0}
-            value={value > max ? max : value.toFixed(decimals)}
-            // onClick={() => rangeEl.current?.focus()}
-            onInput={(e) => {
-              const { valueAsNumber } = e.target as HTMLInputElement;
-              setValue(valueAsNumber);
-            }}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            onKeyDown={handleKeyPress}
-            focused={isFocused}
-            wideTrack={wideTrack}
-          />
-          <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
-        </RangeWrap>
-      </RangeWrapWrap>
+          }
+        />
+        <RangeOutput
+          ref={outputEl}
+          focused={isFocused}
+          wideTrack={wideTrack}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
+        >
+          <span>
+            {prefix +
+              numberWithCommas(value.toFixed(decimals)) +
+              " " +
+              suffix}
+          </span>
+        </RangeOutput>
+        <StyledRangeSlider
+          aria-label="Basic Example"
+          aria-orientation="horizontal"
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          tabIndex={0}
+          heightVal={300}
+          ref={rangeEl}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={value > max ? max : value.toFixed(decimals)}
+          // onClick={() => rangeEl.current?.focus()}
+          onInput={(e) => {
+            const { valueAsNumber } = e.target as HTMLInputElement;
+            setValue(valueAsNumber);
+          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={handleKeyPress}
+          focused={isFocused}
+          wideTrack={wideTrack}
+        />
+        <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
+      </RangeWrap>
+      {/* </RangeWrapWrap> */}
     </Wrapper>
   );
 };
