@@ -99,14 +99,16 @@ const StyledRangeSlider = styled.input.attrs({
   }
 
   &::-webkit-slider-thumb {
+    appearance: none;
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    top: ${p => p.wideTrack ? "0" : "-1.5px"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
-    -webkit-appearance: none;
+    /* border: ${p => p.wideTrack && !p.focused ? `1px solid ${blackColor}` : `1px solid ${focusColor}`}; */
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
@@ -118,7 +120,7 @@ const StyledRangeSlider = styled.input.attrs({
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px #FF0000` : `none`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
@@ -285,7 +287,7 @@ export const DualVerticalRangeSlider = ({
   blurColor = "grey",
   primaryColor = "black",
   height = 400,
-  wideTrack = false,
+  wideTrack = true,
   labelColor = "#345345",
   showTooltip = false,
 }: DualVerticalRangeSliderProps) => {
@@ -299,7 +301,6 @@ export const DualVerticalRangeSlider = ({
   const [newValue2, setNewValue2] = useState(0);
   const [upperFocused, setUpperFocused] = useState(true);
   const [lowerFocused, setLowerFocused] = useState(true);
-  const [progressFocused, setProgressFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState(0);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
@@ -480,7 +481,7 @@ export const DualVerticalRangeSlider = ({
         {/* UPPER RANGE */}
         {showTooltip && <RangeOutput
           ref={outputEl}
-          focused={progressFocused}
+          focused={upperFocused}
           wideTrack={wideTrack}
           style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 2}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
@@ -502,11 +503,9 @@ export const DualVerticalRangeSlider = ({
           onKeyDown={handleKeyPress}
           onFocus={() => {
             setUpperFocused(true);
-            setProgressFocused(true);
           }}
           onBlur={() => {
             setUpperFocused(false);
-            setProgressFocused(false);
           }}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;
@@ -518,7 +517,7 @@ export const DualVerticalRangeSlider = ({
 
         {/* LOWER RANGE */}
         {showTooltip && <RangeOutput
-          focused={progressFocused}
+          focused={lowerFocused}
           wideTrack={wideTrack}
           style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 2}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
@@ -540,11 +539,9 @@ export const DualVerticalRangeSlider = ({
           onKeyDown={handleKeyPress}
           onFocus={() => {
             setLowerFocused(true);
-            setProgressFocused(true);
           }}
           onBlur={() => {
             setLowerFocused(false);
-            setProgressFocused(false);
           }}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;

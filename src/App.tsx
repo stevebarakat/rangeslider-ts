@@ -46,7 +46,7 @@ function App() {
         blurColor="pink"
         primaryColor="lightblue"
         height={400}
-        wideTrack={false}
+        wideTrack={true}
         showTooltip={true}
         labelColor="#0f0f0f"
       />

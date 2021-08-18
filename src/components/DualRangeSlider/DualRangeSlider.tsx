@@ -107,7 +107,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
+    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px #FF0000` : `none`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`

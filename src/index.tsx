@@ -1,8 +1,12 @@
-import * as GlobalStyle from './shared/global';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { GlobalStyle } from "./shared/global";
 
-export { GlobalStyle };
-
-export * from './components/RangeSlider/RangeSlider';
-export * from './components/VerticalRangeSlider/VerticalRangeSlider';
-export * from './components/DualRangeSlider/DualRangeSlider';
-export * from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+    <GlobalStyle />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

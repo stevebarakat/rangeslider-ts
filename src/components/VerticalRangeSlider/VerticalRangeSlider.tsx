@@ -9,18 +9,6 @@ const Wrapper = styled.div<{ maxLabelLength?: number }>`
   padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
 `;
 
-const RangeWrapWrap = styled.div<{
-  maxLabelLength: number;
-  outputWidth: number;
-  showTicks: boolean;
-  heightVal: number;
-}>`
-  width: ${(p) =>
-    p.showTicks
-      ? p.maxLabelLength + p.outputWidth + 125 + "px"
-      : p.maxLabelLength + 60 + "px"};
-`;
-
 const RangeWrap = styled.div<{
   heightVal: number;
   outputWidth: number;
@@ -114,10 +102,12 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    top: ${p => p.wideTrack ? "0" : "-1.5px"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
+    /* border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"}; */
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
@@ -130,7 +120,7 @@ const StyledRangeSlider = styled.input.attrs({
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    box-shadow: ${p => !p.wideTrack && p.focused ? `0 0 8px 3px red` : `none`};
+    box-shadow: ${p => !p.wideTrack && p.focused && `0 0 8px 3px #FF0000`};
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
@@ -299,7 +289,7 @@ export const VerticalRangeSlider = ({
   const [isFocused, setIsFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState(0);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
-  const factor = (max - min) / 10;
+  const factor = (max - min) / 5;
   const newPosition = 10 - newValue * 0.2;
   focusColor = primaryColor;
   
@@ -434,17 +424,17 @@ export const VerticalRangeSlider = ({
             isFocused
               ? {
                 background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 1
                   }px), ${whiteColor} 100%)`
               }
               : wideTrack ? {
                 background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 1
                   }px), ${whiteColor} 100%)`
               } :
                 {
                   background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
+                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 1
                     }px), ${whiteColor} 100%)`
                 }
           }
@@ -453,7 +443,7 @@ export const VerticalRangeSlider = ({
           ref={outputEl}
           focused={isFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 0.75}px)`, "--labelColor": labelColor } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
           <span>
             {prefix +
