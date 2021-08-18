@@ -11,10 +11,10 @@ const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLa
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 + "ch" : p.firstLabelLength / 3.5 + "ch"};
 `;
 
-const RangeWrap = styled.div`
+const RangeWrap = styled.div<{ showTooltip: boolean, showLabel: boolean }>`
   position: relative;
-  padding-top: 3.75rem;
-  padding-bottom: 1.75rem;
+  padding-top: ${p => p.showTooltip ? "3.75rem" : ""};
+  padding-bottom: ${p => p.showLabel ? "1.75rem" : 0};
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
@@ -32,10 +32,11 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
   color: var(--labelColor);
   span {
     border: ${(p) =>
-    p.focused ? `1px solid ${p.focusColor}` : `1px solid ${blackColor}`};
+    p.focused ? `1px solid ${p.focusColor}` : `1px solid var(--labelColor)`};
     border-radius: 5px;
+    font-weight: ${p => p.focused && "bold"};
     color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
-    background: ${(p) => (p.focused ? p.focusColor : whiteColor)};
+    background: ${(p) => (p.focused ? p.focusColor : "white")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5rem 0.75rem;
     &::before {
@@ -43,7 +44,7 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `14px solid ${blackColor}`};
+      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `14px solid var(--labelColor)`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -55,7 +56,7 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `12px solid ${whiteColor}`};
+      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `12px solid white`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       top: 100%;
@@ -156,6 +157,7 @@ const Tick = styled.div<{
   width: 1px;
   height: ${(p) => (p.showTicks ? "5px" : "0")};
   background: var(--labelColor);
+  margin-top: 1rem;
   margin-bottom: ${(p) =>
     p.showLabel &&
     p.rotateLabel &&
@@ -193,10 +195,6 @@ interface RangeSliderProps {
   */
   max?: number;
   /**
-    The amount of decimal points to be rounded to. 
-  */
-  decimals?: number;
-  /**
     The invterval between ticks.
   */
   step?: number;
@@ -205,35 +203,47 @@ interface RangeSliderProps {
    */
   snap?: boolean;
   /**
-  For creating custom labels like so:<code> [
-    { 0: "low" },
-    { 50: "medium" },
-    { 100: "high"}
+    Show or hide tick marks.
+ */
+  showTicks?: boolean;
+  /**
+    Show or hide labels.
+  */
+  showLabel?: boolean;
+  /**
+    Show or hide tooltip.
+  */
+  showTooltip?: boolean;
+  /**
+    This rotates the label by 45 degrees. Allows for more / longer labels.
+ */
+  rotateLabel?: boolean;
+  /**
+    For creating custom labels like so:<code> [
+      { 0: "low" },
+      { 50: "medium" },
+      { 100: "high"}
     ]</code> 
     
     <i>Custom labels replace default labels!</i>
     */
   customLabels?: Array<Record<number, string>>;
   /**
-    Show or hide labels.
-  */
-  showLabel?: boolean;
-  /**
-    Show or hide tick marks.
- */
-  showTicks?: boolean;
-  /**
     Optional text displayed before value. 
-  */
+   */
   prefix?: string;
   /**
     Optional text displayed after value.
-  */
+   */
   suffix?: string;
   /**
-    The amount in degrees to rotate the labels.
+    The amount of decimal points to be rounded to. 
   */
-  rotateLabel?: boolean;
+  decimals?: number;
+  /**
+  The color of the labels.
+  */
+  labelColor?: string;
   /**
     The focus color. 
   */
@@ -243,22 +253,13 @@ interface RangeSliderProps {
    */
   blurColor?: string;
   /**
+    The width of the range track.
+   */
+  wideTrack?: boolean;
+  /**
     The width of the range slider.
   */
   width?: number;
-  /**
-    The width of the range track.
-  */
-  wideTrack?: boolean;
-  /**
-The color of the labels.
-*/
-  labelColor?: string;
-  /**
-Show or hide tooltip.
-*/
-  showTooltip?: boolean;
-
 }
 
 export const RangeSlider = ({
@@ -271,8 +272,8 @@ export const RangeSlider = ({
   snap,
   customLabels,
   showLabel,
-  prefix,
-  suffix,
+  prefix = "",
+  suffix = "",
   rotateLabel,
   blurColor,
   focusColor = "black",
@@ -391,7 +392,7 @@ export const RangeSlider = ({
       firstLabelLength={showLabel && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
       lastLabelLength={showLabel && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
     >
-      <RangeWrap style={{ width: width }}>
+      <RangeWrap showTooltip={showTooltip} showLabel={showLabel} style={{ width: width }}>
         <Progress
           wideTrack={wideTrack}
           focused={isFocused}

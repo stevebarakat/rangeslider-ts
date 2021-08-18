@@ -3,10 +3,7 @@ import { useArgTypes } from "@storybook/api";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
 import { RangeSlider } from "./RangeSlider";
 
-<Meta
-  title="RangeSlider"
-  component={RangeSlider}
-/>
+<Meta title="RangeSlider" component={RangeSlider} />
 
 export const Template = (args) => <RangeSlider {...args} />;
 
@@ -21,49 +18,24 @@ export const Template = (args) => <RangeSlider {...args} />;
   values.
 </p>
 
+---
 
-<Preview>
-  <Story
-    name="Default: Thick"
-    args={{
-      initialValue: 50 
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-</Preview>
 
 ### Default Configuration
 
 <p className="mdp">
-  The most basic configuration. These are the values used if not set by
-  the user.
+  The most basic configuration. These are the values used if not set by the
+  user.
 </p>
 
-<Props story="Default: Thick" />
+<div className="grid">
+<div className="grid">
 
-#### Configuration Two
-
-Default labels, not rotated, snapping, 10 steps.
-
-<Preview>
+<Preview style={{width: "50%", background: "pink"}}>
   <Story
-    name="Two"
+    name="Default"
     args={{
       initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
-      showTicks: true,
-      snap: true,
-      customLabels: [],
-      showLabel: false,
-      prefix: "",
-      suffix: "",
-      rotateLabel: false,
-      blurColor: "grey",
-      focusColor: "black",
       width: 950,
     }}
   >
@@ -71,9 +43,51 @@ Default labels, not rotated, snapping, 10 steps.
   </Story>
 </Preview>
 
-<Props story="Two" />
 
-#### Configuration Three
+<Preview style={{width: "50%", background: "pink"}}>
+  <Story
+    name="One"
+    args={{
+      initialValue: 50,
+      width: 950,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+</div>
+<div>
+
+<Preview style={{width: "50%", background: "pink"}}>
+  <Story
+    name="Two"
+    args={{
+      initialValue: 50,
+      step: 5,
+      snap: true,
+      showTicks: true,
+      showLabel: true,
+      showTooltip: true,
+      rotateLabel: false,
+      customLabels: [],
+      prefix: "",
+      suffix: "",
+      decimals: 0,
+      labelColor: "grey",
+      focusColor: "black",
+      blurColor: "grey",
+      width: 950,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+</div>
+</div>
+
+### Configuration Three
 
 Default labels, not rotated, snapping, 10 steps.
 
@@ -81,30 +95,31 @@ Default labels, not rotated, snapping, 10 steps.
   <Story
     name="Three"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
+      initialValue: 14,
+      min: 5,
+      max: 15,
+      step: 1,
+      snap: false,
       showTicks: true,
-      snap: true,
-      customLabels: [],
-      showLabel: false,
-      prefix: "",
-      suffix: "",
+      showLabel: true,
+      showTooltip: true,
       rotateLabel: false,
-      blurColor: "grey",
-      focusColor: "black",
+      customLabels: [],
+      prefix: "$",
+      suffix: " trillion",
+      decimals: 0,
+      labelColor: "darkgreen",
+      focusColor: "darkgreen",
+      blurColor: "green",
       width: 950,
+      wideTrack: true,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
 
-<Props story="Three" />
-
-#### Configuration Four
+### Configuration Four
 
 Default labels, not rotated, snapping, 10 steps.
 
@@ -114,23 +129,25 @@ Default labels, not rotated, snapping, 10 steps.
     args={{
       initialValue: 50,
       min: 0,
-      max: 100,
+      max: 84,
       decimals: 0,
-      step: 5,
+      step: 7,
       showTicks: true,
       snap: true,
       customLabels: [],
-      showLabel: false,
+      showLabel: true,
       prefix: "",
       suffix: "",
       rotateLabel: false,
       blurColor: "grey",
       focusColor: "black",
+      labelColor: "grey",
       width: 950,
+      wideTrack: true,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
 
-<Props story="Four" />
+<Props story="Default" />

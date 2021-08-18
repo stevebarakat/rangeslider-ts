@@ -147,11 +147,7 @@ export const bodyStyles = css`
   body {
     box-sizing: border-box;
     font-family: sans-serif;
-    background: hsl(
-      287.49999999999994,
-      15.384615384615385%,
-      69.41176470588235%
-    );
+    background: #fefefe;
   }
 
   h2 {
@@ -174,6 +170,17 @@ export const bodyStyles = css`
 
   .mdp {
     color: #666666;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .flexY {
+    display: flex;
+    flex-direction: column;
   }
 `;
 
