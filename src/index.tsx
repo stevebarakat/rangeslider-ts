@@ -1,6 +1,6 @@
-import * as global from './shared/global';
+import * as GlobalStyle from './shared/global';
 
-export { global };
+export { GlobalStyle };
 
 export * from './components/RangeSlider/RangeSlider';
 export * from './components/VerticalRangeSlider/VerticalRangeSlider';
