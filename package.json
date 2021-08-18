@@ -1,5 +1,5 @@
 {
-  "name": "rangeslider-storybok-ts",
+  "name": "@alvabenson/rangeslider",
   "version": "0.1.0",
   "private": false,
   "dependencies": {
@@ -20,11 +20,21 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env BABEL_ENV=production babel src -d dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
+  },
+  "babel": {
+    "presets": [
+      [
+        "react-app",
+        {
+          "absoluteRuntime": false
+        }
+      ]
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -55,13 +65,21 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.8",
     "@storybook/addon-actions": "^6.4.0-alpha.22",
     "@storybook/addon-essentials": "^6.4.0-alpha.22",
     "@storybook/addon-links": "^6.4.0-alpha.22",
     "@storybook/node-logger": "^6.4.0-alpha.22",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.6",
+    "auto": "^10.31.0",
     "babel-loader": "8.1.0",
+    "cross-env": "^7.0.3",
     "webpack": "4.44.2"
-  }
+  },
+  "description": "A range slider component",
+  "main": "dist/index.js",
+  "repository": "https://github.com/stevebarakat/rangeslider-ts.git",
+  "author": "s.barakat",
+  "license": "MIT"
 }
