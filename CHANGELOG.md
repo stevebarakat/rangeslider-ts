@@ -1,3 +1,37 @@
+# v0.1.2 (Wed Aug 18 2021)
+
+#### ⚠️ Pushed to `main`
+
+- v0.1.1 (stevebarakat@gmail.com)
+- ready to publishh (stevebarakat@gmail.com)
+- check out (stevebarakat@gmail.com)
+- check in (stevebarakat@gmail.com)
+- still tidying (stevebarakat@gmail.com)
+- vert good for now" (stevebarakat@gmail.com)
+- breask (stevebarakat@gmail.com)
+- in the middle of stuff (stevebarakat@gmail.com)
+- chek in (stevebarakat@gmail.com)
+- chciin (stevebarakat@gmail.com)
+- removed css (stevebarakat@gmail.com)
+- fixed (stevebarakat@gmail.com)
+- color pickers (stevebarakat@gmail.com)
+- docs; (stevebarakat@gmail.com)
+- dual good (stevebarakat@gmail.com)
+- vertical good (stevebarakat@gmail.com)
+- ticktext (stevebarakat@gmail.com)
+- time (stevebarakat@gmail.com)
+- good stopping point for now (stevebarakat@gmail.com)
+- progress (stevebarakat@gmail.com)
+- tidying up (stevebarakat@gmail.com)
+- initial commit (stevebarakat@gmail.com)
+- Initialize project using Create React App (stevebarakat@gmail.com)
+
+#### Authors: 1
+
+- [@stevebarakat](https://github.com/stevebarakat)
+
+---
+
 # v0.1.1 (Tue Aug 17 2021)
 
 #### ⚠️ Pushed to `main`
