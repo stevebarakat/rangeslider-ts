@@ -26,7 +26,7 @@ export const Template = (args) => <RangeSlider {...args} />;
   <Story
     name="Default: Thick"
     args={{
-      primaryColor: "black",
+      initialValue: 50 
     }}
   >
     {Template.bind({})}
@@ -36,7 +36,7 @@ export const Template = (args) => <RangeSlider {...args} />;
 ### Default Configuration
 
 <p className="mdp">
-  Default labels, not rotated, snapping, 10 steps. The values used if not set by
+  The most basic configuration. These are the values used if not set by
   the user.
 </p>
 
@@ -63,7 +63,7 @@ Default labels, not rotated, snapping, 10 steps.
       suffix: "",
       rotateLabel: false,
       blurColor: "grey",
-      primaryColor: "black",
+      focusColor: "black",
       width: 950,
     }}
   >
@@ -94,7 +94,7 @@ Default labels, not rotated, snapping, 10 steps.
       suffix: "",
       rotateLabel: false,
       blurColor: "grey",
-      primaryColor: "black",
+      focusColor: "black",
       width: 950,
     }}
   >
@@ -125,7 +125,7 @@ Default labels, not rotated, snapping, 10 steps.
       suffix: "",
       rotateLabel: false,
       blurColor: "grey",
-      primaryColor: "black",
+      focusColor: "black",
       width: 950,
     }}
   >

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-let focusColor = "";
-
 // Styles
 
 const whiteColor = "#EEE";
@@ -22,7 +20,7 @@ const RangeWrap = styled.div`
   user-select: none;
 `;
 
-const RangeOutput = styled.output<{ focused: boolean }>`
+const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
   margin-top: -3.75rem;
   width: 0;
   position: absolute;
@@ -34,10 +32,10 @@ const RangeOutput = styled.output<{ focused: boolean }>`
   color: var(--labelColor);
   span {
     border: ${(p) =>
-    p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    p.focused ? `1px solid ${p.focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
     color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
-    background: ${(p) => (p.focused ? focusColor : whiteColor)};
+    background: ${(p) => (p.focused ? p.focusColor : whiteColor)};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5rem 0.75rem;
     &::before {
@@ -45,7 +43,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid ${blackColor}`};
+      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `14px solid ${blackColor}`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -57,7 +55,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `12px solid ${whiteColor}`};
+      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `12px solid ${whiteColor}`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       top: 100%;
@@ -68,7 +66,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
+const Progress = styled.div<{ focused: boolean, wideTrack: boolean, focusColor: string }>`
   position: absolute;
   border-radius: 100px;
   height: ${p => p.wideTrack ? "12px" : "5px"};
@@ -80,7 +78,7 @@ const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
-}) <{ focused: boolean, wideTrack: boolean }>`
+}) <{ focused: boolean, wideTrack: boolean, focusColor: string }>`
   cursor: pointer;
   appearance: none;
   position: absolute;
@@ -107,18 +105,18 @@ const StyledRangeSlider = styled.input.attrs({
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
-    }
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${p.focusColor} 25%,${p.focusColor} 100%)`
+  }
   }
   
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`};
   }
   
   &::-moz-range-thumb {
@@ -134,10 +132,10 @@ const StyledRangeSlider = styled.input.attrs({
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-    }
+      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
+  }
   }
   
 `;
@@ -185,7 +183,7 @@ interface RangeSliderProps {
   /**
     The initial value.
   */
-  initialValue?: number;
+  initialValue: number;
   /**
     The minimum value.
   */
@@ -239,11 +237,11 @@ interface RangeSliderProps {
   /**
     The focus color. 
   */
-  blurColor?: string;
+  focusColor?: string;
   /**
     The blur color. 
-  */
-  primaryColor?: string;
+   */
+  blurColor?: string;
   /**
     The width of the range slider.
   */
@@ -264,9 +262,9 @@ Show or hide tooltip.
 }
 
 export const RangeSlider = ({
-  initialValue=50,
-  min=0,
-  max=100,
+  initialValue = 50,
+  min = 0,
+  max = 100,
   decimals,
   step,
   showTicks,
@@ -277,7 +275,7 @@ export const RangeSlider = ({
   suffix,
   rotateLabel,
   blurColor,
-  primaryColor="black",
+  focusColor = "black",
   width,
   wideTrack,
   labelColor,
@@ -290,7 +288,6 @@ export const RangeSlider = ({
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  focusColor = primaryColor;
 
   // Make sure min never exceds max
   if (min > max) {
@@ -419,6 +416,7 @@ export const RangeSlider = ({
         />
 
         {showTooltip && <RangeOutput
+          focusColor={focusColor}
           focused={isFocused}
           style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
         >
@@ -447,6 +445,7 @@ export const RangeSlider = ({
           onBlur={() => setIsFocused(false)}
           focused={isFocused}
           wideTrack={wideTrack}
+          focusColor={focusColor}
         />
         <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
       </RangeWrap>
