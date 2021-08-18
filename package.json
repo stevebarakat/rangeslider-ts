@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "clean": "rm -rf dist",
     "build": "cross-env BABEL_ENV=production babel src -d dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
