@@ -1,6 +1,5 @@
 import { createGlobalStyle, css } from "styled-components";
-
-// import { color, typography } from './styles';
+import { COLORS } from "./constants";
 
 export const fontUrl =
   "https://fonts.googleapis.com/css?family=Nunito+Sans:400,700,800,900";
@@ -144,6 +143,16 @@ export const bodyStyles = css`
     -moz-osx-font-smoothing: auto;
   }
 
+  :root {
+    --color-primary: ${COLORS.primary};
+    --color-secondary: ${COLORS.secondary};
+    --color-lightgray: ${COLORS.gray300};
+    --color-gray: ${COLORS.gray500};
+    --color-darkgray: ${COLORS.gray700};
+    --color-transparent-gray: ${COLORS.transparentGray35};
+    --color-white: ${COLORS.offWhite};
+  }
+
   body {
     box-sizing: border-box;
     font-family: sans-serif;
@@ -156,7 +165,6 @@ export const bodyStyles = css`
 
   h3 {
     font-weight: 800;
-    padding-top: 1rem !important;
   }
 
   h4 {
@@ -167,20 +175,58 @@ export const bodyStyles = css`
   li {
     list-style: disc;
   }
+  .css-1wjen9k {
+    margin: 0;
+  }
+  .css-kdwx3d {
+    height: 140px;
+  }
+  .css-10n01gg tr {
+    border: none;
+  }
 
+  .css-10n01gg tr th {
+    border: none;
+  }
+
+  .css-10n01gg tr td {
+    border: none;
+  }
+  .css-10n01gg tr td,
+  .css-10n01gg tr th {
+    padding-left: 0;
+  }
   .mdp {
     color: #666666;
   }
 
   .flex {
     display: flex;
+    gap: 1em;
     justify-content: center;
-    align-items: flex-end;
+    align-items: flex-start;
   }
 
   .flexY {
+    ${
+      "" /* justify-content: flex-end;
+    align-items: space-evenly;
     display: flex;
     flex-direction: column;
+    margin-top: -0.5em;
+    gap: 1em; */
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    padding: 0;
+  }
+
+  .float {
+    float: right;
   }
 `;
 

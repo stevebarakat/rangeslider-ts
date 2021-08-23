@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
-// Styles
 
-const whiteColor = "#EEE";
-const blackColor = "#999";
+// Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
@@ -20,7 +18,7 @@ const RangeWrap = styled.div<{ showTooltip: boolean, showLabel: boolean }>`
   user-select: none;
 `;
 
-const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
+const RangeOutput = styled.output<{ focused: boolean }>`
   margin-top: -3.75rem;
   width: 0;
   position: absolute;
@@ -29,14 +27,13 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
   text-align: center;
   font-size: 1rem;
   white-space: nowrap;
-  color: var(--labelColor);
   span {
     border: ${(p) =>
-    p.focused ? `1px solid ${p.focusColor}` : `1px solid var(--labelColor)`};
+    p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
     font-weight: ${p => p.focused && "bold"};
-    color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
-    background: ${(p) => (p.focused ? p.focusColor : "white")};
+    color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
+    background: ${(p) => (p.focused ? "var(--color-primary)" : "white")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5rem 0.75rem;
     &::before {
@@ -44,7 +41,7 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `14px solid var(--labelColor)`};
+      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -56,7 +53,7 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.focusColor}` : `12px solid white`};
+      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `12px solid white`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       top: 100%;
@@ -67,24 +64,25 @@ const RangeOutput = styled.output<{ focused: boolean, focusColor: string }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean, wideTrack: boolean, focusColor: string }>`
+const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
-  height: ${p => p.wideTrack ? "12px" : "5px"};
+  height: ${p => p.wideTrack ? "12px" : "7px"};
   width: 100%;
   z-index: 0;
-  border: 1px solid #AAA;
+  border-bottom: ${p => p.wideTrack ? "1px solid var(--color-transparent-gray)" : "none"};
+  box-shadow: ${p => p.wideTrack ? "inset 1px 1px 1px 0.5px var(--color-transparent-gray)" : "none"};
 `;
 
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
-}) <{ focused: boolean, wideTrack: boolean, focusColor: string }>`
+}) <{ focused: boolean, wideTrack: boolean }>`
   cursor: pointer;
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "12px" : "8px"};
+  height: ${p => p.wideTrack ? "12px" : "9px"};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -101,14 +99,16 @@ const StyledRangeSlider = styled.input.attrs({
     width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
     height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
+    border: ${p => p.wideTrack ? p.focused ? "none" : `1px solid var(--color-transparent-gray)` : "none"};
+    border-bottom: none;
+    box-shadow: 0 1px 1px 0.5px var(--color-transparent-gray);
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${p.focusColor} 25%,${p.focusColor} 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover, var(--color-primary) 0%, var(--color-primary) 35%, var(--color-white) 40%,var(--color-white) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 35%, var(--color-primary) 40%, var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 20%, var(--color-primary) 25%, var(--color-primary) 100%)`
   }
   }
   
@@ -116,8 +116,8 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`};
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-white) 40%,var(--color-white) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
   
   &::-moz-range-thumb {
@@ -127,15 +127,15 @@ const StyledRangeSlider = styled.input.attrs({
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid ${blackColor}` : "none"};
+    border: ${p => p.wideTrack ? "1px solid var(--color-gray700)" : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${p.focusColor} 0%,${p.focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${p.focusColor} 40%,${p.focusColor} 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-white) 40%,var(--color-white) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
   }
   }
   
@@ -156,7 +156,7 @@ const Tick = styled.div<{
   position: relative;
   width: 1px;
   height: ${(p) => (p.showTicks ? "5px" : "0")};
-  background: var(--labelColor);
+  background: var(--color-darkgray);
   margin-top: 1rem;
   margin-bottom: ${(p) =>
     p.showLabel &&
@@ -165,7 +165,7 @@ const Tick = styled.div<{
   label {
     display: block;
     width: 0;
-    color: var(--labelColor);
+    color: var(--color-darkgray);
     transform-origin: top center;
     margin-top: 0.5rem;
     margin-left: ${(p) =>
@@ -215,7 +215,7 @@ interface RangeSliderProps {
   */
   showTooltip?: boolean;
   /**
-    This rotates the label by 45 degrees. Allows for more / longer labels.
+    This rotates the label by 45 degrees allowing for more labels and / or longer labels.
  */
   rotateLabel?: boolean;
   /**
@@ -241,18 +241,6 @@ interface RangeSliderProps {
   */
   decimals?: number;
   /**
-  The color of the labels.
-  */
-  labelColor?: string;
-  /**
-    The focus color. 
-  */
-  focusColor?: string;
-  /**
-    The blur color. 
-   */
-  blurColor?: string;
-  /**
     The width of the range track.
    */
   wideTrack?: boolean;
@@ -275,11 +263,8 @@ export const RangeSlider = ({
   prefix = "",
   suffix = "",
   rotateLabel,
-  blurColor,
-  focusColor = "black",
   width,
   wideTrack,
-  labelColor,
   showTooltip,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
@@ -299,13 +284,13 @@ export const RangeSlider = ({
     max = min;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
 
   // For collecting tick marks
   let markers = [];
-  if (customLabels?.length !== 0) {
+  if (customLabels?.length > 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
         let labelLength = 0;
@@ -323,7 +308,6 @@ export const RangeSlider = ({
           markers.push(
             <Tick
               key={i}
-              style={{ "--labelColor": labelColor } as React.CSSProperties}
               labelLength={labelLength}
               showLabel={showLabel}
               rotateLabel={rotateLabel}
@@ -345,7 +329,6 @@ export const RangeSlider = ({
           Tick && (
             <Tick
               key={i}
-              style={{ "--labelColor": labelColor } as React.CSSProperties}
               labelLength={labelLength}
               rotateLabel={rotateLabel}
               showLabel={showLabel}
@@ -397,29 +380,22 @@ export const RangeSlider = ({
           wideTrack={wideTrack}
           focused={isFocused}
           style={
-            isFocused
-              ? {
-                background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                  }px), ${whiteColor} 100%)`
+            !isFocused && wideTrack ? {
+              background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
+                }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
+                }px), var(--color-white) 100%)`
+            } :
+              {
+                background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
+                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
+                  }px), var(--color-secondary) 100%)`
               }
-              : wideTrack ? {
-                background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2
-                  }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                  }px), ${whiteColor} 100%)`
-              } :
-                {
-                  background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2
-                    }px), ${whiteColor} calc(${newValue}% + ${newPosition * 0.75
-                    }px), ${whiteColor} 100%)`
-                }
           }
         />
 
         {showTooltip && <RangeOutput
-          focusColor={focusColor}
           focused={isFocused}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
         >
           <span>
             {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
@@ -446,7 +422,6 @@ export const RangeSlider = ({
           onBlur={() => setIsFocused(false)}
           focused={isFocused}
           wideTrack={wideTrack}
-          focusColor={focusColor}
         />
         <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
       </RangeWrap>

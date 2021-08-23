@@ -3,12 +3,8 @@ import styled from "styled-components";
 
 let newPosition1 = 0;
 let newPosition2 = 0;
-let focusColor = "";
 
 // STYLES
-const blackColor = "#999";
-const whiteColor = "white";
-
 const Wrapper = styled.div<{ maxLabelLength?: number }>`
   padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
 `;
@@ -34,10 +30,10 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) => p.focused ? `1px solid ${focusColor}` : `1px solid var(--labelColor)`};
+    border: ${(p) => p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
-    color: ${(p) => (p.focused ? whiteColor : "var(--labelColor)")};
-    background: ${(p) => (p.focused ? focusColor : whiteColor)};
+    color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
+    background: ${(p) => (p.focused ? "var(--color-primary)" : "var(--color-white)")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -46,7 +42,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `14px solid var(--labelColor)`};
+      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -59,7 +55,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `12px solid ${whiteColor}`};
+      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       bottom: 100%;
@@ -78,7 +74,9 @@ const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
   height: ${(p) => (p.wideTrack ? "12px" : "5px")};
   width: 100%;
   z-index: 0;
-  border: 1px solid #AAA;
+  border-bottom: 1px solid var(--color-transparent-gray);
+  border-bottom: ${p => p.wideTrack ? "1px solid var(--color-transparent-gray)" : "none"};
+  box-shadow: ${p => p.wideTrack ? "inset 1px 1px 1px 0.5px var(--color-transparent-gray)" : "none"}
 `;
 
 const StyledRangeSlider = styled.input.attrs({
@@ -107,14 +105,14 @@ const StyledRangeSlider = styled.input.attrs({
     height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
     top: ${p => p.wideTrack ? "0" : "-1.5px"};
     border-radius: 50%;
-    /* border: ${p => p.wideTrack && !p.focused ? `1px solid ${blackColor}` : `1px solid ${focusColor}`}; */
-    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    border: ${p => p.wideTrack ? p.focused ? "1px solid var(--color-primary)" : `1px solid var(--color-lightgray)` : "none"};
+    box-shadow: -1px 0 5px 0 rgba(0, 0, 0, 0.25);
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 20%,${focusColor} 25%,${focusColor} 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 20%,var(--color-primary) 25%,var(--color-primary) 100%)`
   }
   }
   
@@ -122,33 +120,32 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
   
   &::-moz-range-thumb {
     cursor: grab;
     pointer-events: all;
     position: relative;
-    height: 3em;
-    width: 3em;
-    border: 1px solid ${blackColor};
+    height: 2.5em;
+    width: 2.5em;
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     appearance: none;
     z-index: 50;
     background: ${p =>
     p.focused
-      ? `-moz-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-moz-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+      ? `-moz-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-moz-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
 
   &:focus::-moz-range-thumb {
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-moz-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
-      : `-moz-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
+      ? `-moz-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-moz-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
 `;
 
@@ -175,9 +172,9 @@ const Tick = styled.div<{
   justify-content: flex-end;
   width: 1px;
   height: 5px;
-  background: ${p => p.showTicks ? "var(--labelColor)" : "transparent"};
+  background: ${p => p.showTicks ? "var(--color-darkgray)" : "transparent"};
   label {
-    color: var(--labelColor);
+    color: var(--color-darkgray);
     display: block;
     writing-mode: vertical-rl;
     margin-left: 0.65em;
@@ -240,14 +237,6 @@ interface DualVerticalRangeSliderProps {
   */
   suffix?: string;
   /**
-    The focus color. 
-  */
-  blurColor: string;
-  /**
-    The blur color. 
-  */
-  primaryColor: string;
-  /**
     The width of the range slider.
   */
   height: number;
@@ -255,10 +244,6 @@ interface DualVerticalRangeSliderProps {
 The width of the range track.
 */
   wideTrack?: boolean;
-  /**
-  The color of the labels.
-  */
-  labelColor?: string;
   /**
   Show or hide tooltip.
   */
@@ -283,11 +268,8 @@ export const DualVerticalRangeSlider = ({
   showLabel = true,
   prefix = "",
   suffix = "",
-  blurColor = "grey",
-  primaryColor = "black",
   height = 400,
   wideTrack = true,
-  labelColor = "#345345",
   showTooltip = false,
 }: DualVerticalRangeSliderProps) => {
   const lowerRange = useRef<HTMLInputElement | null>(null);
@@ -298,14 +280,14 @@ export const DualVerticalRangeSlider = ({
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [newValue1, setNewValue1] = useState(0);
   const [newValue2, setNewValue2] = useState(0);
-  const [upperFocused, setUpperFocused] = useState(true);
-  const [lowerFocused, setLowerFocused] = useState(true);
+  const [upperFocused, setUpperFocused] = useState(false);
+  const [lowerFocused, setLowerFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState(0);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
+  const focused = upperFocused || lowerFocused;
   newPosition1 = 10 - newValue1 * 0.2;
   newPosition2 = 10 - newValue2 * 0.2;
-  focusColor = primaryColor;
 
   // Make sure min never exceds max
   if (min > max) {
@@ -336,7 +318,7 @@ export const DualVerticalRangeSlider = ({
 
   // For collecting tick marks
   let markers = [];
-  if (customLabels?.length !== 0) {
+  if (customLabels?.length > 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
         let labelLength = 0;
@@ -357,7 +339,6 @@ export const DualVerticalRangeSlider = ({
             maxLabelLength={maxLabelLength}
             showLabel={showLabel}
             showTicks={showTicks}
-            style={{ "--labelColor": labelColor } as React.CSSProperties}
           >
             {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
 
@@ -378,7 +359,6 @@ export const DualVerticalRangeSlider = ({
               labelLength={labelLength}
               showLabel={showLabel}
               showTicks={showTicks}
-              style={{ "--labelColor": labelColor } as React.CSSProperties}
             >
               {showLabel && <label htmlFor={tickText}>{tickText}</label>}
 
@@ -449,27 +429,23 @@ export const DualVerticalRangeSlider = ({
       >
         <Progress
           wideTrack={wideTrack}
-          focused={upperFocused || lowerFocused}
-          style={{
-            background: !wideTrack ?
-              `-webkit-linear-gradient(left,  
-              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-              ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
-              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-              :
-              upperFocused || lowerFocused ? `-webkit-linear-gradient(left,  
-                ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
-                ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-                :
-                `-webkit-linear-gradient(left,  
-                  ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                  ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
-                  ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
-                  ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
-          }}
+          focused={focused}
+          style={
+            !focused && wideTrack ? {
+              background: `-webkit-linear-gradient(left,  
+                var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
+                var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`})`
+            } :
+              {
+                background: `-webkit-linear-gradient(left,  
+                  var(--color-secondary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
+                  var(--color-secondary) ${`calc(${newValue1}% + ${newPosition1}px)`})`
+              }
+          }
         />
 
         {/* UPPER RANGE */}
@@ -477,7 +453,7 @@ export const DualVerticalRangeSlider = ({
           ref={outputEl}
           focused={upperFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 2}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
+          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 2}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`}}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider
@@ -513,7 +489,7 @@ export const DualVerticalRangeSlider = ({
         {showTooltip && <RangeOutput
           focused={lowerFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 2}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`, "--labelColor": labelColor } as React.CSSProperties}>
+          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 2}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`}}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider

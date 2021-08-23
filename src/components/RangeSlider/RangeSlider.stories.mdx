@@ -18,48 +18,134 @@ export const Template = (args) => <RangeSlider {...args} />;
   values.
 </p>
 
----
-
-
-### Default Configuration
-
-<p className="mdp">
-  The most basic configuration. These are the values used if not set by the
-  user.
-</p>
-
-<div className="grid">
-<div className="grid">
-
-<Preview style={{width: "50%", background: "pink"}}>
-  <Story
-    name="Default"
-    args={{
-      initialValue: 50,
-      width: 950,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-</Preview>
-
-
-<Preview style={{width: "50%", background: "pink"}}>
+<Preview>
   <Story
     name="One"
     args={{
       initialValue: 50,
+      step: 5,
+      snap: true,
+      showTicks: true,
+      showLabel: true,
+      showTooltip: true,
+      rotateLabel: false,
+      customLabels: [],
+      prefix: "",
+      suffix: "",
+      decimals: 0,
       width: 950,
+      wideTrack: true,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
 
-</div>
-<div>
+<Props story="One" />
 
-<Preview style={{width: "50%", background: "pink"}}>
+| <h3>Default Settings</h3>                                                       | <h3>Default Settings</h3>                                                       | <h3>Default Settings</h3>                                                       |
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ |
+| The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. |
+
+<Con className="flex" style={{height: "240px"}}>
+
+  <Preview>
+  <Story
+    name="1.1"
+    args={{
+      initialValue: 50,
+      width: 305,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+<Preview>
+  <Story
+    name="1.2"
+    args={{
+      initialValue: 50,
+      step: 10,
+      snap: true,
+      showTicks: true,
+      showLabel: false,
+      showTooltip: false,
+      rotateLabel: false,
+      customLabels: [],
+      prefix: "",
+      suffix: "",
+      decimals: 0,
+      width: 305,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+
+<Preview>
+  <Story
+    name="1.3"
+    args={{
+      initialValue: 50,
+      step: 10,
+      snap: true,
+      showTicks: true,
+      showLabel: true,
+      showTooltip: false,
+      rotateLabel: false,
+      customLabels: [],
+      prefix: "",
+      suffix: "",
+      decimals: 0,
+      width: 305,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+
+</Con>
+
+| <h3>Default Settings</h3>                                                         | <h3>Default Settings</h3>                                                                  
+| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ | 
+| The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. | 
+
+<Con className="flex">
+
+  <Preview>
+  <Story
+    name="2.1"
+    args={{
+      initialValue: 50,
+      width: 480,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+<Preview>
+  <Story
+    name="2.2"
+    args={{
+      initialValue: 50,
+      width: 480,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+</Con>
+
+### Configuration Two
+
+Default labels, not rotated, snapping, 10 steps.
+
+<Preview>
   <Story
     name="Two"
     args={{
@@ -74,18 +160,12 @@ export const Template = (args) => <RangeSlider {...args} />;
       prefix: "",
       suffix: "",
       decimals: 0,
-      labelColor: "grey",
-      focusColor: "black",
-      blurColor: "grey",
       width: 950,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
-
-</div>
-</div>
 
 ### Configuration Three
 
@@ -108,9 +188,6 @@ Default labels, not rotated, snapping, 10 steps.
       prefix: "$",
       suffix: " trillion",
       decimals: 0,
-      labelColor: "darkgreen",
-      focusColor: "darkgreen",
-      blurColor: "green",
       width: 950,
       wideTrack: true,
     }}
@@ -139,9 +216,6 @@ Default labels, not rotated, snapping, 10 steps.
       prefix: "",
       suffix: "",
       rotateLabel: false,
-      blurColor: "grey",
-      focusColor: "black",
-      labelColor: "grey",
       width: 950,
       wideTrack: true,
     }}
@@ -149,5 +223,3 @@ Default labels, not rotated, snapping, 10 steps.
     {Template.bind({})}
   </Story>
 </Preview>
-
-<Props story="Default" />
