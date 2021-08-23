@@ -87,7 +87,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
   }
 
   &::-webkit-slider-thumb {
-    margin-top: -34px;
+    top: ${p => p.wideTrack ? "-22.5px" : "-25px"};
     cursor: grab;
     pointer-events: all;
     position: relative;
@@ -145,7 +145,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" }) <{ focused: bool
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin: ${p => p.wideTrack ? "17.5px" : "10px"};
   margin-top: ${p => p.wideTrack ? "32px" : "18px"};
 `;
 const Tick = styled.div<{
@@ -446,7 +446,7 @@ export const DualRangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={upperFocused}
-          style={{ left: wideTrack ? `calc(${newUpperVal}% + ${newPosition2 * 2}px)` : `calc(${newUpperVal}% + ${newPosition2 * 1}px)` }}
+          style={{ left: wideTrack ? `calc(${newUpperVal}% + ${newPosition2 * 1.75}px)` : `calc(${newUpperVal}% + ${newPosition2 * 1}px)` }}
         >
           <span>
             {prefix + numberWithCommas(upperVal?.toFixed(decimals)) + suffix}
@@ -479,7 +479,7 @@ export const DualRangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={lowerFocused}
-          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 2}px)` : `calc(${newLowerVal}% + ${newPosition1 * 1}px)` }}
+          style={{ left: wideTrack ? `calc(${newLowerVal}% + ${newPosition1 * 1.75}px)` : `calc(${newLowerVal}% + ${newPosition1 * 1}px)` }}
         >
           <span>
             {prefix + numberWithCommas(lowerVal?.toFixed(decimals)) + suffix}

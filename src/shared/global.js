@@ -178,9 +178,6 @@ export const bodyStyles = css`
   .css-1wjen9k {
     margin: 0;
   }
-  .css-kdwx3d {
-    height: 140px;
-  }
   .css-10n01gg tr {
     border: none;
   }
@@ -227,6 +224,18 @@ export const bodyStyles = css`
 
   .float {
     float: right;
+  }
+
+  .short-story {
+    height: 40px;
+  }
+
+  .mid-story {
+    height: 120px;
+  }
+
+  .tall-story {
+    height: 140px;
   }
 `;
 

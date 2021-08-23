@@ -33,6 +33,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
     writing-mode: vertical-lr;
     border: ${(p) => p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
+    font-weight: ${p => p.focused ? "bold" : "normal"};
     color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
     background: ${(p) => (p.focused ? "var(--color-primary)" : "var(--color-white)")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -148,7 +149,7 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin: ${p => p.wideTrack ? "17.5px" : "10px"};
   margin-top: ${p => p.wideTrack ? "32px" : "12px"};
   position: relative;
   top: -1.2em;
@@ -409,7 +410,7 @@ export const VerticalRangeSlider = ({
           ref={outputEl}
           focused={isFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)`}}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)`}}
         >
           <span>
             {prefix +

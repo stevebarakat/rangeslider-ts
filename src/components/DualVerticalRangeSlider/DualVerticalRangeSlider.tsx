@@ -30,10 +30,11 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) => p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
+    border: ${(p) => !p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
-    color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
-    background: ${(p) => (p.focused ? "var(--color-primary)" : "var(--color-white)")};
+    color: ${(p) => (!p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
+    font-weight: ${p => !p.focused ? "bold" : "normal"};
+    background: ${(p) => (!p.focused ? "var(--color-primary)" : "var(--color-white)")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -42,7 +43,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
+      border-top: ${p => !p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -55,7 +56,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
+      border-top: ${p => !p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       bottom: 100%;
@@ -152,7 +153,7 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "10px"};
+  margin: ${p => p.wideTrack ? "15px" : "10px"};
   margin-top: ${p => p.wideTrack ? "32px" : "12px"};
   position: relative;
   top: -1.2em;
@@ -241,8 +242,8 @@ interface DualVerticalRangeSliderProps {
   */
   height: number;
   /**
-The width of the range track.
-*/
+    The width of the range track.
+  */
   wideTrack?: boolean;
   /**
   Show or hide tooltip.
@@ -453,7 +454,7 @@ export const DualVerticalRangeSlider = ({
           ref={outputEl}
           focused={upperFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 2}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`}}>
+          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`}}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider
@@ -489,7 +490,7 @@ export const DualVerticalRangeSlider = ({
         {showTooltip && <RangeOutput
           focused={lowerFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 2}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`}}>
+          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`}}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider

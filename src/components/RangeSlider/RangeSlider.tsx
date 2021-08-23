@@ -95,9 +95,10 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    top: ${p => p.wideTrack ? 0 : "-1.5px"};
-    width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
-    height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    /* top: ${p => p.wideTrack ? "-1.5px" : "-1.5px"}; */
+    top: -1.5px;
+    width: ${p => p.wideTrack ? "32px" : "20px"};
+    height: ${p => p.wideTrack ? "32px" : "20px"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? "none" : `1px solid var(--color-transparent-gray)` : "none"};
     border-bottom: none;
@@ -144,8 +145,7 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "20px" : "10px"};
-  margin-top: ${p => p.wideTrack ? "32px" : "18px"};
+  margin: ${p => p.wideTrack ? "10px 15px" : "5px 10px"};
 `
 const Tick = styled.div<{
   showTicks?: boolean;
@@ -395,7 +395,7 @@ export const RangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={isFocused}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 2}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
         >
           <span>
             {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
