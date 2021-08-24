@@ -5,9 +5,21 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const ShortStory = (args) => <div className="short-story"><RangeSlider {...args} /></div>;
-export const MidStory = (args) => <div className="mid-story"><RangeSlider {...args} /></div>;
-export const TallStory = (args) => <div className="tall-story"><RangeSlider {...args} /></div>;
+export const ShortStory = (args) => (
+  <div className="short-story">
+    <RangeSlider {...args} />
+  </div>
+);
+export const MidStory = (args) => (
+  <div className="mid-story">
+    <RangeSlider {...args} />
+  </div>
+);
+export const TallStory = (args) => (
+  <div className="tall-story">
+    <RangeSlider {...args} />
+  </div>
+);
 
 # RangeSlider
 
@@ -45,13 +57,33 @@ export const TallStory = (args) => <div className="tall-story"><RangeSlider {...
 
 <Props story="One" />
 
-| <h3>Default Settings</h3>                                                       | <h3>Default Settings</h3>                                                       | <h3>Default Settings</h3>                                                       |
-| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ |
-| The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. |
+<Con className="flex">
+  <div>
+    <h3>Default</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Ticks</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Ticks & Labels</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
 
-<Con className="flex" style={{height: "240px"}}>
+<Con className="flex">
 
-  <Preview>
+<Preview>
   <Story
     name="1.1"
     args={{
@@ -69,22 +101,13 @@ export const TallStory = (args) => <div className="tall-story"><RangeSlider {...
     args={{
       initialValue: 50,
       step: 10,
-      snap: true,
       showTicks: true,
-      showLabel: false,
-      showTooltip: false,
-      rotateLabel: false,
-      customLabels: [],
-      prefix: "",
-      suffix: "",
-      decimals: 0,
       width: 305,
     }}
   >
     {ShortStory.bind({})}
   </Story>
 </Preview>
-
 
 <Preview>
   <Story
@@ -108,16 +131,28 @@ export const TallStory = (args) => <div className="tall-story"><RangeSlider {...
   </Story>
 </Preview>
 
-
 </Con>
 
-| <h3>Default Settings</h3>                                                         | <h3>Default Settings</h3>                                                                  
-| :------------------------------------------------------------------------------ | :------------------------------------------------------------------------------ | 
-| The most basic configuration. These are the values used if not set by the user. | The most basic configuration. These are the values used if not set by the user. | 
+<Con className="flex">
+  <div>
+    <h3>Default Settings</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Default Settings</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
 
 <Con className="flex">
 
-  <Preview>
+<Preview>
   <Story
     name="2.1"
     args={{

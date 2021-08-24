@@ -172,12 +172,23 @@ export const bodyStyles = css`
     font-size: 1.75rem !important;
   }
 
+  p {
+    padding-bottom: none;
+    margin-bottom: none;
+    margin-block-end: 0;
+  }
+
   li {
     list-style: disc;
   }
   .css-1wjen9k {
     margin: 0;
   }
+
+  .css-tmvzag {
+    margin-top: 0;
+  }
+
   .css-10n01gg tr {
     border: none;
   }
@@ -193,6 +204,9 @@ export const bodyStyles = css`
   .css-10n01gg tr th {
     padding-left: 0;
   }
+  .css-ypcfyr {
+    margin: 0;
+  }
   .mdp {
     color: #666666;
   }
@@ -200,19 +214,14 @@ export const bodyStyles = css`
   .flex {
     display: flex;
     gap: 1em;
+    width: 100%;
     justify-content: center;
     align-items: flex-start;
   }
 
-  .flexY {
-    ${
-      "" /* justify-content: flex-end;
-    align-items: space-evenly;
-    display: flex;
-    flex-direction: column;
-    margin-top: -0.5em;
-    gap: 1em; */
-    }
+  .important {
+    color: red;
+    font-size: 1em;
   }
 
   .grid {
