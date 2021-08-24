@@ -5,8 +5,8 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
+  padding-left: ${p => p.rotateLabel ? 0 : p.firstLabelLength / 3.5 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
-  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 + "ch" : p.firstLabelLength / 3.5 + "ch"};
 `;
 
 const RangeWrap = styled.div<{ showTooltip: boolean, showLabel: boolean }>`
@@ -324,7 +324,6 @@ export const RangeSlider = ({
       for (let i = min; i <= max; i += step) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength: number = tickText.toString().length;
-        console.log(labelLength);
         markers.push(
           Tick && (
             <Tick

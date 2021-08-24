@@ -240,7 +240,7 @@ export const bodyStyles = css`
   }
 
   .mid-story {
-    height: 120px;
+    height: 110px;
   }
 
   .tall-story {

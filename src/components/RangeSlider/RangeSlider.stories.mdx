@@ -34,7 +34,7 @@ export const TallStory = (args) => (
 
 <Preview>
   <Story
-    name="One"
+    name="Primary"
     args={{
       initialValue: 50,
       step: 5,
@@ -55,7 +55,7 @@ export const TallStory = (args) => (
   </Story>
 </Preview>
 
-<Props story="One" />
+<Props story="Primary" />
 
 <Con className="flex">
   <div>
@@ -85,7 +85,7 @@ export const TallStory = (args) => (
 
 <Preview>
   <Story
-    name="1.1"
+    name="Default"
     args={{
       initialValue: 50,
       width: 305,
@@ -97,7 +97,7 @@ export const TallStory = (args) => (
 
 <Preview>
   <Story
-    name="1.2"
+    name="Ticks"
     args={{
       initialValue: 50,
       step: 10,
@@ -111,74 +111,76 @@ export const TallStory = (args) => (
 
 <Preview>
   <Story
-    name="1.3"
+    name="Ticks & Lables"
+    args={{
+      initialValue: 50,
+      step: 10,
+      showLabel: true,
+      showTicks: true,
+      width: 305,
+    }}
+  >
+    {ShortStory.bind({})}
+  </Story>
+</Preview>
+
+</Con>
+
+<Con className="flex">
+  <div>
+    <h3>ToolTip</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Snap & ToolTip</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
+
+<Con className="flex">
+
+<Preview>
+  <Story
+    name="ToolTip"
+    args={{
+      initialValue: 50,
+      step: 10,
+      showLabel: true,
+      showTicks: true,
+      showTooltip: true,
+      width: 480,
+    }}
+  >
+    {MidStory.bind({})}
+  </Story>
+</Preview>
+
+<Preview>
+  <Story
+    name="Snap & ToolTip"
     args={{
       initialValue: 50,
       step: 10,
       snap: true,
-      showTicks: true,
       showLabel: true,
-      showTooltip: false,
-      rotateLabel: false,
-      customLabels: [],
-      prefix: "",
-      suffix: "",
-      decimals: 0,
-      width: 305,
-    }}
-  >
-    {ShortStory.bind({})}
-  </Story>
-</Preview>
-
-</Con>
-
-<Con className="flex">
-  <div>
-    <h3>Default Settings</h3>
-    <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
-    </p>
-  </div>
-  <div>
-    <h3>Default Settings</h3>
-    <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
-    </p>
-  </div>
-</Con>
-
-<Con className="flex">
-
-<Preview>
-  <Story
-    name="2.1"
-    args={{
-      initialValue: 50,
+      showTicks: true,
+      showTooltip: true,
       width: 480,
     }}
   >
-    {ShortStory.bind({})}
-  </Story>
-</Preview>
-
-<Preview>
-  <Story
-    name="2.2"
-    args={{
-      initialValue: 50,
-      width: 480,
-    }}
-  >
-    {ShortStory.bind({})}
+    {MidStory.bind({})}
   </Story>
 </Preview>
 
 </Con>
 
-### Configuration Two
+### Prefix & Suffix
 
 Default labels, not rotated, snapping, 10 steps.
 
@@ -186,18 +188,21 @@ Default labels, not rotated, snapping, 10 steps.
   <Story
     name="Two"
     args={{
-      initialValue: 50,
-      step: 5,
-      snap: true,
+      initialValue: 14,
+      min: 5,
+      max: 150,
+      step: 15,
+      snap: false,
       showTicks: true,
       showLabel: true,
       showTooltip: true,
       rotateLabel: false,
       customLabels: [],
-      prefix: "",
-      suffix: "",
+      prefix: "$",
+      suffix: " USD",
       decimals: 0,
       width: 950,
+      wideTrack: true,
     }}
   >
     {TallStory.bind({})}
@@ -212,19 +217,16 @@ Default labels, not rotated, snapping, 10 steps.
   <Story
     name="Three"
     args={{
-      initialValue: 14,
-      min: 5,
-      max: 15,
-      step: 1,
-      snap: false,
-      showTicks: true,
-      showLabel: true,
+      initialValue: 0.05,
+      min: -2,
+      max: 2,
+      step: 0.01,
+      snap: true,
+      showTicks: false,
+      showLabel: false,
       showTooltip: true,
-      rotateLabel: false,
-      customLabels: [],
-      prefix: "$",
-      suffix: " trillion",
-      decimals: 0,
+      rotateLabel: true,
+      decimals: 2,
       width: 950,
       wideTrack: true,
     }}
