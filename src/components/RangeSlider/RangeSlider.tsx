@@ -178,12 +178,12 @@ const Tick = styled.div<{
 `;
 
 const Label = styled.label `
-  position: relative;
-  display: block;
-  width: fit-content;
+  position: absolute;
+  transform: translateX(-50%);
   color: var(--color-darkgray);
-  /* transform-origin: top center; */
   margin-top: 0.5rem;
+  transform: translateX();
+  transform-origin: center;
   /* margin-left: ${(p) =>
   !p.rotateLabel && p.labelLength
     ? (p.labelLength / 2) * -0.5 + "em"
@@ -413,7 +413,7 @@ export const RangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={isFocused}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
         >
           <span>
             {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
