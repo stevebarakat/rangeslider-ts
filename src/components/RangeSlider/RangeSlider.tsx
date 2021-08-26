@@ -162,7 +162,7 @@ const Tick = styled.div<{
     p.showLabel &&
     p.rotateLabel &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
-  label {
+  /* label {
     display: block;
     width: 0;
     color: var(--color-darkgray);
@@ -174,8 +174,25 @@ const Tick = styled.div<{
       : "0.5rem"};
     transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
     white-space: nowrap;
-  }
+  } */
 `;
+
+const Label = styled.label `
+  position: relative;
+  display: block;
+  width: fit-content;
+  color: var(--color-darkgray);
+  /* transform-origin: top center; */
+  margin-top: 0.5rem;
+  /* margin-left: ${(p) =>
+  !p.rotateLabel && p.labelLength
+    ? (p.labelLength / 2) * -0.5 + "em"
+    : "0.5rem"};
+  transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")}; */
+  white-space: nowrap;
+  text-align: center;
+  border: 1px dotted red;
+`
 
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -254,18 +271,18 @@ export const RangeSlider = ({
   initialValue = 50,
   min = 0,
   max = 100,
-  decimals,
-  step,
-  showTicks,
-  snap,
-  customLabels,
-  showLabel,
+  decimals = 0,
+  step = 0,
+  showTicks = true,
+  snap = true,
+  customLabels = [],
+  showLabel = true,
   prefix = "",
   suffix = "",
-  rotateLabel,
-  width,
-  wideTrack,
-  showTooltip,
+  rotateLabel = true,
+  width = 800,
+  wideTrack = true,
+  showTooltip = true,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -313,7 +330,7 @@ export const RangeSlider = ({
               rotateLabel={rotateLabel}
               showTicks={showTicks}
             >
-              {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+              {showLabel && <Label htmlFor={tickText}>{customTickText}</Label>}
             </Tick>
           );
         }
@@ -326,15 +343,17 @@ export const RangeSlider = ({
         const labelLength: number = tickText.toString().length;
         markers.push(
           Tick && (
-            <Tick
-              key={i}
-              labelLength={labelLength}
-              rotateLabel={rotateLabel}
-              showLabel={showLabel}
-              showTicks={showTicks}
-            >
-              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
-            </Tick>
+            <div>
+              <Tick
+                key={i}
+                labelLength={labelLength}
+                rotateLabel={rotateLabel}
+                showLabel={showLabel}
+                showTicks={showTicks}
+              >
+              </Tick>
+              {showLabel && <Label htmlFor={tickText}>{tickText}</Label>}
+            </div>
           )
         );
       }
