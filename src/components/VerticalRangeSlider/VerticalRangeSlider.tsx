@@ -157,7 +157,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 
 const Tick = styled.div<{
   showTicks?: boolean;
-  showLabel?: boolean;
+  showLabels?: boolean;
   rotateLabel?: boolean;
   labelLength?: number | undefined;
   focused?: boolean;
@@ -215,7 +215,7 @@ interface VerticalRangeSliderProps {
   /**
     Show or hide labels.
    */
-  showLabel: boolean;
+  showLabels: boolean;
   /**
     Show or hide tick marks.
   */
@@ -256,7 +256,7 @@ export const VerticalRangeSlider = ({
     { 50: "medium" },
     { 100: "high" }
   ],
-  showLabel = true,
+  showLabels = true,
   prefix = "",
   suffix = "",
   height = 400,
@@ -292,7 +292,7 @@ export const VerticalRangeSlider = ({
         const tickText = tickList![i]?.firstChild?.firstChild?.textContent
           ?.length;
         showTicks &&
-          showLabel &&
+          showLabels &&
           tickText !== undefined &&
           labelList.push(tickText);
       }
@@ -301,7 +301,7 @@ export const VerticalRangeSlider = ({
     }
     if (!outputEl.current) return;
     setOutputWidth(outputEl.current?.clientHeight);
-  }, [min, max, value, showLabel, showTicks]);
+  }, [min, max, value, showLabels, showTicks]);
 
   // For collecting tick marks
   let markers = [];
@@ -323,10 +323,10 @@ export const VerticalRangeSlider = ({
           <Tick
             key={i}
             labelLength={labelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
             showTicks={showTicks}
           >
-            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
 
           </Tick>
         );
@@ -342,10 +342,10 @@ export const VerticalRangeSlider = ({
             <Tick
               key={i}
               labelLength={labelLength}
-              showLabel={showLabel}
+              showLabels={showLabels}
               showTicks={showTicks}
             >
-              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
 
             </Tick>
           )

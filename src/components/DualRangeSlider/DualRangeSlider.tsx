@@ -150,7 +150,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 `;
 const Tick = styled.div<{
   showTicks?: boolean;
-  showLabel?: boolean;
+  showLabels?: boolean;
   rotateLabel?: boolean;
   labelLength?: number | undefined;
 }>`
@@ -159,7 +159,7 @@ const Tick = styled.div<{
   height: ${(p) => (p.showTicks ? "5px" : "0")};
   background: var(--color-darkgray);
   margin-bottom: ${(p) =>
-    p.showLabel &&
+    p.showLabels &&
     p.rotateLabel &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
   label {
@@ -222,7 +222,7 @@ interface DualRangeSliderProps {
   /**
     Show or hide labels.
    */
-  showLabel: boolean;
+  showLabels: boolean;
   /**
     Show or hide tick marks.
   */
@@ -264,7 +264,7 @@ export const DualRangeSlider = ({
   showTicks = true,
   snap = true,
   customLabels = [],
-  showLabel = true,
+  showLabels = true,
   prefix = "",
   suffix = "",
   rotateLabel = false,
@@ -331,11 +331,11 @@ export const DualRangeSlider = ({
           <Tick
             key={i}
             labelLength={labelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
             rotateLabel={rotateLabel}
             showTicks={showTicks}
           >
-            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
           </Tick>
         );
       }
@@ -352,10 +352,10 @@ export const DualRangeSlider = ({
               key={i}
               labelLength={labelLength}
               rotateLabel={rotateLabel}
-              showLabel={showLabel}
+              showLabels={showLabels}
               showTicks={showTicks}
             >
-              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
 
             </Tick>
           )
@@ -417,8 +417,8 @@ export const DualRangeSlider = ({
   return (
     <Wrapper
       rotateLabel={rotateLabel}
-      firstLabelLength={showLabel && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
-      lastLabelLength={showLabel && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
+      firstLabelLength={showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
+      lastLabelLength={showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
     >
       <RangeWrap style={{ width: width }}>
         <Progress

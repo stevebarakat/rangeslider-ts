@@ -14,8 +14,9 @@ function App() {
         step={10}
         showTicks={true}
         snap={true}
+        // customLabels={[]}
         customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hidfgdgdgdgdgdggh" }]}
-        showLabel={true}
+        showLabels={true}
         prefix=""
         suffix=""
         rotateLabel={true}
@@ -37,7 +38,7 @@ function App() {
           { 50: "medium" },
           { 100: "high" }
         ]}
-        showLabel={true}
+        showLabels={true}
         prefix=""
         suffix=""
         height={400}
@@ -58,7 +59,7 @@ function App() {
           { 50: "medium" },
           { 100: "high" }
         ]}
-        showLabel={true}
+        showLabels={true}
         prefix=""
         suffix=""
         rotateLabel={false}
@@ -81,7 +82,7 @@ function App() {
           { 100: "high" }
         ]}
         // customLabels={[]}
-        showLabel={true}
+        showLabels={true}
         prefix=""
         suffix=""
         height={400}

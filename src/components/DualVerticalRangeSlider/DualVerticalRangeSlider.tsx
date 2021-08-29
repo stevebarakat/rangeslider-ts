@@ -161,7 +161,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 
 const Tick = styled.div<{
   showTicks?: boolean;
-  showLabel?: boolean;
+  showLabels?: boolean;
   rotateLabel?: boolean;
   labelLength?: number | undefined;
   focused?: boolean;
@@ -228,7 +228,7 @@ interface DualVerticalRangeSliderProps {
   /**
     Show or hide labels.
   */
-  showLabel: boolean;
+  showLabels: boolean;
   /**
     Optional text displayed before value. 
   */
@@ -266,7 +266,7 @@ export const DualVerticalRangeSlider = ({
     { 50: "medium" },
     { 100: "high" }
   ],
-  showLabel = true,
+  showLabels = true,
   prefix = "",
   suffix = "",
   height = 400,
@@ -307,7 +307,7 @@ export const DualVerticalRangeSlider = ({
       let labelList = [];
       for (let i = 0; i < tickList!.length; i++) {
         const tickText = tickList![i]?.firstChild?.firstChild?.textContent?.length;
-        showLabel &&
+        showLabels &&
           tickText !== undefined && labelList.push(tickText);
         if (!labelList) return;
         setMaxLabelLength(Math.max(...labelList));
@@ -315,7 +315,7 @@ export const DualVerticalRangeSlider = ({
       if (!outputEl.current) return;
       setOutputWidth(outputEl.current?.clientHeight);
     }
-  }, [min, max, lowerVal, upperVal, showLabel, showTicks]);
+  }, [min, max, lowerVal, upperVal, showLabels, showTicks]);
 
   // For collecting tick marks
   let markers = [];
@@ -338,10 +338,10 @@ export const DualVerticalRangeSlider = ({
             key={i}
             labelLength={labelLength}
             maxLabelLength={maxLabelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
             showTicks={showTicks}
           >
-            {showLabel && <label htmlFor={tickText}>{customTickText}</label>}
+            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
 
           </Tick>
         );
@@ -358,10 +358,10 @@ export const DualVerticalRangeSlider = ({
               key={i}
               maxLabelLength={maxLabelLength}
               labelLength={labelLength}
-              showLabel={showLabel}
+              showLabels={showLabels}
               showTicks={showTicks}
             >
-              {showLabel && <label htmlFor={tickText}>{tickText}</label>}
+              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
 
             </Tick>
           )

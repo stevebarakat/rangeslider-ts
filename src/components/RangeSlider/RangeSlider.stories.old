@@ -21,7 +21,7 @@ Default.args =  {
   showTicks: true,
   snap: true,
   customLabels: [{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "high" }],
-  showLabel: true,
+  showLabels: true,
   prefix: "",
   suffix: "",
   rotateLabel: false,

@@ -5,16 +5,16 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
-  padding-left: ${p => p.rotateLabel ?  p.firstLabelLength / 2 + "ch"  : p.firstLabelLength / 2 + "ch"};
+  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 2 + "ch" : p.firstLabelLength / 2 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 2 + "ch" : p.lastLabelLength / 2 + "ch"};
   width: fit-content;
   border: 1px dotted red;
 `;
 
-const RangeWrap = styled.div<{ showTooltip: boolean, showLabel: boolean }>`
+const RangeWrap = styled.div<{ showTooltip: boolean, showLabels: boolean }>`
   position: relative;
   padding-top: ${p => p.showTooltip ? "3.75rem" : ""};
-  padding-bottom: ${p => p.showLabel ? "1.75rem" : 0};
+  padding-bottom: ${p => p.showLabels ? "1.75rem" : 0};
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
@@ -151,7 +151,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 `
 const Tick = styled.div<{
   showTicks?: boolean;
-  showLabel?: boolean;
+  showLabels?: boolean;
   rotateLabel?: boolean;
 }>`
   position: relative;
@@ -205,7 +205,7 @@ interface RangeSliderProps {
   /**
     Show or hide labels.
   */
-  showLabel?: boolean;
+  showLabels?: boolean;
   /**
     Show or hide tooltip.
   */
@@ -255,7 +255,7 @@ export const RangeSlider = ({
   showTicks = true,
   snap = true,
   customLabels = [],
-  showLabel = true,
+  showLabels = true,
   prefix = "",
   suffix = "",
   rotateLabel = true,
@@ -285,53 +285,33 @@ export const RangeSlider = ({
   }, [value, min, max]);
 
   // For collecting tick marks
-  let markers = [];
-  if (customLabels?.length > 0) {
-    if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let customTickText: string[] = [];
-        let tickText = numberWithCommas(i.toFixed(decimals));
-        customLabels.map((label) => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
-            customTickText = Object.values(label);
-          }
-          return null;
-        });
-        if (showLabel) {
-          markers.push(
-            <Tick
-              key={i}
-              showLabel={showLabel}
-              rotateLabel={rotateLabel}
-              showTicks={showTicks}
-            >
-              {showLabel && <Label htmlFor={tickText}>{customTickText}</Label>}
-            </Tick>
-          );
-        }
-      }
-    }
-  } else {
-    if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        markers.push(
-          Tick && (
-            <Tick
-              key={i}
-              rotateLabel={rotateLabel}
-              showLabel={showLabel}
-              showTicks={showTicks}
-            >
-              {showLabel && <Label htmlFor={tickText}>{tickText}</Label>}
-            </Tick>
-          )
-        );
-      }
-    }
+  let labels: JSX.Element[] = [];
+  if (step > 0) {
+    // creates an array of numbers from 'min' to 'max' with 'step' as interval
+    const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+    labels = numbers.map((n) => (
+      <Tick
+        showLabels={showLabels}
+        rotateLabel={rotateLabel}
+        showTicks={showTicks}
+        key={n}
+      >
+        {customLabels?.length > 0
+          ? customLabels.map((label) => {
+            return (
+              n === parseFloat(Object.keys(label)[0]) && (
+                <Label htmlFor={n.toString()}>{Object.values(label)}</Label>
+              )
+            )
+          })
+          : showLabels && (
+            <Label htmlFor={n.toString()}>
+              {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+            </Label>
+          )}
+      </Tick>
+    ));
   }
-
-  const marks = markers.map((marker) => marker);
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     const cmd = e.metaKey;
@@ -358,10 +338,10 @@ export const RangeSlider = ({
   return (
     <Wrapper
       rotateLabel={rotateLabel}
-      firstLabelLength={showLabel && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
-      lastLabelLength={showLabel && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
+      firstLabelLength={showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
+      lastLabelLength={showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
     >
-      <RangeWrap showTooltip={showTooltip} showLabel={showLabel} style={{ width: width }}>
+      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: width }}>
         <Progress
           wideTrack={wideTrack}
           focused={isFocused}
@@ -409,7 +389,7 @@ export const RangeSlider = ({
           focused={isFocused}
           wideTrack={wideTrack}
         />
-        <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
+        <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
       </RangeWrap>
     </Wrapper>
   );
