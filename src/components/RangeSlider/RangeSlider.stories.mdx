@@ -217,15 +217,18 @@ Default labels, not rotated, snapping, 10 steps.
   <Story
     name="Three"
     args={{
-      initialValue: 0.05,
-      min: -2,
-      max: 2,
-      step: 0.01,
+      initialValue: 50,
+      min: 0,
+      max: 100,
+      step: 10,
       snap: true,
-      showTicks: false,
-      showLabel: false,
+      customLabels: [
+        { 0: "losssssssssssssw" }, { 50: "medium" }, { 100: "higgfdgdgdgdfgdgdgdh"} 
+      ],
+      showTicks: true,
+      showLabel: true,
       showTooltip: true,
-      rotateLabel: true,
+      rotateLabel: false,
       decimals: 2,
       width: 950,
       wideTrack: true,

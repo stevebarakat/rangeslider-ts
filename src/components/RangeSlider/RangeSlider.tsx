@@ -5,8 +5,10 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
-  padding-left: ${p => p.rotateLabel ? 0 : p.firstLabelLength / 3.5 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
+  padding-left: ${p => p.rotateLabel ? 0 : p.firstLabelLength / 2 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2 + "ch"};
+  width: fit-content;
+  border: 1px dotted red;
 `;
 
 const RangeWrap = styled.div<{ showTooltip: boolean, showLabel: boolean }>`
@@ -151,30 +153,12 @@ const Tick = styled.div<{
   showTicks?: boolean;
   showLabel?: boolean;
   rotateLabel?: boolean;
-  labelLength?: number | undefined;
 }>`
   position: relative;
   width: 1px;
   height: ${(p) => (p.showTicks ? "5px" : "0")};
   background: var(--color-darkgray);
   margin-top: 1rem;
-  margin-bottom: ${(p) =>
-    p.showLabel &&
-    p.rotateLabel &&
-    `${p.labelLength !== undefined && p.labelLength / 2}ch`};
-  /* label {
-    display: block;
-    width: 0;
-    color: var(--color-darkgray);
-    transform-origin: top center;
-    margin-top: 0.5rem;
-    margin-left: ${(p) =>
-    !p.rotateLabel && p.labelLength
-      ? (p.labelLength / 2) * -0.5 + "em"
-      : "0.5rem"};
-    transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
-    white-space: nowrap;
-  } */
 `;
 
 const Label = styled.label `
@@ -182,16 +166,11 @@ const Label = styled.label `
   transform: translateX(-50%);
   color: var(--color-darkgray);
   margin-top: 0.5rem;
-  transform: translateX();
   transform-origin: center;
-  /* margin-left: ${(p) =>
-  !p.rotateLabel && p.labelLength
-    ? (p.labelLength / 2) * -0.5 + "em"
-    : "0.5rem"};
-  transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")}; */
   white-space: nowrap;
   text-align: center;
-  border: 1px dotted red;
+  transform: rotate(35deg);
+  /* width: 1px; */
 `
 
 function numberWithCommas(x: string) {
@@ -310,10 +289,8 @@ export const RangeSlider = ({
   if (customLabels?.length > 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
-        let labelLength = 0;
         let customTickText: string[] = [];
         let tickText = numberWithCommas(i.toFixed(decimals));
-        labelLength = tickText.toString().length;
         customLabels.map((label) => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
             customTickText = Object.values(label);
@@ -321,11 +298,9 @@ export const RangeSlider = ({
           return null;
         });
         if (showLabel) {
-          if (customTickText !== null) labelLength = customTickText[0]?.length;
           markers.push(
             <Tick
               key={i}
-              labelLength={labelLength}
               showLabel={showLabel}
               rotateLabel={rotateLabel}
               showTicks={showTicks}
@@ -340,19 +315,17 @@ export const RangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += step) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength: number = tickText.toString().length;
         markers.push(
           Tick && (
             <div>
               <Tick
                 key={i}
-                labelLength={labelLength}
                 rotateLabel={rotateLabel}
                 showLabel={showLabel}
                 showTicks={showTicks}
               >
-              </Tick>
               {showLabel && <Label htmlFor={tickText}>{tickText}</Label>}
+              </Tick>
             </div>
           )
         );
@@ -367,9 +340,6 @@ export const RangeSlider = ({
     const ctrl = e.ctrlKey;
 
     switch (e.code) {
-      case "Escape": //Esc
-        // rangeEl.current.blur();
-        return;
       case "ArrowLeft": //Left
         (cmd || ctrl) && setValue(value - factor);
         return;
