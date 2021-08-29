@@ -5,8 +5,8 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
-  padding-left: ${p => p.rotateLabel ? 0 : p.firstLabelLength / 2 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2 + "ch"};
+  padding-left: ${p => p.rotateLabel ?  p.firstLabelLength / 2 + "ch"  : p.firstLabelLength / 2 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 2 + "ch" : p.lastLabelLength / 2 + "ch"};
   width: fit-content;
   border: 1px dotted red;
 `;
@@ -161,7 +161,7 @@ const Tick = styled.div<{
   margin-top: 1rem;
 `;
 
-const Label = styled.label `
+const Label = styled.label`
   position: absolute;
   transform: translateX(-50%);
   color: var(--color-darkgray);
@@ -169,7 +169,7 @@ const Label = styled.label `
   transform-origin: center;
   white-space: nowrap;
   text-align: center;
-  transform: rotate(35deg);
+  /* transform: rotate(35deg); */
   /* width: 1px; */
 `
 
@@ -317,16 +317,14 @@ export const RangeSlider = ({
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         markers.push(
           Tick && (
-            <div>
-              <Tick
-                key={i}
-                rotateLabel={rotateLabel}
-                showLabel={showLabel}
-                showTicks={showTicks}
-              >
+            <Tick
+              key={i}
+              rotateLabel={rotateLabel}
+              showLabel={showLabel}
+              showTicks={showTicks}
+            >
               {showLabel && <Label htmlFor={tickText}>{tickText}</Label>}
-              </Tick>
-            </div>
+            </Tick>
           )
         );
       }
