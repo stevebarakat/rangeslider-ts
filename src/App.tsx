@@ -9,7 +9,7 @@ function App() {
       <RangeSlider
         initialValue={50}
         min={0}
-        max={100}
+        max={300}
         decimals={0}
         step={10}
         showTicks={true}

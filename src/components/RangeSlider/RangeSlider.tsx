@@ -285,33 +285,36 @@ export const RangeSlider = ({
   }, [value, min, max]);
 
   // For collecting tick marks
-  let labels: JSX.Element[] = [];
-  if (step > 0) {
-    // creates an array of numbers from 'min' to 'max' with 'step' as interval
-    const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
-    labels = numbers.map((n) => (
-      <Tick
-        showLabels={showLabels}
-        rotateLabel={rotateLabel}
-        showTicks={showTicks}
-        key={n}
-      >
-        {customLabels?.length > 0
-          ? customLabels.map((label) => {
-            return (
-              n === parseFloat(Object.keys(label)[0]) && (
-                <Label htmlFor={n.toString()}>{Object.values(label)}</Label>
+  function createLabels() {
+    if (step > 0) {
+      // creates an array of numbers from 'min' to 'max' with 'step' as interval
+      const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      return numbers.map((n) => (
+        <Tick
+          showLabels={showLabels}
+          rotateLabel={rotateLabel}
+          showTicks={showTicks}
+          key={n}
+        >
+          {customLabels?.length > 0
+            ? customLabels.map((label) => {
+              return (
+                n === parseFloat(Object.keys(label)[0]) && (
+                  <Label htmlFor={n.toString()}>{Object.values(label)}</Label>
+                )
               )
-            )
-          })
-          : showLabels && (
-            <Label htmlFor={n.toString()}>
-              {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
-            </Label>
-          )}
-      </Tick>
-    ));
-  }
+            })
+            : showLabels && (
+              <Label htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+              </Label>
+            )}
+        </Tick>
+      ));
+    }
+  };
+
+  const labels = createLabels();
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     const cmd = e.metaKey;
