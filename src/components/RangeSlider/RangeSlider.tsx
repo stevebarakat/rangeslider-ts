@@ -4,9 +4,10 @@ import styled from "styled-components";
 
 // Styles
 
-const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
-  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 2 + "ch" : p.firstLabelLength / 2 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 2 + "ch" : p.lastLabelLength / 2 + "ch"};
+const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
+  padding-bottom: ${p => p.rotateLabel && p.labelLength / 2 + "ch"};
+  padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2 + "ch" };
   width: fit-content;
   border: 1px dotted red;
 `;
@@ -161,7 +162,7 @@ const Tick = styled.div<{
   margin-top: 1rem;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ rotateLabel: boolean }>`
   position: absolute;
   transform: translateX(-50%);
   color: var(--color-darkgray);
@@ -169,8 +170,8 @@ const Label = styled.label`
   transform-origin: center;
   white-space: nowrap;
   text-align: center;
-  /* transform: rotate(35deg); */
-  /* width: 1px; */
+  transform: ${p => p.rotateLabel && "rotate(35deg)"};
+  width: ${p => p.rotateLabel && "1px"};
 `
 
 function numberWithCommas(x: string) {
@@ -289,6 +290,7 @@ export const RangeSlider = ({
     if (step > 0) {
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
       const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      // create tick mark for every element in the numbers array 
       return numbers.map((n) => (
         <Tick
           showLabels={showLabels}
@@ -296,19 +298,21 @@ export const RangeSlider = ({
           showTicks={showTicks}
           key={n}
         >
-          {customLabels?.length > 0
-            ? customLabels.map((label) => {
-              return (
-                n === parseFloat(Object.keys(label)[0]) && (
-                  <Label htmlFor={n.toString()}>{Object.values(label)}</Label>
+          { // if there are custom labels, show them!
+            customLabels?.length > 0
+              ? showLabels && customLabels.map((label) => {
+                return (
+                  n === parseFloat(Object.keys(label)[0]) && (
+                    <Label rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
+                  )
                 )
-              )
-            })
-            : showLabels && (
-              <Label htmlFor={n.toString()}>
+              })
+              // if there are not custom labels, show the default labels (n)
+              : showLabels &&
+              <Label rotateLabel={rotateLabel} htmlFor={n.toString()}>
                 {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
               </Label>
-            )}
+          }
         </Tick>
       ));
     }
@@ -338,11 +342,26 @@ export const RangeSlider = ({
     }
   }
 
+  const firstLabelLength = showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length;
+  const lastLabelLength = showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length;
+  const labelLength = calcLabels();
+
+  function calcLabels() {
+    if (lastLabelLength === undefined || firstLabelLength === undefined) return;
+    console.log(firstLabelLength > lastLabelLength);
+    if (firstLabelLength >= lastLabelLength) {
+      return firstLabelLength;
+    } else {
+      return lastLabelLength;
+    }
+  }
+
   return (
     <Wrapper
       rotateLabel={rotateLabel}
-      firstLabelLength={showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length}
-      lastLabelLength={showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length}
+      firstLabelLength={firstLabelLength}
+      lastLabelLength={lastLabelLength}
+      labelLength={labelLength}
     >
       <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: width }}>
         <Progress

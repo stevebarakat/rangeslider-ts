@@ -318,59 +318,38 @@ export const DualVerticalRangeSlider = ({
   }, [min, max, lowerVal, upperVal, showLabels, showTicks]);
 
   // For collecting tick marks
-  let markers = [];
-  if (customLabels?.length > 0) {
+  function createLabels() {
     if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let labelLength = 0;
-        let customTickText: string[] = [];
-        let tickText = numberWithCommas(i.toFixed(decimals));
-        labelLength = tickText.toString().length;
-        customLabels.map((label) => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
-            customTickText = Object.values(label);
+      // creates an array of numbers from 'min' to 'max' with 'step' as interval
+      const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      // create tick mark for every element in the numbers array 
+      return numbers.map((n) => (
+        <Tick
+          key={n}
+          maxLabelLength={maxLabelLength}
+          showLabels={showLabels}
+          showTicks={showTicks}
+        >
+          { // if there are custom labels, show them!
+            customLabels?.length > 0
+              ? showLabels && customLabels.map((label) => {
+                return (
+                  n === parseFloat(Object.keys(label)[0]) && (
+                    <label htmlFor={n.toString()}>{Object.values(label)}</label>
+                  )
+                )
+              })
+              // if there are not custom labels, show the default labels (n)
+              : showLabels &&
+              <label htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+              </label>
           }
-          return null;
-        });
-        if (customTickText !== null) labelLength = customTickText[0]?.length;
-        markers.push(
-          <Tick
-            key={i}
-            labelLength={labelLength}
-            maxLabelLength={maxLabelLength}
-            showLabels={showLabels}
-            showTicks={showTicks}
-          >
-            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
-
-          </Tick>
-        );
-      }
+        </Tick>
+      ));
     }
-  } else {
-    if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength: number = tickText.toString().length;
-        markers.push(
-          Tick && (
-            <Tick
-              key={i}
-              maxLabelLength={maxLabelLength}
-              labelLength={labelLength}
-              showLabels={showLabels}
-              showTicks={showTicks}
-            >
-              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
-
-            </Tick>
-          )
-        );
-      }
-    }
-  }
-
-  const marks = markers.map((marker) => marker);
+  };
+  const labels = createLabels();
 
   //If the upper value slider is LESS THAN the lower value slider.
   if (upperVal > lowerVal) {
@@ -454,7 +433,7 @@ export const DualVerticalRangeSlider = ({
           ref={outputEl}
           focused={upperFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)`}}>
+          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)` }}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider
@@ -490,7 +469,7 @@ export const DualVerticalRangeSlider = ({
         {showTooltip && <RangeOutput
           focused={lowerFocused}
           wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)`}}>
+          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)` }}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>}
         <StyledRangeSlider
@@ -522,7 +501,7 @@ export const DualVerticalRangeSlider = ({
           wideTrack={wideTrack}
         />
 
-        {<Ticks ref={tickEl} wideTrack={wideTrack}>{marks}</Ticks>}
+        {<Ticks ref={tickEl} wideTrack={wideTrack}>{labels}</Ticks>}
       </RangeWrap>
     </Wrapper>
   );

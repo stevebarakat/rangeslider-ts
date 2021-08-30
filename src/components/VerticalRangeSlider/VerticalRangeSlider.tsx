@@ -158,7 +158,6 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
-  rotateLabel?: boolean;
   labelLength?: number | undefined;
   focused?: boolean;
 }>`
@@ -304,57 +303,37 @@ export const VerticalRangeSlider = ({
   }, [min, max, value, showLabels, showTicks]);
 
   // For collecting tick marks
-  let markers = [];
-  if (customLabels?.length > 0) {
+  function createLabels() {
     if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let labelLength = 0;
-        let customTickText: string[] = [];
-        let tickText = numberWithCommas(i.toFixed(decimals));
-        labelLength = tickText.toString().length;
-        customLabels.map((label) => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
-            customTickText = Object.values(label);
+      // creates an array of numbers from 'min' to 'max' with 'step' as interval
+      const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      // create tick mark for every element in the numbers array 
+      return numbers.map((n) => (
+        <Tick
+          showLabels={showLabels}
+          showTicks={showTicks}
+          key={n}
+        >
+          { // if there are custom labels, show them!
+            customLabels?.length > 0
+              ? showLabels && customLabels.map((label) => {
+                return (
+                  n === parseFloat(Object.keys(label)[0]) && (
+                    <label htmlFor={n.toString()}>{Object.values(label)}</label>
+                  )
+                )
+              })
+              // if there are not custom labels, show the default labels (n)
+              : showLabels &&
+              <label htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+              </label>
           }
-          return null;
-        });
-        if (customTickText !== null) labelLength = customTickText[0]?.length;
-        markers.push(
-          <Tick
-            key={i}
-            labelLength={labelLength}
-            showLabels={showLabels}
-            showTicks={showTicks}
-          >
-            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
-
-          </Tick>
-        );
-      }
+        </Tick>
+      ));
     }
-  } else {
-    if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength: number = tickText.toString().length;
-        markers.push(
-          Tick && (
-            <Tick
-              key={i}
-              labelLength={labelLength}
-              showLabels={showLabels}
-              showTicks={showTicks}
-            >
-              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
-
-            </Tick>
-          )
-        );
-      }
-    }
-  }
-
-  const marks = markers.map((marker) => marker);
+  };
+  const labels = createLabels();
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     // Check if modifier key is pressed
@@ -443,7 +422,7 @@ export const VerticalRangeSlider = ({
           focused={isFocused}
           wideTrack={wideTrack}
         />
-        <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
+        <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
       </RangeWrap>
     </Wrapper>
   );

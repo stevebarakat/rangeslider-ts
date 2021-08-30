@@ -4,8 +4,10 @@ import styled from 'styled-components';
 // STYLES
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any }>`
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
-  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 + "ch" : p.firstLabelLength / 3.5 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 2 + "ch" : p.lastLabelLength / 2 + "ch"};
+  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 2 + "ch" : p.firstLabelLength / 2 + "ch"};
+  border: 1px dotted red;
+  width: fit-content;
 `;
 
 const RangeWrap = styled.div`
@@ -162,20 +164,19 @@ const Tick = styled.div<{
     p.showLabels &&
     p.rotateLabel &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
-  label {
-    display: block;
-    width: 0;
-    color: var(--color-darkgray);
-    transform-origin: top center;
-    margin-top: 0.5rem;
-    margin-left: ${(p) =>
-    !p.rotateLabel && p.labelLength
-      ? (p.labelLength / 2) * -1 + "ch"
-      : "0.5rem"};
-    transform: ${(p) => (p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)")};
-    white-space: nowrap;
-  }
-`;
+`
+const Label = styled.label`
+  position: absolute;
+  transform: translateX(-50%);
+  color: var(--color-darkgray);
+  margin-top: 0.5rem;
+  transform-origin: center;
+  white-space: nowrap;
+  text-align: center;
+  /* transform: rotate(35deg); */
+  /* width: 1px; */
+`
+;
 
 let newValue1 = 0;
 let newValue2 = 0;
@@ -312,59 +313,40 @@ export const DualRangeSlider = ({
 
 
   // For collecting tick marks
-  let markers = [];
-  if (customLabels?.length > 0) {
+  function createLabels() {
     if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let labelLength = 0;
-        let customTickText: string[] = [];
-        let tickText = numberWithCommas(i.toFixed(decimals));
-        labelLength = tickText.toString().length;
-        customLabels.map((label) => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label)[0], 10)) {
-            customTickText = Object.values(label);
+      // creates an array of numbers from 'min' to 'max' with 'step' as interval
+      const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      // create tick mark for every element in the numbers array 
+      return numbers.map((n) => (
+        <Tick
+          showLabels={showLabels}
+          rotateLabel={rotateLabel}
+          showTicks={showTicks}
+          key={n}
+        >
+          { // if there are custom labels, show them!
+            customLabels?.length > 0
+              ? showLabels && customLabels.map((label) => {
+                return (
+                  n === parseFloat(Object.keys(label)[0]) && (
+                    <Label htmlFor={n.toString()}>{Object.values(label)}</Label>
+                  )
+                )
+              })
+              // if there are not custom labels, show the default labels (n)
+              : showLabels &&
+              <Label htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+              </Label>
           }
-          return null;
-        });
-        if (customTickText !== null) labelLength = customTickText[0]?.length;
-        markers.push(
-          <Tick
-            key={i}
-            labelLength={labelLength}
-            showLabels={showLabels}
-            rotateLabel={rotateLabel}
-            showTicks={showTicks}
-          >
-            {showLabels && <label htmlFor={tickText}>{customTickText}</label>}
-          </Tick>
-        );
-      }
+        </Tick>
+      ));
     }
-  } else {
-    if (step > 0) {
-      for (let i = min; i <= max; i += step) {
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength: number = tickText.toString().length;
-        console.log(labelLength);
-        markers.push(
-          Tick && (
-            <Tick
-              key={i}
-              labelLength={labelLength}
-              rotateLabel={rotateLabel}
-              showLabels={showLabels}
-              showTicks={showTicks}
-            >
-              {showLabels && <label htmlFor={tickText}>{tickText}</label>}
+  };
 
-            </Tick>
-          )
-        );
-      }
-    }
-  }
+  const labels = createLabels();
 
-  const marks = markers.map((marker) => marker);
 
   //If the upper value slider is LESS THAN the lower value slider.
   if (upperVal > lowerVal) {
@@ -504,7 +486,7 @@ export const DualRangeSlider = ({
           wideTrack={wideTrack}
         />
 
-        <Ticks ref={ticksEl} wideTrack={wideTrack}>{marks}</Ticks>
+        <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
       </RangeWrap>
     </Wrapper>
   );

@@ -9,13 +9,13 @@ function App() {
       <RangeSlider
         initialValue={50}
         min={0}
-        max={300}
+        max={100}
         decimals={0}
         step={10}
         showTicks={true}
         snap={true}
         // customLabels={[]}
-        customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hidfgdgdgdgdgdggh" }]}
+        customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsdfbcbgfgdgh" }]}
         showLabels={true}
         prefix=""
         suffix=""
@@ -25,7 +25,7 @@ function App() {
         showTooltip={true}
 
       />
-      {/* <VerticalRangeSlider
+      <VerticalRangeSlider
         initialValue={50}
         min={0}
         max={100}
@@ -55,9 +55,9 @@ function App() {
         snap={true}
         showTicks={true}
         customLabels={[
-          { 0: "low" },
+          { 0: "lodfgddgf" },
           { 50: "medium" },
-          { 100: "high" }
+          { 100: "hhfghfhfhfhfghhfghfgigh" }
         ]}
         showLabels={true}
         prefix=""
@@ -77,7 +77,7 @@ function App() {
         snap={true}
         showTicks={true}
         customLabels={[
-          { 0: "low" },
+          { 0: "lowkjgkjhkjhkjhkjhkjhkjh" },
           { 50: "medium" },
           { 100: "high" }
         ]}
@@ -87,7 +87,7 @@ function App() {
         suffix=""
         height={400}
         showTooltip={true}
-      /> */}
+      />
     </div>
   );
 }
