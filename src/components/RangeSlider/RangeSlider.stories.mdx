@@ -13,6 +13,12 @@ export const ShortTemplate = (args) => (
   </div>
 );
 
+export const MidTemplate = (args) => (
+  <div className="mid-story">
+    <RangeSlider {...args} />
+  </div>
+);
+
 # RangeSlider
 
 ## A single value horizontal range slider.
@@ -286,22 +292,37 @@ export const ShortTemplate = (args) => (
       wideTrack: true,
     }}
   >
-    {Template.bind({})}
+    {MidTemplate.bind({})}
   </Story>
 </Preview>
 
 </Con>
 
 
-### Configuration Four
+<Con className="flex">
+  <div>
+    <h3>Odd Numbering</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Rotated Labels</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
 
-Default labels, not rotated, snapping, 10 steps.
+<Con className="flex">
 
 <Preview>
   <Story
-    name="Four"
+    name="Odd Numbering"
     args={{
-      initialValue: 50,
+      initialValue: 42,
       min: 0,
       max: 84,
       step: 7,
@@ -309,6 +330,7 @@ Default labels, not rotated, snapping, 10 steps.
       snap: true,
       customLabels: [],
       showLabels: true,
+      showTooltip: true,
       prefix: "",
       suffix: "",
       rotateLabel: false,
@@ -319,3 +341,28 @@ Default labels, not rotated, snapping, 10 steps.
     {Template.bind({})}
   </Story>
 </Preview>
+
+<Preview>
+  <Story
+    name="Roatated Labels"
+    args={{
+      initialValue: 6000000,
+      min: 1000000,
+      max: 10000000,
+      step: 1000000,
+      snap: false,
+      customLabels: [],
+      prefix: "$",
+      showTicks: true,
+      showLabels: true,
+      showTooltip: true,
+      rotateLabel: true,
+      width: 950,
+      wideTrack: true,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+</Con>

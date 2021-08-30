@@ -238,6 +238,9 @@ export const bodyStyles = css`
   .short-story {
     height: 26px;
   }
+  .mid-story {
+    height: 129px;
+  }
 `;
 
 export const GlobalStyle = createGlobalStyle`

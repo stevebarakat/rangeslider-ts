@@ -157,7 +157,6 @@ const Tick = styled.div<{
   width: 1px;
   height: 5px;
   background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
-  /* background: var(--color-darkgray); */
   margin-top: 1em;
 `;
 
@@ -350,8 +349,7 @@ export const RangeSlider = ({
 
   const firstLabelLength = showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length;
   const lastLabelLength = showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length;
-  const labelLength = calcLabels();
-
+  
   function calcLabels() {
     if (lastLabelLength === undefined || firstLabelLength === undefined) return;
     if (firstLabelLength >= lastLabelLength) {
@@ -360,6 +358,7 @@ export const RangeSlider = ({
       return lastLabelLength;
     }
   }
+  const labelLength = calcLabels();
 
   return (
     <Wrapper
