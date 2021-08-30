@@ -266,7 +266,16 @@ export const RangeSlider = ({
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
+  
+  function calcSteps(step: number) {
+    if(step <= 0) return 0.1;
+    if(step <= 0.1) return 0.01;
+    if(step <= 0.01) return 0.001;
+    if(step <= 0.001) return 0.0001;
+  };
 
+  const steps = calcSteps(step);
+  
   // Make sure min never exceds max
   if (min > max) {
     min = max;
@@ -278,10 +287,6 @@ export const RangeSlider = ({
 
   const diff = max - min;
   
-  console.log("moduluo: ", diff % step === 0);
-  console.log("division: ", diff / step);
-  console.log("diff: ", diff);
-
   useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
@@ -289,7 +294,6 @@ export const RangeSlider = ({
   // For collecting tick marks
   function createLabels() {
     if (step > 0) {
-      console.log(diff)
       if (diff % step !== 0) throw Error("The distance between max and min (aka. max - min) must be divisible by step! \nUsing modulo operator: (max - min % step) must equal 0.\nCurrently (max - min % step) equals: " + (diff % step).toString());
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
       const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
@@ -400,7 +404,7 @@ export const RangeSlider = ({
           ref={rangeEl}
           min={min}
           max={max}
-          step={snap ? step : 0}
+          step={steps}
           value={value > max ? max : value}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;

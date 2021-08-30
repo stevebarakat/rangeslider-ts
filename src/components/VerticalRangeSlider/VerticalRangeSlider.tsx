@@ -292,8 +292,6 @@ export const VerticalRangeSlider = ({
     }
   }, [min, max, value, showLabels, showTicks]);
 
-  console.log(maxLabelLength);
-  
   // For collecting tick marks
   function createLabels() {
     if (step > 0) {

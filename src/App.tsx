@@ -10,7 +10,7 @@ function App() {
         initialValue={50}
         min={21}
         max={51}
-        step={6}
+        step={0}
         showTicks={true}
         snap={true}
         customLabels={[]}
