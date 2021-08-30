@@ -54,7 +54,7 @@ export const MidTemplate = (args) => (
 
 <Props story="Primary" />
 
-<Con className="flex">
+<Con className="grid">
   <div>
     <h3>Default</h3>
     <p>
@@ -65,8 +65,7 @@ export const MidTemplate = (args) => (
   <div>
     <h3>Ticks</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      Displaying tickmarks with 10 step intervals. Step must be greater than zero for ticks to show.
     </p>
   </div>
   <div>
@@ -76,19 +75,15 @@ export const MidTemplate = (args) => (
       user.
     </p>
   </div>
-</Con>
 
-<Con className="flex">
 
 <Preview>
   <Story
     name="Default"
     args={{
-      initialValue: 50,
-      width: 950,
     }}
   >
-    {ShortTemplate.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -96,10 +91,8 @@ export const MidTemplate = (args) => (
   <Story
     name="Ticks"
     args={{
-      initialValue: 50,
       step: 10,
       showTicks: true,
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -114,7 +107,6 @@ export const MidTemplate = (args) => (
       step: 20,
       snap: true,
       showTicks: true,
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -151,7 +143,6 @@ export const MidTemplate = (args) => (
       showLabels: true,
       showTicks: true,
       showTooltip: true,
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -169,7 +160,6 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showTooltip: true,
       customLabels: [{ 0: "low" }, { 50: "medium" }, { 100: "high" }],
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -207,7 +197,6 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showTooltip: true,
       prefix: "$",
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -224,7 +213,6 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showTooltip: true,
       suffix: " lbs",
-      width: 950,
     }}
   >
     {Template.bind({})}
@@ -266,7 +254,6 @@ export const MidTemplate = (args) => (
       showLabels: true,
       showTooltip: true,
       rotateLabel: false,
-      width: 950,
       wideTrack: true,
     }}
   >
@@ -278,7 +265,7 @@ export const MidTemplate = (args) => (
   <Story
     name="Decimals w/o Labels"
     args={{
-      initialValue: 1.24,
+      initialValue: 6.74,
       min: 1.24,
       max: 12.24,
       step: 0,
@@ -288,7 +275,6 @@ export const MidTemplate = (args) => (
       showLabels: false,
       showTooltip: true,
       rotateLabel: false,
-      width: 950,
       wideTrack: true,
     }}
   >
@@ -334,7 +320,6 @@ export const MidTemplate = (args) => (
       prefix: "",
       suffix: "",
       rotateLabel: false,
-      width: 950,
       wideTrack: true,
     }}
   >
@@ -357,7 +342,6 @@ export const MidTemplate = (args) => (
       showLabels: true,
       showTooltip: true,
       rotateLabel: true,
-      width: 950,
       wideTrack: true,
     }}
   >

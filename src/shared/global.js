@@ -216,7 +216,17 @@ export const bodyStyles = css`
     gap: 1em;
     width: 100%;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-end;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    padding: 0;
+    margin: 0;
+    gap: 1em;
+    border: 1px dotted pink;
   }
 
   .important {
@@ -224,19 +234,8 @@ export const bodyStyles = css`
     font-size: 1em;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: 0;
-    padding: 0;
-  }
-
-  .float {
-    float: right;
-  }
-
   .short-story {
-    height: 26px;
+    height: 32px;
   }
   .mid-story {
     height: 129px;
