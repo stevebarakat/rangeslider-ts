@@ -5,9 +5,6 @@ let newPosition1 = 0;
 let newPosition2 = 0;
 
 // STYLES
-const Wrapper = styled.div<{ maxLabelLength?: number }>`
-  padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
-`;
 
 const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
   width: ${p => p.heightVal + "px"};
@@ -400,109 +397,107 @@ export const DualVerticalRangeSlider = ({
   }
 
   return (
-    <Wrapper maxLabelLength={maxLabelLength}>
-      <RangeWrap
-        outputWidth={outputWidth}
-        showTicks={showTicks}
-        heightVal={height}
-        maxLabelLength={maxLabelLength}
-      >
-        <Progress
-          wideTrack={wideTrack}
-          focused={focused}
-          style={
-            !focused && wideTrack ? {
-              background: `-webkit-linear-gradient(left,  
+    <RangeWrap
+      outputWidth={outputWidth}
+      showTicks={showTicks}
+      heightVal={height}
+      maxLabelLength={maxLabelLength}
+    >
+      <Progress
+        wideTrack={wideTrack}
+        focused={focused}
+        style={
+          !focused && wideTrack ? {
+            background: `-webkit-linear-gradient(left,  
                 var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`},
                 var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                 var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                 var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`})`
-            } :
-              {
-                background: `-webkit-linear-gradient(left,  
+          } :
+            {
+              background: `-webkit-linear-gradient(left,  
                   var(--color-secondary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                   var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                   var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                   var(--color-secondary) ${`calc(${newValue1}% + ${newPosition1}px)`})`
-              }
-          }
-        />
+            }
+        }
+      />
 
-        {/* UPPER RANGE */}
-        {showTooltip && <RangeOutput
-          ref={outputEl}
-          focused={upperFocused}
-          wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)` }}>
-          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
-        </RangeOutput>}
-        <StyledRangeSlider
-          id="upper"
-          aria-label="upper value"
-          aria-orientation="horizontal"
-          aria-valuenow={upperVal}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          tabIndex={0}
-          heightVal={300}
-          ref={upperRange}
-          min={min}
-          max={max}
-          step={snap ? step : 0}
-          value={upperVal > max ? max : upperVal.toFixed(decimals)}
-          onKeyDown={handleKeyPress}
-          onFocus={() => {
-            setUpperFocused(true);
-          }}
-          onBlur={() => {
-            setUpperFocused(false);
-          }}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setUpperVal(valueAsNumber);
-          }}
-          focused={upperFocused}
-          wideTrack={wideTrack}
-        />
+      {/* UPPER RANGE */}
+      {showTooltip && <RangeOutput
+        ref={outputEl}
+        focused={upperFocused}
+        wideTrack={wideTrack}
+        style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)` }}>
+        <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
+      </RangeOutput>}
+      <StyledRangeSlider
+        id="upper"
+        aria-label="upper value"
+        aria-orientation="horizontal"
+        aria-valuenow={upperVal}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        tabIndex={0}
+        heightVal={300}
+        ref={upperRange}
+        min={min}
+        max={max}
+        step={snap ? step : 0}
+        value={upperVal > max ? max : upperVal.toFixed(decimals)}
+        onKeyDown={handleKeyPress}
+        onFocus={() => {
+          setUpperFocused(true);
+        }}
+        onBlur={() => {
+          setUpperFocused(false);
+        }}
+        onInput={(e) => {
+          const { valueAsNumber } = e.target as HTMLInputElement;
+          setUpperVal(valueAsNumber);
+        }}
+        focused={upperFocused}
+        wideTrack={wideTrack}
+      />
 
-        {/* LOWER RANGE */}
-        {showTooltip && <RangeOutput
-          focused={lowerFocused}
-          wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)` }}>
-          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
-        </RangeOutput>}
-        <StyledRangeSlider
-          id="lower"
-          aria-label="lower value"
-          aria-orientation="horizontal"
-          aria-valuenow={lowerVal}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          tabIndex={0}
-          heightVal={300}
-          ref={lowerRange}
-          min={min}
-          max={max}
-          step={snap ? step : 0}
-          value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
-          onKeyDown={handleKeyPress}
-          onFocus={() => {
-            setLowerFocused(true);
-          }}
-          onBlur={() => {
-            setLowerFocused(false);
-          }}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setLowerVal(valueAsNumber);
-          }}
-          focused={lowerFocused}
-          wideTrack={wideTrack}
-        />
+      {/* LOWER RANGE */}
+      {showTooltip && <RangeOutput
+        focused={lowerFocused}
+        wideTrack={wideTrack}
+        style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)` }}>
+        <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
+      </RangeOutput>}
+      <StyledRangeSlider
+        id="lower"
+        aria-label="lower value"
+        aria-orientation="horizontal"
+        aria-valuenow={lowerVal}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        tabIndex={0}
+        heightVal={300}
+        ref={lowerRange}
+        min={min}
+        max={max}
+        step={snap ? step : 0}
+        value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
+        onKeyDown={handleKeyPress}
+        onFocus={() => {
+          setLowerFocused(true);
+        }}
+        onBlur={() => {
+          setLowerFocused(false);
+        }}
+        onInput={(e) => {
+          const { valueAsNumber } = e.target as HTMLInputElement;
+          setLowerVal(valueAsNumber);
+        }}
+        focused={lowerFocused}
+        wideTrack={wideTrack}
+      />
 
-        {<Ticks ref={tickEl} wideTrack={wideTrack}>{labels}</Ticks>}
-      </RangeWrap>
-    </Wrapper>
+      {<Ticks ref={tickEl} wideTrack={wideTrack}>{labels}</Ticks>}
+    </RangeWrap>
   );
 };

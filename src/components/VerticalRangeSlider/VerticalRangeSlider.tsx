@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div<{ maxLabelLength?: number }>`
-  padding-left: ${(p) => `${p?.maxLabelLength ?? 0 + 1}ch`};
-`;
-
 const RangeWrap = styled.div<{
   heightVal: number;
   outputWidth: number;
@@ -362,68 +358,66 @@ export const VerticalRangeSlider = ({
   }
 
   return (
-    <Wrapper maxLabelLength={maxLabelLength}>
-      <RangeWrap
-        outputWidth={outputWidth}
-        showTicks={showTicks}
-        heightVal={height}
-        maxLabelLength={maxLabelLength}
+    <RangeWrap
+      outputWidth={outputWidth}
+      showTicks={showTicks}
+      heightVal={height}
+      maxLabelLength={maxLabelLength}
+    >
+      <Progress
+        wideTrack={wideTrack}
+        focused={isFocused}
+        style={
+          !isFocused && wideTrack ? {
+            background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
+              }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
+              }px), var(--color-white) 100%)`
+          } :
+            {
+              background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
+                }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
+                }px), var(--color-secondary) 100%)`
+            }
+        }
+      />
+      {showTooltip && <RangeOutput
+        ref={outputEl}
+        focused={isFocused}
+        wideTrack={wideTrack}
+        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)` }}
       >
-        <Progress
-          wideTrack={wideTrack}
-          focused={isFocused}
-          style={
-            !isFocused && wideTrack ? {
-              background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
-                }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
-                }px), var(--color-white) 100%)`
-            } :
-              {
-                background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
-                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
-                  }px), var(--color-secondary) 100%)`
-              }
-          }
-        />
-        {showTooltip && <RangeOutput
-          ref={outputEl}
-          focused={isFocused}
-          wideTrack={wideTrack}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)`}}
-        >
-          <span>
-            {prefix +
-              numberWithCommas(value.toFixed(decimals)) +
-              " " +
-              suffix}
-          </span>
-        </RangeOutput>}
-        <StyledRangeSlider
-          aria-label="Basic Example"
-          aria-orientation="horizontal"
-          aria-valuenow={value}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          tabIndex={0}
-          heightVal={300}
-          ref={rangeEl}
-          min={min}
-          max={max}
-          step={snap ? step : 0}
-          value={value > max ? max : value.toFixed(decimals)}
-          // onClick={() => rangeEl.current?.focus()}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setValue(valueAsNumber);
-          }}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onKeyDown={handleKeyPress}
-          focused={isFocused}
-          wideTrack={wideTrack}
-        />
-        <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
-      </RangeWrap>
-    </Wrapper>
+        <span>
+          {prefix +
+            numberWithCommas(value.toFixed(decimals)) +
+            " " +
+            suffix}
+        </span>
+      </RangeOutput>}
+      <StyledRangeSlider
+        aria-label="Basic Example"
+        aria-orientation="horizontal"
+        aria-valuenow={value}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        tabIndex={0}
+        heightVal={300}
+        ref={rangeEl}
+        min={min}
+        max={max}
+        step={snap ? step : 0}
+        value={value > max ? max : value.toFixed(decimals)}
+        // onClick={() => rangeEl.current?.focus()}
+        onInput={(e) => {
+          const { valueAsNumber } = e.target as HTMLInputElement;
+          setValue(valueAsNumber);
+        }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onKeyDown={handleKeyPress}
+        focused={isFocused}
+        wideTrack={wideTrack}
+      />
+      <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
+    </RangeWrap>
   );
 };

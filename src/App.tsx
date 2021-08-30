@@ -34,7 +34,7 @@ function App() {
         showTicks={true}
         snap={true}
         customLabels={[
-          { 0: "low" },
+          { 0: "logdfgdgdgdgdgdgdgdgdgdgfdfw" },
           { 50: "medium" },
           { 100: "high" }
         ]}
