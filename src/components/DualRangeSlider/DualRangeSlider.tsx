@@ -325,7 +325,7 @@ export const DualRangeSlider = ({
             customLabels?.length > 0
               ? showLabels && customLabels.map((label) => {
                 return (
-                  n === parseFloat(Object.keys(label)[0]) && (
+                  n === Number(Object.keys(label)[0]) && (
                     <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
                   )
                 )

@@ -8,14 +8,13 @@ function App() {
     <div>
       <RangeSlider
         initialValue={50}
-        min={0}
-        max={100}
-        decimals={0}
-        step={10}
+        min={21}
+        max={51}
+        step={6}
         showTicks={true}
         snap={true}
-        // customLabels={[]}
-        customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsdfbcbgfgdgh" }]}
+        customLabels={[]}
+        // customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsdfbcbgfgdgh" }]}
         showLabels={true}
         prefix=""
         suffix=""

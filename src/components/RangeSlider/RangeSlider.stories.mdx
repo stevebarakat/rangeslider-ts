@@ -38,7 +38,6 @@ export const ShortTemplate = (args) => (
       customLabels: [],
       prefix: "",
       suffix: "",
-      decimals: 0,
       width: 950,
       wideTrack: true,
     }}
@@ -236,17 +235,42 @@ Default labels, not rotated, snapping, 10 steps.
   <Story
     name="Decimals"
     args={{
-      initialValue: 5,
+      initialValue: 1.12,
       min: 1,
-      max: 10,
-      step: 1,
+      max: 1.24,
+      step: 0.03,
       snap: true,
       customLabels: [],
       showTicks: true,
       showLabels: true,
       showTooltip: true,
       rotateLabel: false,
-      decimals: 0,
+      width: 950,
+      wideTrack: true,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+### Decimals w/o Labels
+
+Default labels, not rotated, snapping, 10 steps.
+
+<Preview>
+  <Story
+    name="Decimals w/o Labels"
+    args={{
+      initialValue: 1.24,
+      min: 1.24,
+      max: 12.24,
+      step: 0,
+      snap: false,
+      customLabels: [],
+      showTicks: true,
+      showLabels: false,
+      showTooltip: true,
+      rotateLabel: false,
       width: 950,
       wideTrack: true,
     }}
@@ -266,7 +290,6 @@ Default labels, not rotated, snapping, 10 steps.
       initialValue: 50,
       min: 0,
       max: 84,
-      decimals: 0,
       step: 7,
       showTicks: true,
       snap: true,

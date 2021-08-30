@@ -234,10 +234,6 @@ interface RangeSliderProps {
    */
   suffix?: string;
   /**
-    The amount of decimal points to be rounded to. 
-  */
-  decimals?: number;
-  /**
     The width of the range track.
    */
   wideTrack?: boolean;
@@ -251,7 +247,6 @@ export const RangeSlider = ({
   initialValue = 50,
   min = 0,
   max = 100,
-  decimals = 0,
   step = 0,
   showTicks = false,
   snap = false,
@@ -281,6 +276,12 @@ export const RangeSlider = ({
     max = min;
   }
 
+  const diff = max - min;
+  
+  console.log("moduluo: ", diff % step === 0);
+  console.log("division: ", diff / step);
+  console.log("diff: ", diff);
+
   useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
@@ -288,6 +289,8 @@ export const RangeSlider = ({
   // For collecting tick marks
   function createLabels() {
     if (step > 0) {
+      console.log(diff)
+      if (diff % step !== 0) throw Error("The distance between max and min (aka. max - min) must be divisible by step! \nUsing modulo operator: (max - min % step) must equal 0.\nCurrently (max - min % step) equals: " + (diff % step).toString());
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
       const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
       // create tick mark for every element in the numbers array 
@@ -302,7 +305,7 @@ export const RangeSlider = ({
             customLabels?.length > 0
               ? showLabels && customLabels.map((label) => {
                 return (
-                  n === parseFloat(Object.keys(label)[0]) && (
+                  n === Number(Object.keys(label)[0]) && (
                     <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
                   )
                 )
@@ -310,7 +313,7 @@ export const RangeSlider = ({
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
               <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>
-                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+                {prefix + numberWithCommas(n.toString()) + suffix}
               </Label>
           }
         </Tick>
@@ -382,10 +385,10 @@ export const RangeSlider = ({
 
         {showTooltip && <RangeOutput
           focused={isFocused}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition * 1}px)` } as React.CSSProperties}
+          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)` } as React.CSSProperties}
         >
           <span>
-            {prefix + numberWithCommas(value?.toFixed(decimals)) + suffix}
+            {prefix + numberWithCommas(value?.toString()) + suffix}
           </span>
         </RangeOutput>}
         <StyledRangeSlider
@@ -398,7 +401,7 @@ export const RangeSlider = ({
           min={min}
           max={max}
           step={snap ? step : 0}
-          value={value > max ? max : value?.toFixed(decimals)}
+          value={value > max ? max : value}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;
             rangeEl.current?.focus();

@@ -310,7 +310,7 @@ export const VerticalRangeSlider = ({
             customLabels?.length > 0
               ? showLabels && customLabels.map((label) => {
                 return (
-                  n === parseFloat(Object.keys(label)[0]) && (
+                  n === Number(Object.keys(label)[0]) && (
                     <label key={n} htmlFor={n.toString()}>{Object.values(label)}</label>
                   )
                 )
@@ -378,7 +378,7 @@ export const VerticalRangeSlider = ({
       {showTooltip && <RangeOutput
         focused={isFocused}
         wideTrack={wideTrack}
-        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)` }}
+        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition}px)` }}
       >
         <span>
           {prefix +
