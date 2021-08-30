@@ -303,13 +303,13 @@ export const RangeSlider = ({
               ? showLabels && customLabels.map((label) => {
                 return (
                   n === parseFloat(Object.keys(label)[0]) && (
-                    <Label rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
+                    <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
                   )
                 )
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <Label rotateLabel={rotateLabel} htmlFor={n.toString()}>
+              <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>
                 {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
               </Label>
           }
@@ -348,7 +348,6 @@ export const RangeSlider = ({
 
   function calcLabels() {
     if (lastLabelLength === undefined || firstLabelLength === undefined) return;
-    console.log(firstLabelLength > lastLabelLength);
     if (firstLabelLength >= lastLabelLength) {
       return firstLabelLength;
     } else {

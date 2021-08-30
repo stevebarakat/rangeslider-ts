@@ -335,13 +335,13 @@ export const DualVerticalRangeSlider = ({
               ? showLabels && customLabels.map((label) => {
                 return (
                   n === parseFloat(Object.keys(label)[0]) && (
-                    <label htmlFor={n.toString()}>{Object.values(label)}</label>
+                    <label key={n} htmlFor={n.toString()}>{Object.values(label)}</label>
                   )
                 )
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <label htmlFor={n.toString()}>
+              <label key={n} htmlFor={n.toString()}>
                 {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
               </label>
           }

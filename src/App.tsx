@@ -62,7 +62,7 @@ function App() {
         showLabels={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
+        rotateLabel={true}
         width={800}
         wideTrack={false}
         showTooltip={true}
