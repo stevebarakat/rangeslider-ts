@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
   padding-bottom: ${p => p.rotateLabel && p.labelLength / 2.5 + "ch"};
-  padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2.5 + "ch"};
+  padding-left: ${p => p.rotateLabel ?  0 : p.firstLabelLength / 2.5 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2.5 + "ch" };
   width: fit-content;
   max-width: 100%;

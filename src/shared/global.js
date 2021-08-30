@@ -213,20 +213,29 @@ export const bodyStyles = css`
 
   .flex {
     display: flex;
-    gap: 1em;
+    gap: 0 1em;
     width: 100%;
     justify-content: center;
     align-items: flex-end;
   }
 
-  .grid {
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    padding: 0;
+    margin: 0;
+    gap: 0 1em;
+  }
+
+  .grid3 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr;
     padding: 0;
     margin: 0;
-    gap: 1em;
-    border: 1px dotted pink;
+    gap: 0 1em;
+    align-items: flex-start;
   }
 
   .important {
