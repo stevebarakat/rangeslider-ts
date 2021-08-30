@@ -34,7 +34,7 @@ function App() {
         showTicks={true}
         snap={true}
         customLabels={[
-          { 0: "logdfgdgdgdgdgdgdgdgdgdgfdfw" },
+          { 0: "logdfw" },
           { 50: "medium" },
           { 100: "high" }
         ]}
@@ -76,12 +76,12 @@ function App() {
         step={10}
         snap={true}
         showTicks={true}
-        customLabels={[
-          { 0: "lowkjgkjhkjhkjhkjhkjhkjh" },
-          { 50: "medium" },
-          { 100: "high" }
-        ]}
-        // customLabels={[]}
+        // customLabels={[
+        //   { 0: "ljjh" },
+        //   { 50: "mfgm" },
+        //   { 100: "hgdgdfh" }
+        // ]}
+        customLabels={[]}
         showLabels={true}
         prefix=""
         suffix=""

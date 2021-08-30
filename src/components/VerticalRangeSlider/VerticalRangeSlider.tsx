@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 const RangeWrap = styled.div<{
   heightVal: number;
-  outputWidth: number;
   maxLabelLength: number;
   showTicks: boolean;
 }>`
@@ -259,12 +258,10 @@ export const VerticalRangeSlider = ({
   showTooltip = false,
 }: VerticalRangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
-  const outputEl = useRef<HTMLElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
-  const [outputWidth, setOutputWidth] = useState(0);
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const newPosition = 10 - newValue * 0.2;
@@ -278,7 +275,7 @@ export const VerticalRangeSlider = ({
     max = min;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
     if (showTicks) {
       const tickList = ticksEl.current?.children;
@@ -294,8 +291,6 @@ export const VerticalRangeSlider = ({
       if (!labelList) return;
       setMaxLabelLength(Math.max(...labelList));
     }
-    if (!outputEl.current) return;
-    setOutputWidth(outputEl.current?.clientHeight);
   }, [min, max, value, showLabels, showTicks]);
 
   // For collecting tick marks
@@ -359,7 +354,6 @@ export const VerticalRangeSlider = ({
 
   return (
     <RangeWrap
-      outputWidth={outputWidth}
       showTicks={showTicks}
       heightVal={height}
       maxLabelLength={maxLabelLength}
@@ -381,7 +375,6 @@ export const VerticalRangeSlider = ({
         }
       />
       {showTooltip && <RangeOutput
-        ref={outputEl}
         focused={isFocused}
         wideTrack={wideTrack}
         style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition * 1}px)` }}
