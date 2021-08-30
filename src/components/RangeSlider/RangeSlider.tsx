@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
-
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
@@ -404,7 +403,7 @@ export const RangeSlider = ({
           ref={rangeEl}
           min={min}
           max={max}
-          step={steps}
+          step={snap ? step : steps}
           value={value > max ? max : value}
           onInput={(e) => {
             const { valueAsNumber } = e.target as HTMLInputElement;

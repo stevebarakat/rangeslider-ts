@@ -227,9 +227,24 @@ export const ShortTemplate = (args) => (
 
 </Con>
 
-### Decimals
+<Con className="flex">
+  <div>
+    <h3>Decimals</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Decimals w/o Labels</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
 
-Default labels, not rotated, snapping, 10 steps.
+<Con className="flex">
 
 <Preview>
   <Story
@@ -239,7 +254,7 @@ Default labels, not rotated, snapping, 10 steps.
       min: 1,
       max: 1.24,
       step: 0.03,
-      snap: true,
+      snap: false,
       customLabels: [],
       showTicks: true,
       showLabels: true,
@@ -252,10 +267,6 @@ Default labels, not rotated, snapping, 10 steps.
     {Template.bind({})}
   </Story>
 </Preview>
-
-### Decimals w/o Labels
-
-Default labels, not rotated, snapping, 10 steps.
 
 <Preview>
   <Story
@@ -278,6 +289,9 @@ Default labels, not rotated, snapping, 10 steps.
     {Template.bind({})}
   </Story>
 </Preview>
+
+</Con>
+
 
 ### Configuration Four
 
