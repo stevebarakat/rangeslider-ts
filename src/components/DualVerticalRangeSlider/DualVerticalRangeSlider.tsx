@@ -1,19 +1,24 @@
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+
+let newPosition1 = 0;
+let newPosition2 = 0;
 
 // STYLES
 
-const RangeWrap = styled.div<{ heightVal: number, maxLabelLength: number, showTicks: boolean }>`
-  width: ${p => p.heightVal + "px"};
-  /* margin-left: ${p => `${p.maxLabelLength}em`}; */
-  padding-top: ${p => `${p.maxLabelLength / 2.5}ch`};
+const RangeWrap = styled.div<{
+  heightVal: number;
+  maxLabelLength: number;
+  showTicks: boolean;
+}>`
+  width: ${(p) => p.heightVal + "px"};
+  margin-left: ${(p) => `${p.maxLabelLength + 3}ch`};
   transform: rotate(270deg);
-  transform-origin: top left;
-  margin-top: ${p => p.heightVal + "px"};
+  transform-origin: 0 0;
+  margin-top: ${(p) => p.heightVal + "px"};
   left: 0;
   top: 0;
   font-family: sans-serif;
-  /* border: 1px dotted red; */
 `;
 
 const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
@@ -152,7 +157,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
   margin: ${p => p.wideTrack ? "15px" : "10px"};
   margin-top: ${p => p.wideTrack ? "32px" : "12px"};
   position: relative;
-  top: -3.5em;
+  top: -1.2em;
 `;
 
 const Tick = styled.div<{
@@ -271,6 +276,7 @@ export const DualVerticalRangeSlider = ({
 }: DualVerticalRangeSliderProps) => {
   const lowerRange = useRef<HTMLInputElement | null>(null);
   const upperRange = useRef<HTMLInputElement | null>(null);
+  const outputEl = useRef<HTMLElement | null>(null);
   const tickEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
@@ -281,8 +287,8 @@ export const DualVerticalRangeSlider = ({
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const focused = upperFocused || lowerFocused;
-  const newPosition1 = 10 - newValue1 * 0.2;
-  const newPosition2 = 10 - newValue2 * 0.2;
+  newPosition1 = 10 - newValue1 * 0.2;
+  newPosition2 = 10 - newValue2 * 0.2;
 
   // Make sure min never exceds max
   if (min > max) {
@@ -293,20 +299,23 @@ export const DualVerticalRangeSlider = ({
     max = min;
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setNewValue1(Number(((lowerVal - min) * 100) / (max - min)));
     setNewValue2(Number(((upperVal - min) * 100) / (max - min)));
     if (showTicks) {
-      const numbers = Array.from(tickEl.current?.children).map((_, i) => {
-        return min + step * i;
-      });
-      setMaxLabelLength(Math.max(numbers.toString().length))
-      console.log(numbers)
-      // const tickText: number[] = numbers.map(number => number.toString().length)
-      // showLabels &&
-      //   tickText !== undefined && numbers.push(tickText[0]);
+      const tickList = showTicks ? tickEl.current?.children : null;
+      let labelList = [];
+      for (let i = 0; i < tickList!.length; i++) {
+        const tickText = tickList![i]?.firstChild?.firstChild?.textContent
+          ?.length;
+        showLabels &&
+          tickText !== undefined &&
+          labelList.push(tickText);
+      }
+      if (!labelList) return;
+      setMaxLabelLength(Math.max(...labelList));
     }
-  }, [min, max, lowerVal, upperVal, showLabels, showTicks, step]);
+  }, [min, max, lowerVal, upperVal, showLabels, showTicks]);
 
   // For collecting tick marks
   function createLabels() {
@@ -419,6 +428,7 @@ export const DualVerticalRangeSlider = ({
 
       {/* UPPER RANGE */}
       {showTooltip && <RangeOutput
+        ref={outputEl}
         focused={upperFocused}
         wideTrack={wideTrack}
         style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)` }}>

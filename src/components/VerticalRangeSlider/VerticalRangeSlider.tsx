@@ -7,9 +7,9 @@ const RangeWrap = styled.div<{
   showTicks: boolean;
 }>`
   width: ${(p) => p.heightVal + "px"};
-  margin-left: ${(p) => `${p.maxLabelLength + 1}ch`};
+  margin-left: ${(p) => `${p.maxLabelLength + 3}ch`};
   transform: rotate(270deg);
-  transform-origin: top left;
+  transform-origin: 0 0;
   margin-top: ${(p) => p.heightVal + "px"};
   left: 0;
   top: 0;
@@ -283,7 +283,6 @@ export const VerticalRangeSlider = ({
       for (let i = 0; i < tickList!.length; i++) {
         const tickText = tickList![i]?.firstChild?.firstChild?.textContent
           ?.length;
-        showTicks &&
           showLabels &&
           tickText !== undefined &&
           labelList.push(tickText);
@@ -293,6 +292,8 @@ export const VerticalRangeSlider = ({
     }
   }, [min, max, value, showLabels, showTicks]);
 
+  console.log(maxLabelLength);
+  
   // For collecting tick marks
   function createLabels() {
     if (step > 0) {

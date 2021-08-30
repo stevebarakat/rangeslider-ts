@@ -33,11 +33,12 @@ function App() {
         step={5}
         showTicks={true}
         snap={true}
-        customLabels={[
-          { 0: "logdfw" },
-          { 50: "medium" },
-          { 100: "high" }
-        ]}
+        customLabels={[]}
+        // customLabels={[
+        //   { 0: "loffgfdgdgdsfsfsfsfsdfsgdfw" },
+        //   { 50: "meum" },
+        //   { 100: "high" }
+        // ]}
         showLabels={true}
         prefix=""
         suffix=""
@@ -55,9 +56,9 @@ function App() {
         snap={true}
         showTicks={true}
         customLabels={[
-          { 0: "lodfgddgf" },
-          { 50: "medium" },
-          { 100: "hhfghfhfhfhfghhfghfgigh" }
+          { 0: "lgf" },
+          { 50: "mdm" },
+          { 100: "hh" }
         ]}
         showLabels={true}
         prefix=""
@@ -76,12 +77,12 @@ function App() {
         step={10}
         snap={true}
         showTicks={true}
-        // customLabels={[
-        //   { 0: "ljjh" },
-        //   { 50: "mfgm" },
-        //   { 100: "hgdgdfh" }
-        // ]}
-        customLabels={[]}
+        customLabels={[
+          { 0: "ljh" },
+          { 50: "mgm" },
+          { 100: "h" }
+        ]}
+        // customLabels={[]}
         showLabels={true}
         prefix=""
         suffix=""
