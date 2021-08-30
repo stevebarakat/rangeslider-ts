@@ -6,6 +6,10 @@ import { RangeSlider } from "./RangeSlider";
 <Meta title="RangeSlider" component={RangeSlider} />
 
 export const Template = (args) => (
+    <RangeSlider {...args} />
+);
+
+export const ShortTemplate = (args) => (
   <div className="short-story">
     <RangeSlider {...args} />
   </div>
@@ -63,7 +67,7 @@ export const Template = (args) => (
     </p>
   </div>
   <div>
-    <h3>Ticks & Labels</h3>
+    <h3>Snap</h3>
     <p>
       The most basic configuration. These are the values used if not set by the
       user.
@@ -81,7 +85,7 @@ export const Template = (args) => (
       width: 950,
     }}
   >
-    {Template.bind({})}
+    {ShortTemplate.bind({})}
   </Story>
 </Preview>
 
@@ -101,11 +105,11 @@ export const Template = (args) => (
 
 <Preview>
   <Story
-    name="Ticks & Lables"
+    name="Snap"
     args={{
-      initialValue: 50,
-      step: 10,
-      showLabels: true,
+      initialValue: 60,
+      step: 20,
+      snap: true,
       showTicks: true,
       width: 950,
     }}
@@ -125,7 +129,7 @@ export const Template = (args) => (
     </p>
   </div>
   <div>
-    <h3>Snap & ToolTip</h3>
+    <h3>Custom Labels</h3>
     <p>
       The most basic configuration. These are the values used if not set by the
       user.
@@ -153,7 +157,7 @@ export const Template = (args) => (
 
 <Preview>
   <Story
-    name="Snap & ToolTip"
+    name="Custom Labels"
     args={{
       initialValue: 50,
       step: 10,
@@ -161,6 +165,9 @@ export const Template = (args) => (
       showLabels: true,
       showTicks: true,
       showTooltip: true,
+      customLabels: [
+        { 0: "low" }, { 50: "medium" }, { 100: "high"} 
+      ],
       width: 950,
     }}
   >
@@ -170,34 +177,61 @@ export const Template = (args) => (
 
 </Con>
 
-### Prefix & Suffix
 
-Default labels, not rotated, snapping, 10 steps.
+<Con className="flex">
+  <div>
+    <h3>Prefix</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+  <div>
+    <h3>Suffix</h3>
+    <p>
+      The most basic configuration. These are the values used if not set by the
+      user.
+    </p>
+  </div>
+</Con>
+
+<Con className="flex">
 
 <Preview>
   <Story
-    name="Two"
+    name="Prefix"
     args={{
-      initialValue: 14,
-      min: 5,
-      max: 150,
-      step: 15,
-      snap: false,
-      showTicks: true,
+      initialValue: 40,
+      step: 20,
       showLabels: true,
+      showTicks: true,
       showTooltip: true,
-      rotateLabel: false,
-      customLabels: [],
       prefix: "$",
-      suffix: " USD",
-      decimals: 0,
       width: 950,
-      wideTrack: true,
     }}
   >
     {Template.bind({})}
   </Story>
 </Preview>
+
+<Preview>
+  <Story
+    name="Suffix"
+   args={{
+      initialValue: 40,
+      step: 20,
+      showLabels: true,
+      showTicks: true,
+      showTooltip: true,
+      suffix: " lbs",
+      width: 950,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Preview>
+
+</Con>
 
 ### Configuration Three
 

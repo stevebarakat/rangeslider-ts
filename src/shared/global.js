@@ -235,9 +235,8 @@ export const bodyStyles = css`
     float: right;
   }
 
-  .story {
-    height: fit-content;
-    width: fit-content;
+  .short-story {
+    height: 26px;
   }
 `;
 

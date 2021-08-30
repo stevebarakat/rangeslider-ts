@@ -8,7 +8,7 @@ const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLa
   padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2 + "ch" };
   width: fit-content;
-  border: 1px dotted red;
+  max-width: 100%;
 `;
 
 const RangeWrap = styled.div`

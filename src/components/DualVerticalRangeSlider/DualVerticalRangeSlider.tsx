@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 let newPosition1 = 0;
@@ -299,7 +299,7 @@ export const DualVerticalRangeSlider = ({
     max = min;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNewValue1(Number(((lowerVal - min) * 100) / (max - min)));
     setNewValue2(Number(((upperVal - min) * 100) / (max - min)));
     if (showTicks) {

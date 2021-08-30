@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 
@@ -10,26 +10,24 @@ const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLa
   padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2.5 + "ch" };
   width: fit-content;
   max-width: 100%;
-  border: 1px dotted red;
 `;
 
 const RangeWrap = styled.div<{ showTooltip: boolean, showLabels: boolean }>`
   position: relative;
-  padding-top: ${p => p.showTooltip ? "3.75rem" : ""};
-  padding-bottom: ${p => p.showLabels ? "1.75rem" : 0};
+  padding-top: ${p => p.showTooltip ? "3.75em" : "1px"};
+  padding-bottom: ${p => p.showLabels ? "1.75em" : 0};
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
 `;
 
 const RangeOutput = styled.output<{ focused: boolean }>`
-  margin-top: -3.75rem;
+  margin-top: -3.75em;
   width: 0;
   position: absolute;
   display: flex;
   justify-content: center;
   text-align: center;
-  font-size: 1rem;
   white-space: nowrap;
   span {
     border: ${(p) =>
@@ -39,7 +37,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
     color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
     background: ${(p) => (p.focused ? "var(--color-primary)" : "white")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-    padding: 0.5rem 0.75rem;
+    padding: 0.5em 0.75em;
     &::before {
       content: "";
       position: absolute;
@@ -158,16 +156,17 @@ const Tick = styled.div<{
 }>`
   position: relative;
   width: 1px;
-  height: ${(p) => (p.showTicks ? "5px" : "0")};
-  background: var(--color-darkgray);
-  margin-top: 1rem;
+  height: 5px;
+  background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
+  /* background: var(--color-darkgray); */
+  margin-top: 1em;
 `;
 
 const Label = styled.label<{ rotateLabel: boolean }>`
   position: absolute;
   transform: translateX(-50%);
   color: var(--color-darkgray);
-  margin-top: 0.5rem;
+  margin-top: 0.5em;
   transform-origin: center;
   white-space: nowrap;
   text-align: center;
@@ -254,16 +253,16 @@ export const RangeSlider = ({
   max = 100,
   decimals = 0,
   step = 0,
-  showTicks = true,
-  snap = true,
+  showTicks = false,
+  snap = false,
   customLabels = [],
-  showLabels = true,
+  showLabels = false,
   prefix = "",
   suffix = "",
   rotateLabel = false,
   width = 800,
-  wideTrack = true,
-  showTooltip = true,
+  wideTrack = false,
+  showTooltip = false,
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -282,7 +281,7 @@ export const RangeSlider = ({
     max = min;
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
 
@@ -299,7 +298,7 @@ export const RangeSlider = ({
           showTicks={showTicks}
           key={n}
         >
-          { // if there are custom labels, show them!
+          { // if there are custom labels, show them
             customLabels?.length > 0
               ? showLabels && customLabels.map((label) => {
                 return (
