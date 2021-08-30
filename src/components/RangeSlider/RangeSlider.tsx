@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 
@@ -281,7 +281,7 @@ export const RangeSlider = ({
     max = min;
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
 

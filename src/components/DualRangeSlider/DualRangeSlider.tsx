@@ -179,11 +179,6 @@ const Label = styled.label<{ rotateLabel: boolean }>`
 `
 ;
 
-let newValue1 = 0;
-let newValue2 = 0;
-let newPosition1 = 0;
-let newPosition2 = 0;
-
 function numberWithCommas(x: string) {
   return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -301,16 +296,16 @@ export const DualRangeSlider = ({
   }
 
   // Calculations for positioning lower value tooltip
-  newValue1 = Number(
+  const newValue1 = Number(
     ((lowerVal - min) * 100) / (max - min)
   );
-  newPosition1 = 10 - newValue1 * 0.2;
+  const newPosition1 = 10 - newValue1 * 0.2;
 
   // Calculations for positioning upper value tooltip
-  newValue2 = Number(
+  const newValue2 = Number(
     ((upperVal - min) * 100) / (max - min)
   );
-  newPosition2 = 10 - newValue2 * 0.2;
+  const newPosition2 = 10 - newValue2 * 0.2;
 
 
   // For collecting tick marks

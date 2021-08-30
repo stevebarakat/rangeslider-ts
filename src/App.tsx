@@ -71,7 +71,7 @@ function App() {
         initialLowerValue={20}
         initialUpperValue={40}
         min={0}
-        max={500}
+        max={100}
         decimals={0}
         step={10}
         snap={true}

@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-let newPosition1 = 0;
-let newPosition2 = 0;
-
 // STYLES
 
 const RangeWrap = styled.div<{ heightVal: number, outputWidth: number, maxLabelLength: number, showTicks: boolean }>`
@@ -284,8 +281,8 @@ export const DualVerticalRangeSlider = ({
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const focused = upperFocused || lowerFocused;
-  newPosition1 = 10 - newValue1 * 0.2;
-  newPosition2 = 10 - newValue2 * 0.2;
+  const newPosition1 = 10 - newValue1 * 0.2;
+  const newPosition2 = 10 - newValue2 * 0.2;
 
   // Make sure min never exceds max
   if (min > max) {
