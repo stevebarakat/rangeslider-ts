@@ -235,16 +235,9 @@ export const bodyStyles = css`
     float: right;
   }
 
-  .short-story {
-    height: 40px;
-  }
-
-  .mid-story {
-    height: 110px;
-  }
-
-  .tall-story {
-    height: 140px;
+  .story {
+    height: fit-content;
+    width: fit-content;
   }
 `;
 

@@ -5,18 +5,8 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const ShortStory = (args) => (
+export const Template = (args) => (
   <div className="short-story">
-    <RangeSlider {...args} />
-  </div>
-);
-export const MidStory = (args) => (
-  <div className="mid-story">
-    <RangeSlider {...args} />
-  </div>
-);
-export const TallStory = (args) => (
-  <div className="tall-story">
     <RangeSlider {...args} />
   </div>
 );
@@ -51,7 +41,7 @@ export const TallStory = (args) => (
       wideTrack: true,
     }}
   >
-    {TallStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -88,10 +78,10 @@ export const TallStory = (args) => (
     name="Default"
     args={{
       initialValue: 50,
-      width: 305,
+      width: 950,
     }}
   >
-    {ShortStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -102,10 +92,10 @@ export const TallStory = (args) => (
       initialValue: 50,
       step: 10,
       showTicks: true,
-      width: 305,
+      width: 950,
     }}
   >
-    {ShortStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -117,10 +107,10 @@ export const TallStory = (args) => (
       step: 10,
       showLabels: true,
       showTicks: true,
-      width: 305,
+      width: 950,
     }}
   >
-    {ShortStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -154,10 +144,10 @@ export const TallStory = (args) => (
       showLabels: true,
       showTicks: true,
       showTooltip: true,
-      width: 480,
+      width: 950,
     }}
   >
-    {MidStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -171,10 +161,10 @@ export const TallStory = (args) => (
       showLabels: true,
       showTicks: true,
       showTooltip: true,
-      width: 480,
+      width: 950,
     }}
   >
-    {MidStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -205,7 +195,7 @@ Default labels, not rotated, snapping, 10 steps.
       wideTrack: true,
     }}
   >
-    {TallStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -234,7 +224,7 @@ Default labels, not rotated, snapping, 10 steps.
       wideTrack: true,
     }}
   >
-    {TallStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
@@ -262,6 +252,6 @@ Default labels, not rotated, snapping, 10 steps.
       wideTrack: true,
     }}
   >
-    {ShortStory.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>

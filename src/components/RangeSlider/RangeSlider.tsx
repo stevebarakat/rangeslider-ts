@@ -5,10 +5,11 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
-  padding-bottom: ${p => p.rotateLabel && p.labelLength / 2 + "ch"};
-  padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2 + "ch" };
+  padding-bottom: ${p => p.rotateLabel && p.labelLength / 2.5 + "ch"};
+  padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2.5 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2.5 + "ch" };
   width: fit-content;
+  max-width: 100%;
   border: 1px dotted red;
 `;
 
@@ -259,7 +260,7 @@ export const RangeSlider = ({
   showLabels = true,
   prefix = "",
   suffix = "",
-  rotateLabel = true,
+  rotateLabel = false,
   width = 800,
   wideTrack = true,
   showTooltip = true,
