@@ -5,9 +5,7 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const Template = (args) => (
-    <RangeSlider {...args} />
-);
+export const Template = (args) => <RangeSlider {...args} />;
 
 export const ShortTemplate = (args) => (
   <div className="short-story">
@@ -165,9 +163,7 @@ export const ShortTemplate = (args) => (
       showLabels: true,
       showTicks: true,
       showTooltip: true,
-      customLabels: [
-        { 0: "low" }, { 50: "medium" }, { 100: "high"} 
-      ],
+      customLabels: [{ 0: "low" }, { 50: "medium" }, { 100: "high" }],
       width: 950,
     }}
   >
@@ -176,7 +172,6 @@ export const ShortTemplate = (args) => (
 </Preview>
 
 </Con>
-
 
 <Con className="flex">
   <div>
@@ -217,7 +212,7 @@ export const ShortTemplate = (args) => (
 <Preview>
   <Story
     name="Suffix"
-   args={{
+    args={{
       initialValue: 40,
       step: 20,
       showLabels: true,
@@ -233,27 +228,25 @@ export const ShortTemplate = (args) => (
 
 </Con>
 
-### Configuration Three
+### Decimals
 
 Default labels, not rotated, snapping, 10 steps.
 
 <Preview>
   <Story
-    name="Three"
+    name="Decimals"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      step: 10,
+      initialValue: 5,
+      min: 1,
+      max: 10,
+      step: 1,
       snap: true,
-      customLabels: [
-        { 0: "losssssssssssssw" }, { 50: "medium" }, { 100: "higgfdgdgdgdfgdgdgdh"} 
-      ],
+      customLabels: [],
       showTicks: true,
       showLabels: true,
       showTooltip: true,
       rotateLabel: false,
-      decimals: 2,
+      decimals: 0,
       width: 950,
       wideTrack: true,
     }}

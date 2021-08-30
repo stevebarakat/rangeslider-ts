@@ -55,11 +55,12 @@ function App() {
         step={10}
         snap={true}
         showTicks={true}
-        customLabels={[
-          { 0: "lgf" },
-          { 50: "mdm" },
-          { 100: "hh" }
-        ]}
+        // customLabels={[
+        //   { 0: "lgf" },
+        //   { 50: "mdm" },
+        //   { 100: "hh" }
+        // ]}
+        customLabels={[]}
         showLabels={true}
         prefix=""
         suffix=""

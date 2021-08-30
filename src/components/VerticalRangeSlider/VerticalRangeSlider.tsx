@@ -298,7 +298,7 @@ export const VerticalRangeSlider = ({
   function createLabels() {
     if (step > 0) {
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
-      const numbers = Array.from(Array(max / step + 1)).map((_, i) => min + step * i);
+      const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
       // create tick mark for every element in the numbers array 
       return numbers.map((n) => (
         <Tick
