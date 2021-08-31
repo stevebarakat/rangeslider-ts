@@ -226,6 +226,7 @@ export const bodyStyles = css`
     padding: 0;
     margin: 0;
     gap: 0 1em;
+    align-items: flex-start;
   }
 
   .grid3 {
@@ -236,6 +237,16 @@ export const bodyStyles = css`
     margin: 0;
     gap: 0 1em;
     align-items: flex-start;
+  }
+
+  .strong {
+    font-weight: bold;
+    font-size: 0.925rem;
+  }
+
+  .em {
+    font-style: italic;
+    font-size: 0.925rem;
   }
 
   .important {

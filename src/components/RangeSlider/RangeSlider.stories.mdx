@@ -58,8 +58,7 @@ export const MidTemplate = (args) => (
   <div>
     <h3>Default</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      These are the settings used if not set as props. Defaults to <code>1</code> <code>step</code> intervals. Set <code>snap: false</code> for <code>0.1</code> <code>step</code> intervals.
     </p>
   </div>
   <div>
@@ -124,8 +123,7 @@ export const MidTemplate = (args) => (
   <div>
     <h3>Custom Labels</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      <code>customLabels</code> can be created at specific <code>step</code>s within the value range. To define <code>customLabels</code>, create an array of key/value pair objects. View the code below for an example. <span className="strong"><code>customLabels</code> must land on a <code>step</code></span> to be displayed.
     </p>
   </div>
 
@@ -133,7 +131,6 @@ export const MidTemplate = (args) => (
   <Story
     name="ToolTip"
     args={{
-      initialValue: 50,
       step: 10,
       showLabels: true,
       showTicks: true,
@@ -148,7 +145,6 @@ export const MidTemplate = (args) => (
   <Story
     name="Custom Labels"
     args={{
-      initialValue: 50,
       step: 10,
       snap: true,
       showLabels: true,
@@ -167,15 +163,13 @@ export const MidTemplate = (args) => (
   <div>
     <h3>Prefix</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      Display custom text before the default label value and <code>toolTip</code> value. <code>prefix</code> <span className="strong">will not</span> display on <code>customLabels</code>.
     </p>
   </div>
   <div>
     <h3>Suffix</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      Display custom text after the default label value and <code>toolTip</code> value. <code>suffix</code> <span className="strong"> will not</span> display on <code>customLabels</code>.
     </p>
   </div>
 
@@ -184,6 +178,7 @@ export const MidTemplate = (args) => (
     name="Prefix"
     args={{
       initialValue: 40,
+      snap: false,
       step: 20,
       showLabels: true,
       showTicks: true,
