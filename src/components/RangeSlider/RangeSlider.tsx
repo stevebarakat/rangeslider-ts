@@ -106,22 +106,21 @@ const StyledRangeSlider = styled.input.attrs({
     box-shadow: 0 1px 1px 0.5px var(--color-transparent-gray);
     -webkit-appearance: none;
     z-index: 50;
-    /* background: ${(p) =>
+    background: ${(p) =>
     p.wideTrack ? !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover, var(--color-primary) 0%, var(--color-primary) 35%, var(--color-white) 40%,var(--color-white) 100%)`
       : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 35%, var(--color-primary) 40%, var(--color-primary) 100%)`
       : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 20%, var(--color-primary) 25%, var(--color-primary) 100%)`
-    } */
-    background: var(--color-primary);
   }
-/*   
+  }
+  
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
     background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-white) 40%,var(--color-white) 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
-  } */
+  }
   
   &::-moz-range-thumb {
     cursor: grab;
@@ -241,7 +240,7 @@ interface RangeSliderProps {
   */
   width?: number;
   // Color Primary
-  colorPrimary: string;
+  focusColor: string;
 }
 
 export const RangeSlider = ({
@@ -259,7 +258,7 @@ export const RangeSlider = ({
   width = 950,
   wideTrack = false,
   showTooltip = false,
-  colorPrimary = "green",
+  focusColor = "green",
   ...rest
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
