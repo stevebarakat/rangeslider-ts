@@ -5,18 +5,8 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const Template = (args) => <RangeSlider {...args} />;
-
-export const ShortTemplate = (args) => (
-  <div className="short-story">
-    <RangeSlider {...args} />
-  </div>
-);
-
-export const MidTemplate = (args) => (
-  <div className="mid-story">
-    <RangeSlider {...args} />
-  </div>
+export const Template = ({ colorPrimary, ...args }) => (
+  <RangeSlider style={{ "--color-primary": colorPrimary }} {...args} />
 );
 
 # RangeSlider
@@ -40,12 +30,13 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showLabels: true,
       showTooltip: true,
-      rotateLabel: false,
+      rotateLabels: false,
       customLabels: [],
       prefix: "",
       suffix: "",
       width: 950,
       wideTrack: true,
+      colorPrimary: "hotpink",
     }}
   >
     {Template.bind({})}
@@ -74,13 +65,8 @@ export const MidTemplate = (args) => (
     </p>
   </div>
 
-
 <Preview>
-  <Story
-    name="Default"
-    args={{
-    }}
-  >
+  <Story name="Default" args={{}}>
     {Template.bind({})}
   </Story>
 </Preview>
@@ -212,15 +198,13 @@ export const MidTemplate = (args) => (
   <div>
     <h3>Decimals</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      To measure values less than <code>1</code>, set the <code>step</code> to a value less than one. <code>step: 0.1</code> for tenths. <code>step: 0.01</code> for hundredths, etc. Be careful using <code>showLabels</code> and <code>showTicks</code> with small intervals. <code>ticks</code> and <code>labels</code> above <code>100</code> will not be displayed.
     </p>
   </div>
   <div>
     <h3>Decimals w/o Labels</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      To measure values less than <code>1</code>, set the <code>step</code> to a value less than one. <code>step: 0.1</code> for tenths. <code>step: 0.01</code> for hundredths, etc. When using <code>steps</code> less than <code>1</code>, it's better not to <code>showLabels</code> and <code>showTicks</code>.
     </p>
   </div>
 
@@ -237,7 +221,7 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showLabels: true,
       showTooltip: true,
-      rotateLabel: false,
+      rotateLabels: false,
       wideTrack: true,
     }}
   >
@@ -258,16 +242,15 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showLabels: false,
       showTooltip: true,
-      rotateLabel: false,
+      rotateLabels: false,
       wideTrack: true,
     }}
   >
-    {MidTemplate.bind({})}
+    {Template.bind({})}
   </Story>
 </Preview>
 
 </Con>
-
 
 <Con className="grid2">
   <div>
@@ -300,7 +283,7 @@ export const MidTemplate = (args) => (
       showTooltip: true,
       prefix: "",
       suffix: "",
-      rotateLabel: false,
+      rotateLabels: false,
       wideTrack: true,
     }}
   >
@@ -322,7 +305,7 @@ export const MidTemplate = (args) => (
       showTicks: true,
       showLabels: true,
       showTooltip: true,
-      rotateLabel: true,
+      rotateLabels: true,
       wideTrack: true,
     }}
   >

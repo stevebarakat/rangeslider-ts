@@ -163,7 +163,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
-  rotateLabel?: boolean;
+  rotateLabels?: boolean;
   labelLength?: number | undefined;
   focused?: boolean;
   maxLabelLength: number

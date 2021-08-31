@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 // STYLES
 
-const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
-  padding-bottom: ${p => p.rotateLabel && p.labelLength / 2 + "ch"};
-  padding-left: ${p => p.rotateLabel ?  "2ch" : p.firstLabelLength / 2 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2 + "ch" };
+const Wrapper = styled.div<{ rotateLabels: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
+  padding-bottom: ${p => p.rotateLabels && p.labelLength / 2 + "ch"};
+  padding-left: ${p => p.rotateLabels ?  "2ch" : p.firstLabelLength / 2 + "ch"};
+  padding-right: ${p => p.rotateLabels ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2 + "ch" };
   width: fit-content;
   max-width: 100%;
 `;
@@ -154,7 +154,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
-  rotateLabel?: boolean;
+  rotateLabels?: boolean;
   labelLength?: number | undefined;
 }>`
   position: relative;
@@ -163,10 +163,10 @@ const Tick = styled.div<{
   background: var(--color-darkgray);
   margin-bottom: ${(p) =>
     p.showLabels &&
-    p.rotateLabel &&
+    p.rotateLabels &&
     `${p.labelLength !== undefined && p.labelLength / 2}ch`};
 `
-const Label = styled.label<{ rotateLabel: boolean }>`
+const Label = styled.label<{ rotateLabels: boolean }>`
   position: absolute;
   transform: translateX(-50%);
   color: var(--color-darkgray);
@@ -174,8 +174,8 @@ const Label = styled.label<{ rotateLabel: boolean }>`
   transform-origin: center;
   white-space: nowrap;
   text-align: center;
-  transform: ${p => p.rotateLabel && "rotate(35deg)"};
-  width: ${p => p.rotateLabel && "1px"};
+  transform: ${p => p.rotateLabels && "rotate(35deg)"};
+  width: ${p => p.rotateLabels && "1px"};
 `
 ;
 
@@ -235,7 +235,7 @@ interface DualRangeSliderProps {
   /**
     The amount in degrees to rotate the labels.
   */
-  rotateLabel?: boolean;
+  rotateLabels?: boolean;
   /**
     The length of the range slider. 
   */
@@ -264,7 +264,7 @@ export const DualRangeSlider = ({
   showLabels = true,
   prefix = "",
   suffix = "",
-  rotateLabel = false,
+  rotateLabels = false,
   width = 800,
   wideTrack = false,
   showTooltip = false,
@@ -317,7 +317,7 @@ export const DualRangeSlider = ({
       return numbers.map((n) => (
         <Tick
           showLabels={showLabels}
-          rotateLabel={rotateLabel}
+          rotateLabels={rotateLabels}
           showTicks={showTicks}
           key={n}
         >
@@ -326,13 +326,13 @@ export const DualRangeSlider = ({
               ? showLabels && customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
-                    <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
+                    <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>{Object.values(label)}</Label>
                   )
                 )
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>
+              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>
                 {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
               </Label>
           }
@@ -406,7 +406,7 @@ export const DualRangeSlider = ({
 
   return (
     <Wrapper
-      rotateLabel={rotateLabel}
+      rotateLabels={rotateLabels}
       firstLabelLength={firstLabelLength}
       lastLabelLength={lastLabelLength}
       labelLength={labelLength}

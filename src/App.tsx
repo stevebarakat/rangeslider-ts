@@ -18,7 +18,7 @@ function App() {
         showLabels={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
+        rotateLabels={false}
         width={800}
         wideTrack={false}
         showTooltip={true}
@@ -63,7 +63,7 @@ function App() {
         showLabels={true}
         prefix=""
         suffix=""
-        rotateLabel={false}
+        rotateLabels={false}
         width={800}
         wideTrack={false}
         showTooltip={true}

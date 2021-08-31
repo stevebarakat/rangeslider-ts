@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 // Styles
 
-const Wrapper = styled.div<{ rotateLabel: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
-  padding-bottom: ${p => p.rotateLabel && p.labelLength / 2.5 + "ch"};
-  padding-left: ${p => p.rotateLabel ?  0 : p.firstLabelLength / 2.5 + "ch"};
-  padding-right: ${p => p.rotateLabel ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2.5 + "ch" };
+const Wrapper = styled.div<{ rotateLabels: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
+  padding-bottom: ${p => p.rotateLabels && p.labelLength / 2.5 + "ch"};
+  padding-left: ${p => p.rotateLabels ? 0 : p.firstLabelLength / 2.5 + "ch"};
+  padding-right: ${p => p.rotateLabels ? p.labelLength / 1.5 + "ch" : p.lastLabelLength / 2.5 + "ch"};
   width: fit-content;
   max-width: 100%;
 `;
@@ -151,7 +151,7 @@ const Ticks = styled.div<{ wideTrack: boolean }>`
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
-  rotateLabel?: boolean;
+  rotateLabels?: boolean;
 }>`
   position: relative;
   width: 1px;
@@ -160,7 +160,7 @@ const Tick = styled.div<{
   margin-top: 1em;
 `;
 
-const Label = styled.label<{ rotateLabel: boolean }>`
+const Label = styled.label<{ rotateLabels: boolean }>`
   position: absolute;
   transform: translateX(-50%);
   color: var(--color-darkgray);
@@ -168,8 +168,8 @@ const Label = styled.label<{ rotateLabel: boolean }>`
   transform-origin: center;
   white-space: nowrap;
   text-align: center;
-  transform: ${p => p.rotateLabel && "rotate(35deg)"};
-  width: ${p => p.rotateLabel && "1px"};
+  transform: ${p => p.rotateLabels && "rotate(35deg)"};
+  width: ${p => p.rotateLabels && "1px"};
 `
 
 function numberWithCommas(x: string) {
@@ -212,7 +212,7 @@ interface RangeSliderProps {
   /**
     This rotates the label by 45 degrees allowing for more labels and / or longer labels.
  */
-  rotateLabel?: boolean;
+  rotateLabels?: boolean;
   /**
     For creating custom labels like so:<code> [
       { 0: "low" },
@@ -239,6 +239,8 @@ interface RangeSliderProps {
     The width of the range slider.
   */
   width?: number;
+  // Color Primary
+  colorPrimary: string;
 }
 
 export const RangeSlider = ({
@@ -252,10 +254,12 @@ export const RangeSlider = ({
   showLabels = false,
   prefix = "",
   suffix = "",
-  rotateLabel = false,
+  rotateLabels = false,
   width = 950,
   wideTrack = false,
   showTooltip = false,
+  colorPrimary = "green",
+  ...rest
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -264,16 +268,16 @@ export const RangeSlider = ({
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  
+
   function calcSteps(step: number) {
-    if(step <= 0) return 0.1;
-    if(step <= 0.1) return 0.01;
-    if(step <= 0.01) return 0.001;
-    if(step <= 0.001) return 0.0001;
+    if (step <= 0) return 0.1;
+    if (step <= 0.1) return 0.01;
+    if (step <= 0.01) return 0.001;
+    if (step <= 0.001) return 0.0001;
   };
 
   const steps = calcSteps(step);
-  
+
   // Make sure min never exceds max
   if (min > max) {
     min = max;
@@ -284,7 +288,7 @@ export const RangeSlider = ({
   }
 
   const diff = max - min;
-  
+
   useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
@@ -299,7 +303,7 @@ export const RangeSlider = ({
       return numbers.map((n) => (
         <Tick
           showLabels={showLabels}
-          rotateLabel={rotateLabel}
+          rotateLabels={rotateLabels}
           showTicks={showTicks}
           key={n}
         >
@@ -308,13 +312,13 @@ export const RangeSlider = ({
               ? showLabels && customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
-                    <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>{Object.values(label)}</Label>
+                    <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>{Object.values(label)}</Label>
                   )
                 )
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <Label key={n} rotateLabel={rotateLabel} htmlFor={n.toString()}>
+              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>
                 {prefix + numberWithCommas(n.toString()) + suffix}
               </Label>
           }
@@ -349,7 +353,7 @@ export const RangeSlider = ({
 
   const firstLabelLength = showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length;
   const lastLabelLength = showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length;
-  
+
   function calcLabels() {
     if (lastLabelLength === undefined || firstLabelLength === undefined) return;
     if (firstLabelLength >= lastLabelLength) {
@@ -362,13 +366,14 @@ export const RangeSlider = ({
 
   return (
     <Wrapper
-      rotateLabel={rotateLabel}
+      rotateLabels={rotateLabels}
       firstLabelLength={firstLabelLength}
       lastLabelLength={lastLabelLength}
       labelLength={labelLength}
     >
       <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: width }}>
         <Progress
+          {...rest}
           wideTrack={wideTrack}
           focused={isFocused}
           style={
@@ -385,14 +390,16 @@ export const RangeSlider = ({
           }
         />
 
-        {showTooltip && <RangeOutput
-          focused={isFocused}
-          style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)` } as React.CSSProperties}
-        >
-          <span>
-            {prefix + numberWithCommas(value?.toString()) + suffix}
-          </span>
-        </RangeOutput>}
+        {showTooltip &&
+          <RangeOutput
+            {...rest}
+            focused={isFocused}
+            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)` } as React.CSSProperties}
+          >
+            <span>
+              {prefix + numberWithCommas(value?.toString()) + suffix}
+            </span>
+          </RangeOutput>}
         <StyledRangeSlider
           aria-label="Basic Example"
           aria-orientation="horizontal"
