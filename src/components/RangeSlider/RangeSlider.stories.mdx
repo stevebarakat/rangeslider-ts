@@ -5,8 +5,8 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const Template = ({ focusColor, blurColor, ...args }) => (
-  <RangeSlider style={{ "--color-primary": focusColor, "--color-secondary": blurColor }} {...args} />
+export const Template = ({ focusColor, blurColor, sliderWidth, sliderHeight, ...args }) => (
+  <RangeSlider style={{ "--color-primary": focusColor, "--color-secondary": blurColor, "--slider-width": sliderWidth, "--slider-height": sliderHeight }} {...args} />
 );
 
 # RangeSlider
@@ -34,10 +34,10 @@ export const Template = ({ focusColor, blurColor, ...args }) => (
       customLabels: [],
       prefix: "",
       suffix: "",
-      width: 950,
       wideTrack: true,
-      focusColor: "black",
-      blurColor: "grey"
+      focusColor: "",
+      blurColor: "",
+      sliderWidth: "",
     }}
   >
     {Template.bind({})}

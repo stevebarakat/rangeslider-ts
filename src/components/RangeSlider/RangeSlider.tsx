@@ -16,6 +16,7 @@ const RangeWrap = styled.div<{ showTooltip: boolean, showLabels: boolean }>`
   padding-top: ${p => p.showTooltip ? "3.75em" : "1px"};
   padding-bottom: ${p => p.showLabels ? "1.75em" : 0};
   font-family: sans-serif;
+  width: "var(--slider-width)";
   max-width: 100%;
   user-select: none;
 `;
@@ -230,20 +231,18 @@ interface RangeSliderProps {
    */
   wideTrack?: boolean;
   /**
-    The width of the range slider.
-  */
-  width?: number;
-  /**
     The primary color var(--color-primary).
   */
-  focusColor: string;
+  focusColor?: string;
   /**
     The secondary color var(--color-secondary).
   */
-  blurColor: string;
+  blurColor?: string;
   /**
     The width of the range slider.
   */
+  sliderWidth?: string;
+  /** style */
   style: any;
 }
 
@@ -259,11 +258,11 @@ export const RangeSlider = ({
   showLabels = false,
   prefix = "",
   suffix = "",
-  width = 950,
   wideTrack = false,
   showTooltip = false,
   focusColor = "",
   blurColor = "",
+  sliderWidth = "",
   style,
   ...rest
 }: RangeSliderProps) => {
@@ -377,7 +376,7 @@ export const RangeSlider = ({
       lastLabelLength={lastLabelLength}
       labelLength={labelLength}
     >
-      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: width }}>
+      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{width: "var(--slider-width)", ...style}} {...rest}>
         <Progress
           wideTrack={wideTrack}
           focused={isFocused}
