@@ -3,7 +3,13 @@ import { useArgTypes } from "@storybook/api";
 import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
 import { RangeSlider } from "./RangeSlider";
 
-<Meta title="RangeSlider" component={RangeSlider} />
+<Meta title="RangeSlider" component={RangeSlider} argTypes={{
+    style:{
+      table:{
+        disable: true,
+      }
+    }
+  }}/>
 
 export const Template = ({ focusColor, blurColor, sliderWidth, sliderHeight, ...args }) => (
   <RangeSlider style={{ "--color-primary": focusColor, "--color-secondary": blurColor, "--slider-width": sliderWidth, "--slider-height": sliderHeight }} {...args} />

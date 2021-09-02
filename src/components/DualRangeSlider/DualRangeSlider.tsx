@@ -15,7 +15,7 @@ const RangeWrap = styled.div`
   position: relative;
   padding-top: 3.75rem;
   padding-bottom: 1.75rem;
-  font-family: sans-serif;
+  font-family: inherit;
   max-width: 100%;
   user-select: none;
 `;

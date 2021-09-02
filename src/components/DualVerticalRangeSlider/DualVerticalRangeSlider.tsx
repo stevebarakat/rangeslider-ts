@@ -18,7 +18,7 @@ const RangeWrap = styled.div<{
   margin-top: ${(p) => p.heightVal + "px"};
   left: 0;
   top: 0;
-  font-family: sans-serif;
+  font-family: inherit;
 `;
 
 const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`

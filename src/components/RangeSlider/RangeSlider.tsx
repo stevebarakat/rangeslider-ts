@@ -15,7 +15,7 @@ const RangeWrap = styled.div<{ showTooltip: boolean, showLabels: boolean }>`
   position: relative;
   padding-top: ${p => p.showTooltip ? "3.75em" : "1px"};
   padding-bottom: ${p => p.showLabels ? "1.75em" : 0};
-  font-family: sans-serif;
+  font-family: inherit;
   width: "var(--slider-width)";
   max-width: 100%;
   user-select: none;
@@ -195,7 +195,7 @@ interface RangeSliderProps {
   */
   step?: number;
   /**
-    Snap to ticks or scroll smoothly.
+    Snap to values.
    */
   snap?: boolean;
   /**
@@ -242,8 +242,10 @@ interface RangeSliderProps {
     The width of the range slider.
   */
   sliderWidth?: string;
-  /** style */
-  style: any;
+  /**
+    Styles
+  */
+  style?: any;
 }
 
 export const RangeSlider = ({
