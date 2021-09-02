@@ -210,13 +210,12 @@ interface RangeSliderProps {
   */
   showTooltip?: boolean;
   /**
-    This rotates the label by 45 degrees allowing for more labels and / or longer labels.
- */
+    Rotates labels by 45 degrees allowing for more and / or longer labels.
+  */
   rotateLabels?: boolean;
   /**
-    For creating custom labels.  
-    <i>Custom labels replace default labels!</i>
-    */
+    Replace default labels.  
+  */
   customLabels?: Array<Record<number, string>>;
   /**
     Optional text displayed before value. 
@@ -234,11 +233,17 @@ interface RangeSliderProps {
     The width of the range slider.
   */
   width?: number;
-  // Color Primary
+  /**
+    The primary color var(--color-primary).
+  */
   focusColor: string;
-  // Color Secondary
+  /**
+    The secondary color var(--color-secondary).
+  */
   blurColor: string;
-  // Styles
+  /**
+    The width of the range slider.
+  */
   style: any;
 }
 
@@ -249,16 +254,16 @@ export const RangeSlider = ({
   step = 0,
   showTicks = false,
   snap = true,
+  rotateLabels = false,
   customLabels = [],
   showLabels = false,
   prefix = "",
   suffix = "",
-  rotateLabels = false,
   width = 950,
   wideTrack = false,
   showTooltip = false,
-  focusColor = "green",
-  blurColor= "blue",
+  focusColor = "",
+  blurColor = "",
   style,
   ...rest
 }: RangeSliderProps) => {
