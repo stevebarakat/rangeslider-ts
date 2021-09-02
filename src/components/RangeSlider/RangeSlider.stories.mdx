@@ -5,8 +5,8 @@ import { RangeSlider } from "./RangeSlider";
 
 <Meta title="RangeSlider" component={RangeSlider} />
 
-export const Template = ({ focusColor, ...args }) => (
-  <RangeSlider style={{ "--color-primary": focusColor }} {...args} />
+export const Template = ({ focusColor, blurColor, ...args }) => (
+  <RangeSlider style={{ "--color-primary": focusColor, "--color-secondary": blurColor }} {...args} />
 );
 
 # RangeSlider

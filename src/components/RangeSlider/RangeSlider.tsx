@@ -214,12 +214,7 @@ interface RangeSliderProps {
  */
   rotateLabels?: boolean;
   /**
-    For creating custom labels like so:<code> [
-      { 0: "low" },
-      { 50: "medium" },
-      { 100: "high"}
-    ]</code> 
-    
+    For creating custom labels.  
     <i>Custom labels replace default labels!</i>
     */
   customLabels?: Array<Record<number, string>>;
@@ -241,6 +236,10 @@ interface RangeSliderProps {
   width?: number;
   // Color Primary
   focusColor: string;
+  // Color Secondary
+  blurColor: string;
+  // Styles
+  style: any;
 }
 
 export const RangeSlider = ({
@@ -259,6 +258,8 @@ export const RangeSlider = ({
   wideTrack = false,
   showTooltip = false,
   focusColor = "green",
+  blurColor= "blue",
+  style,
   ...rest
 }: RangeSliderProps) => {
   const rangeEl = useRef<HTMLInputElement | null>(null);
@@ -373,28 +374,28 @@ export const RangeSlider = ({
     >
       <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: width }}>
         <Progress
-          {...rest}
           wideTrack={wideTrack}
           focused={isFocused}
           style={
             !isFocused && wideTrack ? {
               background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
                 }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
-                }px), var(--color-white) 100%)`
+                }px), var(--color-white) 100%)`, ...style
             } :
               {
                 background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
                   }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
-                  }px), var(--color-secondary) 100%)`
+                  }px), var(--color-secondary) 100%)`, ...style
               }
           }
+          {...rest}
         />
 
         {showTooltip &&
           <RangeOutput
-            {...rest}
             focused={isFocused}
-            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)` } as React.CSSProperties}
+            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)`, ...style } as React.CSSProperties}
+            {...rest}
           >
             <span>
               {prefix + numberWithCommas(value?.toString()) + suffix}
@@ -421,6 +422,7 @@ export const RangeSlider = ({
           onBlur={() => setIsFocused(false)}
           focused={isFocused}
           wideTrack={wideTrack}
+          style={{ ...style }}
           {...rest}
         />
         <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
