@@ -325,8 +325,8 @@ export const RangeSlider = ({
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>
-                {prefix + numberWithCommas(n.toString()) + suffix}
+              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()} data-prefix={prefix}>
+                {numberWithCommas(n.toString()) + suffix}
               </Label>
           }
         </Tick>

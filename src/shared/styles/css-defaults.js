@@ -7,4 +7,7 @@ export const cssDefaults = css`
   body {
     font-family: sans-serif;
   }
+  [data-prefix]::before {
+    content: attr(data-prefix) " ";
+  }
 `;
