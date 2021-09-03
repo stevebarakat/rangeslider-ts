@@ -11,8 +11,12 @@ import { RangeSlider } from "./RangeSlider";
     }
   }}/>
 
-export const Template = ({ focusColor, blurColor, sliderWidth, sliderHeight, ...args }) => (
-  <RangeSlider {...args} />
+export const Template = ({ focusColor, blurColor, textColor, sliderWidth, sliderHeight, ...args }) => (
+  <RangeSlider style={{ 
+    '--color-text': textColor,
+    '--color-primary': focusColor, 
+    '--color-secondary': blurColor, 
+  }} {...args} />
 );
 
 # RangeSlider
