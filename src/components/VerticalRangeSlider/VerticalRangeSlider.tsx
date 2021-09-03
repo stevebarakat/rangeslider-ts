@@ -8,11 +8,8 @@ const RangeWrap = styled.div<{
 }>`
   width: ${(p) => p.heightVal + "px"};
   margin-left: ${(p) => `${p.maxLabelLength + 3}ch`};
-  transform: rotate(270deg);
-  transform-origin: 0 0;
+  transform: rotate(270deg) translate3d(200px, -200px, 0);
   margin-top: ${(p) => p.heightVal + "px"};
-  left: 0;
-  top: 0;
   font-family: inherit;
 `;
 
