@@ -8,9 +8,10 @@ const RangeWrap = styled.div<{
   display: grid;
   grid-template-rows: repeat(3, auto);
   width: ${(p) => p.height + "px"};
+  height: ${(p) => p.height + "px"};
+  /* margin-top: ${(p) => p.height + "px"}; */
   transform: rotate(270deg);
-  transform-origin: top left;
-  margin-top: ${(p) => p.height + "px"};
+  transform-origin: center;
   font-family: inherit;
   border: 1px dotted red;
 `;
