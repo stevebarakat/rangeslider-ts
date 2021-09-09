@@ -13,15 +13,15 @@ function App() {
         step={20}
         showTicks={true}
         snap={true}
-        customLabels={[]}
-        // customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsdfbcbgfgdgh" }]}
+        // customLabels={[]}
+        customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsgdfgdgdfgdfgdfbcbgfgdgh" }]}
         showLabels={true}
         prefix="Prefix "
         suffix=" Suffix"
         rotateLabels={true}
         wideTrack={false}
         showTooltip={true}
-
+        sliderWidth="950px"
       />
       <VerticalRangeSlider
         initialValue={50}

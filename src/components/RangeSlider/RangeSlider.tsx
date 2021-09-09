@@ -4,9 +4,9 @@ import styled from "styled-components";
 // Styles
 
 const Wrapper = styled.div<{ rotateLabels: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
-  padding-bottom: ${p => p.rotateLabels && p.labelLength / 1.8 + "ch"};
-  padding-left: ${p => p.rotateLabels ? "5px" : p.firstLabelLength / 1.8 + "ch"};
-  padding-right: ${p => p.rotateLabels ? p.labelLength + "ch" : p.lastLabelLength / 1.8 + "ch"};
+  padding-bottom: ${p => p.rotateLabels && p.labelLength / 2.75 + "ch"};
+  padding-left: ${p => p.rotateLabels ? "5px" : p.firstLabelLength / 2.75 + "ch"};
+  padding-right: ${p => p.rotateLabels ? p.labelLength / 1.75 + "ch" : p.lastLabelLength / 2.75 + "ch"};
   width: fit-content;
   max-width: 100%;
 `;
@@ -325,8 +325,8 @@ export const RangeSlider = ({
               })
               // if there are not custom labels, show the default labels (n)
               : showLabels &&
-              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()} data-prefix={prefix}>
-                {numberWithCommas(n.toString()) + suffix}
+              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toString()) + suffix}
               </Label>
           }
         </Tick>
