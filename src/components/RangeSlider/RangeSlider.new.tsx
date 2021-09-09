@@ -3,10 +3,7 @@ import styled from "styled-components";
 
 // Styles
 
-const Wrapper = styled.div<{ rotateLabels: boolean, lastLabelLength: any, firstLabelLength: any, labelLength: any }>`
-  padding-bottom: ${p => p.rotateLabels && p.labelLength / 1.8 + "ch"};
-  padding-left: ${p => p.rotateLabels ? 0 : p.firstLabelLength / 1.8 + "ch"};
-  padding-right: ${p => p.rotateLabels ? p.labelLength + "ch" : p.lastLabelLength / 1.8 + "ch"};
+const Wrapper = styled.div<{ rotateLabels: boolean }>`
   width: fit-content;
   max-width: 100%;
 `;
@@ -84,7 +81,7 @@ const StyledRangeSlider = styled.input.attrs({
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "12px" : "9px"};
+  height: ${p => p.wideTrack ? "12px" : "7px"};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -161,8 +158,8 @@ const Tick = styled.div<{
   margin-top: 1em;
 `;
 
-const Label = styled.label<{ rotateLabels: boolean }>`
-  position: absolute;
+const Label = styled.div<{ rotateLabels: boolean }>`
+  position: relative;
   transform: translateX(-50%);
   color: var(--color-darkgray);
   margin-top: 0.5em;
@@ -170,7 +167,7 @@ const Label = styled.label<{ rotateLabels: boolean }>`
   white-space: nowrap;
   text-align: center;
   transform: ${p => p.rotateLabels && "rotate(35deg)"};
-  width: ${p => p.rotateLabels && "1px"};
+  width: ${p => p.rotateLabels && "auto"};
 `
 
 function numberWithCommas(x: string) {
@@ -308,28 +305,28 @@ export const RangeSlider = ({
       const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
       // create tick mark for every element in the numbers array 
       return numbers.map((n) => (
-        <Tick
-          showLabels={showLabels}
-          rotateLabels={rotateLabels}
-          showTicks={showTicks}
-          key={n}
-        >
-          { // if there are custom labels, show them
-            customLabels?.length > 0
-              ? showLabels && customLabels.map((label) => {
-                return (
-                  n === Number(Object.keys(label)[0]) && (
-                    <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()}>{Object.values(label)}</Label>
-                  )
-                )
-              })
-              // if there are not custom labels, show the default labels (n)
-              : showLabels &&
-              <Label key={n} rotateLabels={rotateLabels} htmlFor={n.toString()} data-prefix={prefix}>
+        // if there are custom labels, show them
+        customLabels?.length > 0
+          ? showLabels && customLabels.map((label) => {
+            return (
+              n === Number(Object.keys(label)[0]) && (
+                <Label key={n} rotateLabels={rotateLabels}>
+                  <Tick showLabels={showLabels} showTicks={showTicks} />
+                  <label htmlFor={n.toString()}>{Object.values(label)}</label>
+                </Label>
+              )
+            )
+          })
+          // if there are not custom labels, show the default labels (n)
+          : showLabels &&
+          <div>
+            <Tick showLabels={showLabels} showTicks={showTicks} />
+            <Label key={n} rotateLabels={rotateLabels} >
+              <label htmlFor={n.toString()} data-prefix={prefix}>
                 {numberWithCommas(n.toString()) + suffix}
-              </Label>
-          }
-        </Tick>
+              </label>
+            </Label>
+          </div>
       ));
     }
   };
@@ -358,27 +355,11 @@ export const RangeSlider = ({
     }
   }
 
-  const firstLabelLength = showLabels && (step > 0) && ticksEl?.current?.firstChild?.firstChild?.textContent?.length;
-  const lastLabelLength = showLabels && (step > 0) && ticksEl?.current?.lastChild?.firstChild?.textContent?.length;
-
-  function calcLabels() {
-    if (lastLabelLength === undefined || firstLabelLength === undefined) return;
-    if (firstLabelLength >= lastLabelLength) {
-      return firstLabelLength;
-    } else {
-      return lastLabelLength;
-    }
-  }
-  const labelLength = calcLabels();
-
   return (
     <Wrapper
       rotateLabels={rotateLabels}
-      firstLabelLength={firstLabelLength}
-      lastLabelLength={lastLabelLength}
-      labelLength={labelLength}
     >
-      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{width: "var(--slider-width)", ...style}} {...rest}>
+      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: "var(--slider-width)", ...style }} {...rest}>
         <Progress
           wideTrack={wideTrack}
           focused={isFocused}

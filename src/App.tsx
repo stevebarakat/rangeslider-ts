@@ -7,18 +7,18 @@ function App() {
   return (
     <div>
       <RangeSlider
-        initialValue={50}
-        min={21}
-        max={51}
-        step={0}
+        initialValue={60}
+        min={0}
+        max={100}
+        step={20}
         showTicks={true}
         snap={true}
         customLabels={[]}
         // customLabels={[{ 0: "logdfgdfgdfw" }, { 50: "medium" }, { 100: "hfsdfsdfbcbgfgdgh" }]}
         showLabels={true}
-        prefix=""
-        suffix=""
-        rotateLabels={false}
+        prefix="Prefix "
+        suffix=" Suffix"
+        rotateLabels={true}
         wideTrack={false}
         showTooltip={true}
 
