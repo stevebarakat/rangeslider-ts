@@ -377,17 +377,17 @@ export const DualVerticalRangeSlider = ({
           style={
             !focused && wideTrack ? {
               background: `-webkit-linear-gradient(left,  
-                var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`},
-                var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`},
                 var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
-                var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`})`
+                var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`})`
             } :
               {
                 background: `-webkit-linear-gradient(left,  
-                  var(--color-secondary) ${`calc(${newValue2}% + ${newPosition2}px)`},
-                  var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  var(--color-secondary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                   var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
-                  var(--color-secondary) ${`calc(${newValue1}% + ${newPosition1}px)`})`
+                  var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
+                  var(--color-secondary) ${`calc(${newValue2}% + ${newPosition2}px)`})`
               }
           }
         />
