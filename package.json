@@ -1,12 +1,12 @@
 {
   "name": "@defnug6/rangeslider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A range slider component",
   "author": "s.barakat",
   "repository": "git@github.com:stevebarakat/rangeslider-ts.git",
   "license": "MIT",
   "private": false,
-  "main": "dist/index",
+  "main": "dist/index.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.1.0",
