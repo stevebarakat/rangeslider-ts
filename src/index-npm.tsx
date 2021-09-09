@@ -1,4 +1,4 @@
-import * as GlobalStyle from './shared/global';
+import { GlobalStyle } from "./shared/styles/GlobalStyle";
 
 export { GlobalStyle };
 

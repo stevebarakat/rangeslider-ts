@@ -2,32 +2,38 @@ import { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 const RangeWrap = styled.div<{
-  heightVal: number;
-  maxLabelLength: number;
+  height: number;
   showTicks: boolean;
 }>`
-  width: ${(p) => p.heightVal + "px"};
-  margin-left: ${(p) => `${p.maxLabelLength + 3}ch`};
-  transform: rotate(270deg) translate3d(200px, -200px, 0);
-  margin-top: ${(p) => p.heightVal + "px"};
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  width: ${(p) => p.height + "px"};
+  transform: rotate(270deg);
+  transform-origin: top left;
+  margin-top: ${(p) => p.height + "px"};
   font-family: inherit;
+  border: 1px dotted red;
 `;
 
 const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
-  width: 0;
   user-select: none;
-  position: absolute;
+  position: relative;
   display: flex;
   justify-content: flex-start;
-  margin-top: ${p => p.wideTrack ? "2.5em" : "2em"};
+  margin-top: ${(p) => (p.wideTrack ? "2.5em" : "2em")};
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) => p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
+    border: ${(p) =>
+    p.focused
+      ? `1px solid var(--color-primary)`
+      : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
-    font-weight: ${p => p.focused ? "bold" : "normal"};
-    color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
-    background: ${(p) => (p.focused ? "var(--color-primary)" : "var(--color-white)")};
+    font-weight: ${(p) => (p.focused ? "bold" : "normal")};
+    color: ${(p) =>
+    p.focused ? "var(--color-white)" : "var(--color-darkgray)"};
+    background: ${(p) =>
+    p.focused ? "var(--color-primary)" : "var(--color-white)"};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -74,7 +80,7 @@ const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
-}) <{ focused: boolean; wideTrack: boolean; heightVal: number }>`
+}) <{ focused: boolean; wideTrack: boolean; height: number }>`
   cursor: pointer;
   appearance: none;
   position: absolute;
@@ -141,33 +147,29 @@ const StyledRangeSlider = styled.input.attrs({
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  margin: ${p => p.wideTrack ? "17.5px" : "10px"};
-  margin-top: ${p => p.wideTrack ? "32px" : "12px"};
-  position: relative;
-  top: -1.2em;
+  align-items: flex-end;
+  margin: ${(p) => (p.wideTrack ? "10.5px" : "5px 2px")};
 `;
 
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
-  labelLength?: number | undefined;
   focused?: boolean;
 }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: flex-end;
+  align-self: center;
   width: 1px;
   height: 5px;
-  background: ${p => p.showTicks ? "var(--color-darkgray)" : "transparent"};
-  label {
-    color: var(--color-darkgray);
-    display: block;
-    writing-mode: vertical-rl;
-    margin-left: 0.5em;
-    margin-bottom: 0.5rem;
-    white-space: nowrap;
-  }
+  background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
+`;
+
+const Label = styled.div`
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: auto 1fr;
+  color: var(--color-darkgray);
+  writing-mode: vertical-lr;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
 `;
 
 function numberWithCommas(x: string) {
@@ -259,7 +261,6 @@ export const VerticalRangeSlider = ({
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
-  const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const newPosition = 10 - newValue * 0.2;
 
@@ -280,12 +281,10 @@ export const VerticalRangeSlider = ({
       for (let i = 0; i < tickList!.length; i++) {
         const tickText = tickList![i]?.firstChild?.firstChild?.textContent
           ?.length;
-          showLabels &&
+        showLabels &&
           tickText !== undefined &&
           labelList.push(tickText);
       }
-      if (!labelList) return;
-      setMaxLabelLength(Math.max(...labelList));
     }
   }, [min, max, value, showLabels, showTicks]);
 
@@ -293,33 +292,38 @@ export const VerticalRangeSlider = ({
   function createLabels() {
     if (step > 0) {
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
-      const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
-      // create tick mark for every element in the numbers array 
+      const numbers = Array.from(Array((max - min) / step + 1)).map(
+        (_, i) => min + step * i
+      );
+      // create tick mark for every element in the numbers array
       return numbers.map((n) => (
-        <Tick
-          showLabels={showLabels}
-          showTicks={showTicks}
-          key={n}
-        >
-          { // if there are custom labels, show them!
+        <div key={n}>
+          {
+            // if there are custom labels, show them!
             customLabels?.length > 0
-              ? showLabels && customLabels.map((label) => {
+              ? showLabels &&
+              customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
-                    <label key={n} htmlFor={n.toString()}>{Object.values(label)}</label>
+                    <Label key={n} htmlFor={n.toString()}>
+                      {Object.values(label)}
+                      <Tick showLabels={showLabels} showTicks={showTicks} />
+                    </Label>
                   )
-                )
+                );
               })
-              // if there are not custom labels, show the default labels (n)
-              : showLabels &&
-              <label key={n} htmlFor={n.toString()}>
-                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
-              </label>
+              : // if there are not custom labels, show the default labels (n)
+              showLabels && (
+                <Label key={n}>
+                  <label htmlFor={n.toString()}>{prefix + numberWithCommas(n.toFixed(decimals)) + suffix}</label>
+                  <Tick showLabels={showLabels} showTicks={showTicks} />
+                </Label>
+              )
           }
-        </Tick>
+        </div>
       ));
     }
-  };
+  }
   const labels = createLabels();
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -351,62 +355,67 @@ export const VerticalRangeSlider = ({
   return (
     <RangeWrap
       showTicks={showTicks}
-      heightVal={height}
-      maxLabelLength={maxLabelLength}
+      height={height}
     >
-      <Progress
-        wideTrack={wideTrack}
-        focused={isFocused}
-        style={
-          !isFocused && wideTrack ? {
-            background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
-              }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
-              }px), var(--color-white) 100%)`
-          } :
-            {
-              background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
-                }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
-                }px), var(--color-secondary) 100%)`
-            }
-        }
-      />
-      {showTooltip && <RangeOutput
-        focused={isFocused}
-        wideTrack={wideTrack}
-        style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition}px)` }}
-      >
-        <span>
-          {prefix +
-            numberWithCommas(value.toFixed(decimals)) +
-            " " +
-            suffix}
-        </span>
-      </RangeOutput>}
-      <StyledRangeSlider
-        aria-label="Basic Example"
-        aria-orientation="horizontal"
-        aria-valuenow={value}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        tabIndex={0}
-        heightVal={300}
-        ref={rangeEl}
-        min={min}
-        max={max}
-        step={snap ? step : 0}
-        value={value > max ? max : value.toFixed(decimals)}
-        // onClick={() => rangeEl.current?.focus()}
-        onInput={(e) => {
-          const { valueAsNumber } = e.target as HTMLInputElement;
-          setValue(valueAsNumber);
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onKeyDown={handleKeyPress}
-        focused={isFocused}
-        wideTrack={wideTrack}
-      />
-      <Ticks ref={ticksEl} wideTrack={wideTrack}>{labels}</Ticks>
+      <Ticks ref={ticksEl} wideTrack={wideTrack}>
+        {labels}
+      </Ticks>
+      <div>
+        <Progress
+          wideTrack={wideTrack}
+          focused={isFocused}
+          style={
+            !isFocused && wideTrack
+              ? {
+                background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
+                  }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
+                  }px), var(--color-white) 100%)`,
+              }
+              : {
+                background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
+                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
+                  }px), var(--color-secondary) 100%)`,
+              }
+          }
+        />
+        <StyledRangeSlider
+          aria-label="Basic Example"
+          aria-orientation="horizontal"
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          tabIndex={0}
+          height={300}
+          ref={rangeEl}
+          min={min}
+          max={max}
+          step={snap ? step : 0}
+          value={value > max ? max : value.toFixed(decimals)}
+          onInput={(e) => {
+            setValue(e.target.valueAsNumber);
+          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onKeyDown={handleKeyPress}
+          focused={isFocused}
+          wideTrack={wideTrack}
+        />
+      </div>
+      {showTooltip && (
+        <RangeOutput
+          focused={isFocused}
+          wideTrack={wideTrack}
+          style={{
+            left: wideTrack
+              ? `calc(${newValue}% + ${newPosition * 1.75}px)`
+              : `calc(${newValue}% + ${newPosition}px)`,
+          }}
+        >
+          <span>
+            {prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}
+          </span>
+        </RangeOutput>
+      )}
     </RangeWrap>
   );
 };
