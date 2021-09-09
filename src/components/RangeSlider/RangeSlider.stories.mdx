@@ -1,5 +1,6 @@
 import {  Meta, Story, Canvas, ArgsTable } from "@storybook/addon-docs";
 import { RangeSlider } from "./RangeSlider";
+import { Box } from "../../shared/styles/css-storybook"
 
 <Meta title="RangeSlider" component={RangeSlider} argTypes={{
     style:{
@@ -55,7 +56,7 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
 
 <ArgsTable story="Primary" />
 
-<Con className="grid3">
+<Box className="grid3">
   <div>
     <h3>Default</h3>
     <p>
@@ -107,9 +108,9 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>ToolTip</h3>
     <p>
@@ -153,9 +154,9 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Prefix</h3>
     <p>
@@ -202,9 +203,9 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Decimals</h3>
     <p>
@@ -260,9 +261,9 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Odd Numbering</h3>
     <p>
@@ -323,4 +324,4 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   </Story>
 </Canvas>
 
-</Con>
+</Box>

@@ -400,7 +400,7 @@ export const RangeSlider = ({
         {showTooltip &&
           <RangeOutput
             focused={isFocused}
-            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.5}px)` : `calc(${newValue}% + ${newPosition}px)`, ...style } as React.CSSProperties}
+            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition}px)`, ...style } as React.CSSProperties}
             {...rest}
           >
             <span>

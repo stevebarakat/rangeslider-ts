@@ -1,4 +1,6 @@
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
+
+export const Box = styled.div``;
 
 export const cssStorybook = css`
   h2 {

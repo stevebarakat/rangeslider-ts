@@ -274,7 +274,6 @@ export const DualVerticalRangeSlider = ({
   const [newValue2, setNewValue2] = useState(0);
   const [upperFocused, setUpperFocused] = useState(false);
   const [lowerFocused, setLowerFocused] = useState(false);
-  const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const focused = upperFocused || lowerFocused;
   newPosition1 = 0 - newValue1 * 0.2;
