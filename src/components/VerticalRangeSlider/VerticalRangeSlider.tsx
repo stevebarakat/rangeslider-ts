@@ -305,8 +305,8 @@ export const VerticalRangeSlider = ({
               customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
-                    <Label key={n} htmlFor={n.toString()}>
-                      {Object.values(label)}
+                    <Label key={n}>
+                      <label htmlFor={n.toString()}>{Object.values(label)}</label>
                       <Tick showLabels={showLabels} showTicks={showTicks} />
                     </Label>
                   )
@@ -392,7 +392,7 @@ export const VerticalRangeSlider = ({
           step={snap ? step : 0}
           value={value > max ? max : value.toFixed(decimals)}
           onInput={(e) => {
-            setValue(e.target.valueAsNumber);
+            setValue(e.currentTarget.valueAsNumber);
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

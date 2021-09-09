@@ -4,39 +4,38 @@ import styled from "styled-components";
 let newPosition1 = 0;
 let newPosition2 = 0;
 
+// STYLES
+
 const RangeWrap = styled.div<{
-  height: number;
+  heightVal: number;
+  maxLabelLength: number;
   showTicks: boolean;
 }>`
-  display: grid;
-  grid-template-rows: repeat(3, auto);
-  width: ${(p) => p.height + "px"};
+  width: ${(p) => p.heightVal + "px"};
+  margin-left: ${(p) => `${p.maxLabelLength + 3}ch`};
   transform: rotate(270deg);
-  transform-origin: top left;
-  margin-top: ${(p) => p.height + "px"};
+  transform-origin: 0 0;
+  margin-top: ${(p) => p.heightVal + "px"};
+  left: 0;
+  top: 0;
   font-family: inherit;
-  border: 1px dotted red;
 `;
 
 const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
+  width: 0;
   user-select: none;
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: flex-start;
-  margin-top: ${(p) => (p.wideTrack ? "2.5em" : "2em")};
+  margin-top: ${p => p.wideTrack ? "2.5em" : "2em"};
   margin-left: -1rem;
   span {
     writing-mode: vertical-lr;
-    border: ${(p) =>
-    p.focused
-      ? `1px solid var(--color-primary)`
-      : `1px solid var(--color-darkgray)`};
+    border: ${(p) => !p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
     border-radius: 5px;
-    font-weight: ${(p) => (p.focused ? "bold" : "normal")};
-    color: ${(p) =>
-    p.focused ? "var(--color-white)" : "var(--color-darkgray)"};
-    background: ${(p) =>
-    p.focused ? "var(--color-primary)" : "var(--color-white)"};
+    color: ${(p) => (!p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
+    font-weight: ${p => !p.focused ? "bold" : "normal"};
+    background: ${(p) => (!p.focused ? "var(--color-primary)" : "var(--color-white)")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -45,7 +44,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
+      border-top: ${p => !p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -58,7 +57,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
+      border-top: ${p => !p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       bottom: 100%;
@@ -70,21 +69,24 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   }
 `;
 
-const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
+
+const Progress = styled.div<{ focused: boolean, wideTrack: boolean }>`
   position: absolute;
   border-radius: 100px;
   height: ${(p) => (p.wideTrack ? "12px" : "5px")};
   width: 100%;
   z-index: 0;
+  border-bottom: 1px solid var(--color-transparent-gray);
   border-bottom: ${p => p.wideTrack ? "1px solid var(--color-transparent-gray)" : "none"};
   box-shadow: ${p => p.wideTrack ? "inset 1px 1px 1px 0.5px var(--color-transparent-gray)" : "none"}
-  `;
+`;
 
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
-}) <{ focused: boolean; wideTrack: boolean; height: number }>`
-  cursor: pointer;
+}) <{ focused: boolean; wideTrack: boolean; heightVal: number }>`
+  cursor: default;
+  pointer-events: none;
   appearance: none;
   position: absolute;
   width: 100%;
@@ -96,18 +98,17 @@ const StyledRangeSlider = styled.input.attrs({
     outline: none;
   }
 
-
   &::-webkit-slider-thumb {
+    appearance: none;
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "36px" : "20px"};
-    height: ${p => p.wideTrack ? "36px" : "20px"};
+    width: ${p => p.wideTrack ? "2.5em" : "1.5em"};
+    height: ${p => p.wideTrack ? "2.5em" : "1.5em"};
     top: ${p => p.wideTrack ? "0" : "-1.5px"};
     border-radius: 50%;
     border: ${p => p.wideTrack ? p.focused ? "1px solid var(--color-primary)" : `1px solid var(--color-lightgray)` : "none"};
     box-shadow: -1px 0 5px 0 rgba(0, 0, 0, 0.25);
-    -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
@@ -124,59 +125,68 @@ const StyledRangeSlider = styled.input.attrs({
       ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
- 
   
   &::-moz-range-thumb {
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    height: 2.5em;
+    width: 2.5em;
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid var(--color-darkgray)` : "none"};
-    box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
-    -webkit-appearance: none;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    appearance: none;
     z-index: 50;
-    background: ${(p) =>
-    p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+    background: ${p =>
+    p.focused
+      ? `-moz-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-moz-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
+
+  &:focus::-moz-range-thumb {
+    cursor: grabbing;
+    background: ${p =>
+    !p.focused
+      ? `-moz-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
+      : `-moz-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
-  
 `;
 
 const Ticks = styled.div<{ wideTrack: boolean }>`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin: ${(p) => (p.wideTrack ? "10.5px" : "5px 2px")};
+  margin: ${p => p.wideTrack ? "15px" : "10px"};
+  margin-top: ${p => p.wideTrack ? "32px" : "12px"};
+  position: relative;
+  top: -1.2em;
 `;
 
 const Tick = styled.div<{
   showTicks?: boolean;
   showLabels?: boolean;
+  rotateLabels?: boolean;
+  labelLength?: number | undefined;
   focused?: boolean;
+  maxLabelLength: number
 }>`
-  align-self: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: flex-end;
   width: 1px;
   height: 5px;
-  background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
-`;
-
-const Label = styled.div`
-  display: grid;
-  grid-gap: 3px;
-  grid-template-columns: auto 1fr;
-  color: var(--color-darkgray);
-  writing-mode: vertical-lr;
-  margin-bottom: 0.5rem;
-  white-space: nowrap;
+  background: ${p => p.showTicks ? "var(--color-darkgray)" : "transparent"};
+  label {
+    color: var(--color-darkgray);
+    display: block;
+    writing-mode: vertical-rl;
+    margin-left: 0.65em;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+  }
 `;
 
 function numberWithCommas(x: string) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 interface DualVerticalRangeSliderProps {
@@ -277,14 +287,23 @@ export const DualVerticalRangeSlider = ({
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 5;
   const focused = upperFocused || lowerFocused;
-  newPosition1 = 0 - newValue1 * 0.2;
+  newPosition1 = 10 - newValue1 * 0.2;
   newPosition2 = 10 - newValue2 * 0.2;
+
+  // Make sure min never exceds max
+  if (min > max) {
+    min = max;
+  }
+  // Make sure max is never less than min
+  if (max < min) {
+    max = min;
+  }
 
   useLayoutEffect(() => {
     setNewValue1(Number(((lowerVal - min) * 100) / (max - min)));
     setNewValue2(Number(((upperVal - min) * 100) / (max - min)));
     if (showTicks) {
-      const tickList = tickEl.current?.children;
+      const tickList = showTicks ? tickEl.current?.children : null;
       let labelList = [];
       for (let i = 0; i < tickList!.length; i++) {
         const tickText = tickList![i]?.firstChild?.firstChild?.textContent
@@ -293,6 +312,8 @@ export const DualVerticalRangeSlider = ({
           tickText !== undefined &&
           labelList.push(tickText);
       }
+      if (!labelList) return;
+      setMaxLabelLength(Math.max(...labelList));
     }
   }, [min, max, lowerVal, upperVal, showLabels, showTicks]);
 
@@ -300,39 +321,56 @@ export const DualVerticalRangeSlider = ({
   function createLabels() {
     if (step > 0) {
       // creates an array of numbers from 'min' to 'max' with 'step' as interval
-      const numbers = Array.from(Array((max - min) / step + 1)).map(
-        (_, i) => min + step * i
-      );
-      // create tick mark for every element in the numbers array
+      const numbers = Array.from(Array((max - min) / step + 1)).map((_, i) => min + step * i);
+      // create tick mark for every element in the numbers array 
       return numbers.map((n) => (
-        <div key={n}>
-          {
-            // if there are custom labels, show them!
+        <Tick
+          key={n}
+          maxLabelLength={maxLabelLength}
+          showLabels={showLabels}
+          showTicks={showTicks}
+        >
+          { // if there are custom labels, show them!
             customLabels?.length > 0
-              ? showLabels &&
-              customLabels.map((label) => {
+              ? showLabels && customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
-                    <Label key={n}>
-                      <label htmlFor={n.toString()}>{Object.values(label)}</label>
-                      <Tick showLabels={showLabels} showTicks={showTicks} />
-                    </Label>
+                    <label key={n} htmlFor={n.toString()}>{Object.values(label)}</label>
                   )
-                );
+                )
               })
-              : // if there are not custom labels, show the default labels (n)
-              showLabels && (
-                <Label key={n}>
-                  <label htmlFor={n.toString()}>{prefix + numberWithCommas(n.toFixed(decimals)) + suffix}</label>
-                  <Tick showLabels={showLabels} showTicks={showTicks} />
-                </Label>
-              )
+              // if there are not custom labels, show the default labels (n)
+              : showLabels &&
+              <label key={n} htmlFor={n.toString()}>
+                {prefix + numberWithCommas(n.toFixed(decimals)) + suffix}
+              </label>
           }
-        </div>
+        </Tick>
       ));
     }
-  }
+  };
   const labels = createLabels();
+
+  //If the upper value slider is LESS THAN the lower value slider.
+  if (upperVal > lowerVal) {
+    //Set lower slider value to equal the upper value slider.
+    setLowerVal(upperVal);
+    //If the lower value slider equals its set minimum.
+    if (lowerVal === 0) {
+      //Set the upper slider value to equal min.
+      setUpperVal(min);
+    }
+  };
+  //If the lower value slider is GREATER THAN the upper value slider minus one.
+  if (lowerVal < upperVal - 1) {
+    //Set the upper slider value equal to the lower value slider.
+    setUpperVal(lowerVal);
+    //If the upper value slider equals its set maximum.
+    if (upperVal === max) {
+      //Set the lower slider value to equal the upper max.
+      setLowerVal(max);
+    }
+  };
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     const cmd = e.metaKey;
@@ -361,140 +399,107 @@ export const DualVerticalRangeSlider = ({
     }
   }
 
-
   return (
     <RangeWrap
       showTicks={showTicks}
-      height={height}
+      heightVal={height}
+      maxLabelLength={maxLabelLength}
     >
-      <Ticks ref={tickEl} wideTrack={wideTrack}>
-        {labels}
-      </Ticks>
-      <div>
-        <Progress
-          wideTrack={wideTrack}
-          focused={focused}
-          style={
-            !focused && wideTrack ? {
-              background: `-webkit-linear-gradient(left,  
+      <Progress
+        wideTrack={wideTrack}
+        focused={focused}
+        style={
+          !focused && wideTrack ? {
+            background: `-webkit-linear-gradient(left,  
                 var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`},
                 var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                 var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                 var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`})`
-            } :
-              {
-                background: `-webkit-linear-gradient(left,  
+          } :
+            {
+              background: `-webkit-linear-gradient(left,  
                   var(--color-secondary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                   var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
                   var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                   var(--color-secondary) ${`calc(${newValue1}% + ${newPosition1}px)`})`
-              }
-          }
-        />
-        <div style={{ display: "flex" }}>
+            }
+        }
+      />
 
-          {/* UPPER RANGE */}
-          <StyledRangeSlider
-            id="upper"
-            aria-label="upper value"
-            aria-orientation="horizontal"
-            aria-valuenow={upperVal}
-            aria-valuemin={min}
-            aria-valuemax={max}
-            tabIndex={0}
-            height={300}
-            ref={upperRange}
-            min={min}
-            max={max}
-            step={snap ? step : 0}
-            value={upperVal > max ? max : upperVal.toFixed(decimals)}
-            onKeyDown={handleKeyPress}
-            onFocus={() => {
-              setUpperFocused(true);
-            }}
-            onBlur={() => {
-              setUpperFocused(false);
-            }}
-            onInput={(e) => {
-              const { valueAsNumber } = e.target as HTMLInputElement;
-              setUpperVal(valueAsNumber);
-            }}
-            focused={upperFocused}
-            wideTrack={wideTrack}
-          />
-        </div>
+      {/* UPPER RANGE */}
+      {showTooltip && <RangeOutput
+        ref={outputEl}
+        focused={upperFocused}
+        wideTrack={wideTrack}
+        style={{ left: wideTrack ? `calc(${newValue1}% + ${newPosition1 * 1.5}px)` : `calc(${newValue1}% + ${newPosition1 * 1}px)` }}>
+        <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
+      </RangeOutput>}
+      <StyledRangeSlider
+        id="upper"
+        aria-label="upper value"
+        aria-orientation="horizontal"
+        aria-valuenow={upperVal}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        tabIndex={0}
+        heightVal={300}
+        ref={upperRange}
+        min={min}
+        max={max}
+        step={snap ? step : 0}
+        value={upperVal > max ? max : upperVal.toFixed(decimals)}
+        onKeyDown={handleKeyPress}
+        onFocus={() => {
+          setUpperFocused(true);
+        }}
+        onBlur={() => {
+          setUpperFocused(false);
+        }}
+        onInput={(e) => {
+          const { valueAsNumber } = e.target as HTMLInputElement;
+          setUpperVal(valueAsNumber);
+        }}
+        focused={upperFocused}
+        wideTrack={wideTrack}
+      />
 
+      {/* LOWER RANGE */}
+      {showTooltip && <RangeOutput
+        focused={lowerFocused}
+        wideTrack={wideTrack}
+        style={{ left: wideTrack ? `calc(${newValue2}% + ${newPosition2 * 1.5}px)` : `calc(${newValue2}% + ${newPosition2 * 1}px)` }}>
+        <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
+      </RangeOutput>}
+      <StyledRangeSlider
+        id="lower"
+        aria-label="lower value"
+        aria-orientation="horizontal"
+        aria-valuenow={lowerVal}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        tabIndex={0}
+        heightVal={300}
+        ref={lowerRange}
+        min={min}
+        max={max}
+        step={snap ? step : 0}
+        value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
+        onKeyDown={handleKeyPress}
+        onFocus={() => {
+          setLowerFocused(true);
+        }}
+        onBlur={() => {
+          setLowerFocused(false);
+        }}
+        onInput={(e) => {
+          const { valueAsNumber } = e.target as HTMLInputElement;
+          setLowerVal(valueAsNumber);
+        }}
+        focused={lowerFocused}
+        wideTrack={wideTrack}
+      />
 
-
-        <StyledRangeSlider
-          id="lower"
-          aria-label="lower value"
-          aria-orientation="horizontal"
-          aria-valuenow={lowerVal}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          tabIndex={0}
-          height={300}
-          ref={lowerRange}
-          min={min}
-          max={max}
-          step={snap ? step : 0}
-          value={lowerVal > max ? max : lowerVal.toFixed(decimals)}
-          onKeyDown={handleKeyPress}
-          onFocus={() => {
-            setLowerFocused(true);
-          }}
-          onBlur={() => {
-            setLowerFocused(false);
-          }}
-          onInput={(e) => {
-            const { valueAsNumber } = e.target as HTMLInputElement;
-            setLowerVal(valueAsNumber);
-          }}
-          focused={lowerFocused}
-          wideTrack={wideTrack}
-        />
-
-      </div>
-
-      {/* TOOLTIPS */}
-      <div style={{ display: "flex" }}>
-        {showTooltip && (
-          <RangeOutput
-            ref={outputEl}
-            focused={upperFocused}
-            wideTrack={wideTrack}
-            style={{
-              left: wideTrack
-                ? `calc(${newValue2}% + ${newPosition2 * 1.75}px)`
-                : `calc(${newValue2}% + ${newPosition2}px)`,
-            }}
-          >
-            <span>
-              {prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}
-            </span>
-          </RangeOutput>
-        )}
-        {/* LOWER RANGE */}
-        {showTooltip && (
-          <RangeOutput
-            ref={outputEl}
-            focused={lowerFocused}
-            wideTrack={wideTrack}
-            style={{
-              left: wideTrack
-                ? `calc(${newValue1}% + ${newPosition1 * 1.75}px)`
-                : `calc(${newValue1}% + ${newPosition1}px)`,
-            }}
-          >
-            <span>
-              {prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}
-            </span>
-          </RangeOutput>
-        )}
-      </div>
-
-
+      {<Ticks ref={tickEl} wideTrack={wideTrack}>{labels}</Ticks>}
     </RangeWrap>
   );
 };
