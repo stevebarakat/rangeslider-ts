@@ -1,3 +1,62 @@
+# v0.1.1 (Thu Sep 09 2021)
+
+#### ⚠️ Pushed to `main`
+
+- npm ([@stevebarakat](https://github.com/stevebarakat))
+- check in ([@stevebarakat](https://github.com/stevebarakat))
+- check ou t ([@stevebarakat](https://github.com/stevebarakat))
+- update props ([@stevebarakat](https://github.com/stevebarakat))
+- centered origin ([@stevebarakat](https://github.com/stevebarakat))
+- check out ([@stevebarakat](https://github.com/stevebarakat))
+- removed style from props table ([@stevebarakat](https://github.com/stevebarakat))
+- width ([@stevebarakat](https://github.com/stevebarakat))
+- split up css files ([@stevebarakat](https://github.com/stevebarakat))
+- css vars working ([@stevebarakat](https://github.com/stevebarakat))
+- that tthing is pink ([@stevebarakat](https://github.com/stevebarakat))
+- chekc in ([@stevebarakat](https://github.com/stevebarakat))
+- grid ([@stevebarakat](https://github.com/stevebarakat))
+- snapping ([@stevebarakat](https://github.com/stevebarakat))
+- steps ([@stevebarakat](https://github.com/stevebarakat))
+- getting better ([@stevebarakat](https://github.com/stevebarakat))
+- before useKeyPress ([@stevebarakat](https://github.com/stevebarakat))
+- checkin ([@stevebarakat](https://github.com/stevebarakat))
+- label refactor ([@stevebarakat](https://github.com/stevebarakat))
+- chekck in ([@stevebarakat](https://github.com/stevebarakat))
+- tabels to flex ([@stevebarakat](https://github.com/stevebarakat))
+- check ini ([@stevebarakat](https://github.com/stevebarakat))
+- v0.1.4 ([@stevebarakat](https://github.com/stevebarakat))
+- testing ([@stevebarakat](https://github.com/stevebarakat))
+- v0.1.3 ([@stevebarakat](https://github.com/stevebarakat))
+- check in post build ([@stevebarakat](https://github.com/stevebarakat))
+- v0.1.2 ([@stevebarakat](https://github.com/stevebarakat))
+- v0.1.1 ([@stevebarakat](https://github.com/stevebarakat))
+- ready to publishh ([@stevebarakat](https://github.com/stevebarakat))
+- still tidying ([@stevebarakat](https://github.com/stevebarakat))
+- vert good for now" ([@stevebarakat](https://github.com/stevebarakat))
+- breask ([@stevebarakat](https://github.com/stevebarakat))
+- in the middle of stuff ([@stevebarakat](https://github.com/stevebarakat))
+- chek in ([@stevebarakat](https://github.com/stevebarakat))
+- chciin ([@stevebarakat](https://github.com/stevebarakat))
+- removed css ([@stevebarakat](https://github.com/stevebarakat))
+- fixed ([@stevebarakat](https://github.com/stevebarakat))
+- color pickers ([@stevebarakat](https://github.com/stevebarakat))
+- docs; ([@stevebarakat](https://github.com/stevebarakat))
+- dual good ([@stevebarakat](https://github.com/stevebarakat))
+- vertical good ([@stevebarakat](https://github.com/stevebarakat))
+- ticktext ([@stevebarakat](https://github.com/stevebarakat))
+- time ([@stevebarakat](https://github.com/stevebarakat))
+- good stopping point for now ([@stevebarakat](https://github.com/stevebarakat))
+- progress ([@stevebarakat](https://github.com/stevebarakat))
+- tidying up ([@stevebarakat](https://github.com/stevebarakat))
+- initial commit ([@stevebarakat](https://github.com/stevebarakat))
+- Initialize project using Create React App ([@stevebarakat](https://github.com/stevebarakat))
+
+#### Authors: 1
+
+- [@stevebarakat](https://github.com/stevebarakat)
+
+---
+
 # v0.1.5 (Thu Sep 09 2021)
 
 #### ⚠️ Pushed to `main`
