@@ -4,18 +4,23 @@ import styled from "styled-components";
 let newPosition1 = 0;
 let newPosition2 = 0;
 
+const Wrapper = styled.div`
+  position: relative;
+`
+
 const RangeWrap = styled.div<{
   height: number;
   showTicks: boolean;
+  wrapWidth: number;
 }>`
   display: grid;
   grid-template-rows: repeat(3, auto);
   width: ${(p) => p.height + "px"};
+  height: 0;
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${(p) => p.height + "px"};
   font-family: inherit;
-  border: 1px dotted red;
 `;
 
 const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
@@ -30,13 +35,13 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
     border: ${(p) =>
     p.focused
       ? `1px solid var(--color-primary)`
-      : `1px solid var(--color-darkgray)`};
+      : `1px solid var(--color-dark)`};
     border-radius: 5px;
     font-weight: ${(p) => (p.focused ? "bold" : "normal")};
     color: ${(p) =>
-    p.focused ? "var(--color-white)" : "var(--color-darkgray)"};
+    p.focused ? "var(--color-light)" : "var(--color-dark)"};
     background: ${(p) =>
-    p.focused ? "var(--color-primary)" : "var(--color-white)"};
+    p.focused ? "var(--color-primary)" : "var(--color-light)"};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -45,7 +50,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
+      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-dark)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -58,7 +63,7 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-white)"}`};
+      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-light)"}`};
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       bottom: 100%;
@@ -111,9 +116,9 @@ const StyledRangeSlider = styled.input.attrs({
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 20%,var(--color-primary) 25%,var(--color-primary) 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 20%,var(--color-primary) 25%,var(--color-primary) 100%)`
   }
   }
   
@@ -121,8 +126,8 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
  
   
@@ -133,15 +138,15 @@ const StyledRangeSlider = styled.input.attrs({
     width: ${p => p.wideTrack ? "3em" : "1.5em"};
     height: ${p => p.wideTrack ? "3em" : "1.5em"};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid var(--color-darkgray)` : "none"};
+    border: ${p => p.wideTrack ? `1px solid var(--color-dark)` : "none"};
     box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-white)"} 40%,${"var(--color-white)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-white)"} 0%,${"var(--color-white)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
   }
   }
   
@@ -162,14 +167,14 @@ const Tick = styled.div<{
   align-self: center;
   width: 1px;
   height: 5px;
-  background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
+  background: ${(p) => (p.showTicks ? "var(--color-dark)" : "transparent")};
 `;
 
 const Label = styled.div`
   display: grid;
   grid-gap: 3px;
   grid-template-columns: auto 1fr;
-  color: var(--color-darkgray);
+  color: var(--color-dark);
   writing-mode: vertical-lr;
   margin-bottom: 0.5rem;
   white-space: nowrap;
@@ -266,7 +271,7 @@ export const DualVerticalRangeSlider = ({
 }: DualVerticalRangeSliderProps) => {
   const lowerRange = useRef<HTMLInputElement | null>(null);
   const upperRange = useRef<HTMLInputElement | null>(null);
-  const outputEl = useRef<HTMLElement | null>(null);
+  const wrapEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const tickEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
@@ -360,9 +365,14 @@ export const DualVerticalRangeSlider = ({
     }
   }
 
+  // console.log(wrapEl.current.clientWidth);
+  const wrapWidth = wrapEl?.current?.clientHeight;
 
   return (
-    <RangeWrap
+    <Wrapper>
+      <RangeWrap
+      ref={wrapEl}
+      wrapWidth={wrapWidth}
       showTicks={showTicks}
       height={height}
     >
@@ -376,10 +386,10 @@ export const DualVerticalRangeSlider = ({
           style={
             !focused && wideTrack ? {
               background: `-webkit-linear-gradient(left,  
-                var(--color-white) ${`calc(${newValue1}% + ${newPosition1}px)`},
+                var(--color-light) ${`calc(${newValue1}% + ${newPosition1}px)`},
                 var(--color-primary) ${`calc(${newValue1}% + ${newPosition1}px)`},
                 var(--color-primary) ${`calc(${newValue2}% + ${newPosition2}px)`},
-                var(--color-white) ${`calc(${newValue2}% + ${newPosition2}px)`})`
+                var(--color-light) ${`calc(${newValue2}% + ${newPosition2}px)`})`
             } :
               {
                 background: `-webkit-linear-gradient(left,  
@@ -460,7 +470,6 @@ export const DualVerticalRangeSlider = ({
       <div style={{ display: "flex" }}>
         {showTooltip && (
           <RangeOutput
-            ref={outputEl}
             focused={upperFocused}
             wideTrack={wideTrack}
             style={{
@@ -477,7 +486,6 @@ export const DualVerticalRangeSlider = ({
         {/* LOWER RANGE */}
         {showTooltip && (
           <RangeOutput
-            ref={outputEl}
             focused={lowerFocused}
             wideTrack={wideTrack}
             style={{
@@ -495,5 +503,6 @@ export const DualVerticalRangeSlider = ({
 
 
     </RangeWrap>
+    </Wrapper>
   );
 };

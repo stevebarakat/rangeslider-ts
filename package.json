@@ -84,13 +84,13 @@
     "@storybook/addon-links": "^6.4.0-alpha.22",
     "@storybook/node-logger": "^6.4.0-alpha.22",
     "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.7",
+    "@storybook/react": "^6.3.8",
     "auto": "^10.31.0",
     "babel-loader": "8.1.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "react-docgen-typescript": "^2.1.0",
-    "rimraf": "^3.0.2",
+    "react-docgen-typescript-plugin": "^1.0.0",
     "webpack": "4.44.2"
   }
 }

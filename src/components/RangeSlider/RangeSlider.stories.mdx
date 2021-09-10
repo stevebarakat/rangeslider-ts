@@ -1,22 +1,36 @@
-import {  Meta, Story, Canvas, ArgsTable } from "@storybook/addon-docs";
+import { Meta, Story, Canvas, ArgsTable } from "@storybook/addon-docs";
 import { RangeSlider } from "./RangeSlider";
 import { Box } from "../../shared/styles/css-storybook"
 
-<Meta title="RangeSlider" component={RangeSlider} argTypes={{
-    style:{
-      table:{
-        disable: true,
-      }
-    }
-  }}/>
+<Meta
+  title="RangeSlider"
+  component={RangeSlider}
+  parameters={{
+    actions: {
+      handles: ["input"],
+    },
+  }}
+/>
 
-export const Template = ({ focusColor, blurColor, textColor, sliderWidth, sliderHeight, ...args }) => (
-  <RangeSlider style={{ 
-    '--color-text': textColor,
-    '--color-primary': focusColor, 
-    '--color-secondary': blurColor, 
-    '--slider-width': sliderWidth,
-  }} {...args} />
+export const Template = ({
+  focusColor,
+  blurColor,
+  lightColor,
+  darkColor,
+  sliderWidth,
+  sliderHeight,
+  ...args
+}) => (
+  <RangeSlider
+    style={{
+      "--color-primary": focusColor,
+      "--color-secondary": blurColor,
+      "--color-light": lightColor,
+      "--color-dark": darkColor,
+      "--slider-width": sliderWidth,
+    }}
+    {...args}
+  />
 );
 
 # RangeSlider
@@ -45,6 +59,8 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
       prefix: "Prefix ",
       suffix: " Suffix",
       wideTrack: true,
+      lightColor: "",
+      darkColor: "",
       focusColor: "",
       blurColor: "",
       sliderWidth: "",
@@ -267,15 +283,17 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
   <div>
     <h3>Odd Numbering</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      <span className="strong">Important! </span>The distance between <code>max</code> and <code>min</code> (<code>max - min</code>) must be divisible by <code>step</code>! Using modulo operator: <code>max - min % step</code> must equal <code>0</code>. For example, this works: <code>(84 - 14) / 7 = 10</code>, this doesn't: <code>(100 - 0) / 7 = 14.3</code>
     </p>
   </div>
   <div>
-    <h3>Rotated Labels</h3>
+    <h3>Rotated Labels w/ Custom Colors</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      Rotate labels 45 degrees to allow for longer / more labels. <br />
+      '--color-dark': 'rebeccapurple',<br />
+    '--color-light': '#FEFEFE',<br />
+    '--color-primary': 'rebeccapurple',<br />
+    '--color-secondary': 'hotpink',
     </p>
   </div>
 
@@ -284,7 +302,7 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
     name="Odd Numbering"
     args={{
       initialValue: 42,
-      min: 0,
+      min: 14,
       max: 84,
       step: 7,
       showTicks: true,
@@ -318,6 +336,10 @@ export const Template = ({ focusColor, blurColor, textColor, sliderWidth, slider
       showTooltip: true,
       rotateLabels: true,
       wideTrack: true,
+      focusColor: "rebeccapurple",
+      blurColor: "hotpink",
+      lightColor: "#FEFEFE",
+      darkColor: "rebeccapurple",
     }}
   >
     {Template.bind({})}

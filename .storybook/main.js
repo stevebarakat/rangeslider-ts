@@ -1,4 +1,12 @@
+const ts = require("typescript");
+const ReactDocgenTypescriptPlugin = require("react-docgen-typescript-plugin")
+  .default;
+
 module.exports = {
+  plugins: [
+    // Will default to loading your root tsconfig.json
+    new ReactDocgenTypescriptPlugin(),
+  ],
   stories: [
     "../src/**/*.stories.mdx",
     "../src/**/**/*.stories.mdx",

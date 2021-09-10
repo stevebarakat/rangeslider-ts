@@ -43,8 +43,8 @@ export const Template = ({ focusColor, ...args }) => (
 </Canvas>
 
 <Props story="Primary" />
-
-<Con className="grid3">
+=
+<Con className="grid4">
   <div>
     <h3>Default</h3>
     <p>
@@ -62,10 +62,23 @@ export const Template = ({ focusColor, ...args }) => (
     <p>
       Displaying <code>ticks</code> with <code>20</code> <code>step</code> intervals. <code>initialValue</code> should be equal to one of the <code>step</code> values.
     </p>
+  </div>  
+  <div>
+    <h3>Ticks</h3>
+    <p>
+      Displaying <code>ticks</code> with <code>10</code> <code>step</code> intervals. <code>step</code> must be greater than <code>0</code> for ticks to show.
+    </p>
   </div>
+
 
 <Canvas>
   <Story name="Default" args={{}}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="Default2" args={{}}>
     {Template.bind({})}
   </Story>
 </Canvas>

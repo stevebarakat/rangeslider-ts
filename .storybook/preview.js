@@ -2,6 +2,7 @@ import { GlobalStyle } from "../src/shared/styles/GlobalStyle";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
+  layout: "centered",
   controls: {
     expanded: true,
     matchers: {

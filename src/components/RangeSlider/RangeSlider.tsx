@@ -31,11 +31,11 @@ const RangeOutput = styled.output<{ focused: boolean }>`
   white-space: nowrap;
   span {
     border: ${(p) =>
-    p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-darkgray)`};
+    p.focused ? `1px solid var(--color-primary)` : `1px solid var(--color-dark)`};
     border-radius: 5px;
     font-weight: ${p => p.focused && "bold"};
-    color: ${(p) => (p.focused ? "var(--color-white)" : "var(--color-darkgray)")};
-    background: ${(p) => (p.focused ? "var(--color-primary)" : "white")};
+    color: ${(p) => (p.focused ? "var(--color-light)" : "var(--color-dark)")};
+    background: ${(p) => (p.focused ? "var(--color-primary)" : "var(--color-light)")};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em 0.75em;
     &::before {
@@ -43,7 +43,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `14px solid var(--color-darkgray)`};
+      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `14px solid var(--color-dark)`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -55,7 +55,7 @@ const RangeOutput = styled.output<{ focused: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `12px solid white`};
+      border-top: ${p => p.focused ? `14px solid var(--color-primary)` : `12px solid var(--color-light)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       top: 100%;
@@ -109,9 +109,9 @@ const StyledRangeSlider = styled.input.attrs({
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover, var(--color-primary) 0%, var(--color-primary) 35%, var(--color-white) 40%,var(--color-white) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 35%, var(--color-primary) 40%, var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover, var(--color-white) 0%, var(--color-white) 20%, var(--color-primary) 25%, var(--color-primary) 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover, var(--color-primary) 0%, var(--color-primary) 35%, var(--color-light) 40%,var(--color-light) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover, var(--color-light) 0%, var(--color-light) 35%, var(--color-primary) 40%, var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover, var(--color-light) 0%, var(--color-light) 20%, var(--color-primary) 25%, var(--color-primary) 100%)`
   }
   }
   
@@ -119,8 +119,8 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grabbing;
     background: ${p =>
     !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-white) 40%,var(--color-white) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-light) 40%,var(--color-light) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-light) 0%,var(--color-light) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
   
   &::-moz-range-thumb {
@@ -136,9 +136,9 @@ const StyledRangeSlider = styled.input.attrs({
     z-index: 50;
     background: ${(p) =>
     p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-white) 40%,var(--color-white) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-white) 0%,var(--color-white) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,var(--color-light) 40%,var(--color-light) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-light) 0%,var(--color-light) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+      : `-webkit-radial-gradient(center, ellipse cover,  var(--color-light) 0%,var(--color-light) 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
   }
   }
   
@@ -157,14 +157,14 @@ const Tick = styled.div<{
   position: relative;
   width: 1px;
   height: 5px;
-  background: ${(p) => (p.showTicks ? "var(--color-darkgray)" : "transparent")};
+  background: ${(p) => (p.showTicks ? "var(--color-dark)" : "transparent")};
   margin-top: 1em;
 `;
 
 const Label = styled.label<{ rotateLabels: boolean }>`
   position: absolute;
   transform: translateX(-50%);
-  color: var(--color-darkgray);
+  color: var(--color-dark);
   margin-top: 0.5em;
   transform-origin: center;
   white-space: nowrap;
@@ -385,8 +385,8 @@ export const RangeSlider = ({
           style={
             !isFocused && wideTrack ? {
               background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
-                }px), var(--color-white) calc(${newValue}% + ${newPosition * 0.75
-                }px), var(--color-white) 100%)`, ...style
+                }px), var(--color-light) calc(${newValue}% + ${newPosition * 0.75
+                }px), var(--color-light) 100%)`, ...style
             } :
               {
                 background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2

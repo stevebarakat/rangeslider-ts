@@ -65,7 +65,7 @@ export const cssStorybook = css`
 
   .grid2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     padding: 0;
     margin: 0;
@@ -75,7 +75,27 @@ export const cssStorybook = css`
 
   .grid3 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    padding: 0;
+    margin: 0;
+    gap: 0 1em;
+    align-items: flex-start;
+  }
+
+  .grid4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    padding: 0;
+    margin: 0;
+    gap: 0 1em;
+    align-items: flex-start;
+  }
+
+  .grid5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr;
     padding: 0;
     margin: 0;

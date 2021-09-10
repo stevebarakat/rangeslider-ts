@@ -67,6 +67,7 @@ function App() {
         wideTrack={false}
         showTooltip={true}
       />
+      <div style={{display: "flex"}}>
       <DualVerticalRangeSlider
         initialLowerValue={20}
         initialUpperValue={40}
@@ -88,6 +89,28 @@ function App() {
         height={400}
         showTooltip={true}
       />
+      <DualVerticalRangeSlider
+        initialLowerValue={20}
+        initialUpperValue={40}
+        min={0}
+        max={100}
+        decimals={0}
+        step={10}
+        snap={true}
+        showTicks={true}
+        customLabels={[
+          { 0: "ljh" },
+          { 50: "mgm" },
+          { 100: "h" }
+        ]}
+        // customLabels={[]}
+        showLabels={true}
+        prefix=""
+        suffix=""
+        height={400}
+        showTooltip={true}
+      />
+      </div>
     </div>
   );
 }
