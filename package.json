@@ -33,11 +33,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "release": "standard-version && npm publish",
-    "build": "tsc -p tsconfig.json && yarn copy-files",
-    "copy-files": "copyfiles -u 1 \"src/**/*.css\" \"src/**/*.svg\" \"src/**/*.json\" lib/",
+    "build": "cross-env BABEL_ENV=production babel src -d dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "prebuild": "rimraf lib"
+    "build-storybook": "build-storybook"
   },
   "babel": {
     "presets": [

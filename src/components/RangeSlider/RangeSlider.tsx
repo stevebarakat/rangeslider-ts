@@ -231,8 +231,16 @@ interface RangeSliderProps {
    */
   wideTrack?: boolean;
   /**
+    The light color var(--color-light).
+   */
+  lightColor?: string;
+  /**
+    The dark color var(--color-dark).
+   */
+  darkColor?: string;
+  /**
     The primary color var(--color-primary).
-  */
+   */
   focusColor?: string;
   /**
     The secondary color var(--color-secondary).
@@ -378,19 +386,19 @@ export const RangeSlider = ({
       lastLabelLength={lastLabelLength}
       labelLength={labelLength}
     >
-      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{width: "var(--slider-width)", ...style}} {...rest}>
+      <RangeWrap showTooltip={showTooltip} showLabels={showLabels} style={{ width: "var(--slider-width)", ...style }} {...rest}>
         <Progress
           wideTrack={wideTrack}
           focused={isFocused}
           style={
             !isFocused && wideTrack ? {
               background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
-                }px), var(--color-light) calc(${newValue}% + ${newPosition * 0.75
+                }px), var(--color-light) calc(${newValue}% + ${newPosition * 1.65
                 }px), var(--color-light) 100%)`, ...style
             } :
               {
                 background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
-                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
+                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 1.65
                   }px), var(--color-secondary) 100%)`, ...style
               }
           }
@@ -400,7 +408,7 @@ export const RangeSlider = ({
         {showTooltip &&
           <RangeOutput
             focused={isFocused}
-            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.75}px)` : `calc(${newValue}% + ${newPosition}px)`, ...style } as React.CSSProperties}
+            style={{ left: wideTrack ? `calc(${newValue}% + ${newPosition * 1.65}px)` : `calc(${newValue}% + ${newPosition}px)`, ...style } as React.CSSProperties}
             {...rest}
           >
             <span>
