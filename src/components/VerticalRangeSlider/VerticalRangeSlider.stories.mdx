@@ -1,10 +1,36 @@
-import { ArgsTable, Meta, Story, Canvas, Props } from "@storybook/addon-docs";
+import { Meta, Story, Canvas, ArgsTable } from "@storybook/addon-docs";
 import { VerticalRangeSlider } from "./VerticalRangeSlider";
+import { Box } from "../../shared/styles/css-storybook"
 
-<Meta title="VerticalRangeSlider" component={VerticalRangeSlider} />
+<Meta
+  title="VerticalRangeSlider"
+  component={VerticalRangeSlider}
+  parameters={{
+    actions: {
+      handles: ["input"],
+    },
+  }}
+/>
 
-export const Template = ({ focusColor, ...args }) => (
-  <VerticalRangeSlider style={{ "--color-primary": focusColor }} {...args} />
+export const Template = ({
+  focusColor,
+  blurColor,
+  lightColor,
+  darkColor,
+  sliderWidth,
+  sliderHeight,
+  ...args
+}) => (
+  <VerticalRangeSlider
+    style={{
+      "--color-primary": focusColor,
+      "--color-secondary": blurColor,
+      "--color-light": lightColor,
+      "--color-dark": darkColor,
+      "--slider-width": sliderWidth,
+    }}
+    {...args}
+  />
 );
 
 # VerticalRangeSlider
@@ -22,28 +48,31 @@ export const Template = ({ focusColor, ...args }) => (
   <Story
     name="Primary"
     args={{
-      initialValue: 50,
-      step: 5,
+      initialValue: 60,
+      step: 20,
       snap: true,
       showTicks: true,
       showLabels: true,
       showTooltip: true,
       rotateLabels: false,
       customLabels: [],
-      prefix: "",
-      suffix: "",
-      width: 950,
+      prefix: "Prefix ",
+      suffix: " Suffix",
       wideTrack: true,
-      focusColor: "hotpink",
+      lightColor: "",
+      darkColor: "",
+      focusColor: "",
+      blurColor: "",
+      sliderWidth: "",
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
 
-<Props story="Primary" />
+<ArgsTable story="Primary" />
 
-<Con className="grid3">
+<Box className="grid3">
   <div>
     <h3>Default</h3>
     <p>
@@ -95,9 +124,9 @@ export const Template = ({ focusColor, ...args }) => (
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>ToolTip</h3>
     <p>
@@ -141,9 +170,9 @@ export const Template = ({ focusColor, ...args }) => (
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Prefix</h3>
     <p>
@@ -190,9 +219,9 @@ export const Template = ({ focusColor, ...args }) => (
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Decimals</h3>
     <p>
@@ -248,21 +277,23 @@ export const Template = ({ focusColor, ...args }) => (
   </Story>
 </Canvas>
 
-</Con>
+</Box>
 
-<Con className="grid2">
+<Box className="grid2">
   <div>
     <h3>Odd Numbering</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      <span className="strong">Important! </span>The distance between <code>max</code> and <code>min</code> (<code>max - min</code>) must be divisible by <code>step</code>! Using modulo operator: <code>max - min % step</code> must equal <code>0</code>. For example, this works: <code>(84 - 14) / 7 = 10</code>, this doesn't: <code>(100 - 0) / 7 = 14.3</code>
     </p>
   </div>
   <div>
-    <h3>Rotated Labels</h3>
+    <h3>Rotated Labels w/ Custom Colors</h3>
     <p>
-      The most basic configuration. These are the values used if not set by the
-      user.
+      Rotate labels 45 degrees to allow for longer / more labels. <br />
+      '--color-dark': 'rebeccapurple',<br />
+    '--color-light': '#FEFEFE',<br />
+    '--color-primary': 'rebeccapurple',<br />
+    '--color-secondary': 'hotpink',
     </p>
   </div>
 
@@ -271,7 +302,7 @@ export const Template = ({ focusColor, ...args }) => (
     name="Odd Numbering"
     args={{
       initialValue: 42,
-      min: 0,
+      min: 14,
       max: 84,
       step: 7,
       showTicks: true,
@@ -305,10 +336,14 @@ export const Template = ({ focusColor, ...args }) => (
       showTooltip: true,
       rotateLabels: true,
       wideTrack: true,
+      focusColor: "rebeccapurple",
+      blurColor: "hotpink",
+      lightColor: "#FEFEFE",
+      darkColor: "rebeccapurple",
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
 
-</Con>
+</Box>

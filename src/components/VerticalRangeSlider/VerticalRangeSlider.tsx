@@ -1,5 +1,6 @@
 import { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
+import tick from "../../shared/img/tick.svg";
 
 const RangeWrap = styled.div<{
   height: number;
@@ -94,7 +95,6 @@ const StyledRangeSlider = styled.input.attrs({
     outline: none;
   }
 
-
   &::-webkit-slider-thumb {
     cursor: grab;
     pointer-events: all;
@@ -122,7 +122,6 @@ const StyledRangeSlider = styled.input.attrs({
       ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
- 
   
   &::-moz-range-thumb {
     cursor: grab;
@@ -142,25 +141,31 @@ const StyledRangeSlider = styled.input.attrs({
       : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
   }
   }
-  
 `;
 
-const Ticks = styled.div<{ wideTrack: boolean }>`
+const Ticks = styled.ol<{ wideTrack: boolean, min: number }>`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin: ${(p) => (p.wideTrack ? "10.5px" : "5px 2px")};
-`;
+  margin: ${(p) => (p.wideTrack ? "10.5px" : "-25px 0")};
+  counter-reset: ${p => `rangeCounter ${p.min}`};
+  `;
 
-const Tick = styled.div<{
-  showTicks?: boolean;
-  showLabels?: boolean;
-  focused?: boolean;
+const Tick = styled.li<{
+  showTicks: boolean,
+  showLabels: boolean,
+  value: number,
+  step: number,
+  min: number,
+  tick: string,
 }>`
-  align-self: center;
-  width: 1px;
-  height: 5px;
-  background: ${(p) => (p.showTicks ? "var(--color-dark)" : "transparent")};
+  list-style-image: ${p => `url(${p.tick})`};
+  list-style-position: inside;
+  /* align-self: center; */
+  width: 5px;
+  height: 1px;
+  counter-increment: rangeCounter 20;
+  z-index: 9;
 `;
 
 const Label = styled.div`
@@ -171,6 +176,16 @@ const Label = styled.div`
   writing-mode: vertical-lr;
   margin-bottom: 0.5rem;
   white-space: nowrap;
+  &::before{
+    content: counter(rangeCounter);
+    position: relative;
+    top: -0.25em;
+  }
+  /* &::after{
+    content: "-";
+    position: absolute;
+    top: 2.5em;
+  } */
 `;
 
 function numberWithCommas(x: string) {
@@ -241,23 +256,18 @@ export const VerticalRangeSlider = ({
   initialValue = 50,
   min = 0,
   max = 100,
-  decimals = 0,
-  step = 10,
-  showTicks = true,
-  snap = true,
-  customLabels = [
-    { 0: "low" },
-    { 50: "medium" },
-    { 100: "high" }
-  ],
-  showLabels = true,
-  prefix = "",
-  suffix = "",
+  decimals,
+  step = 20,
+  showTicks,
+  snap,
+  customLabels,
+  showLabels,
+  prefix,
+  suffix,
   height = 400,
-  wideTrack = false,
-  showTooltip = false,
+  wideTrack,
+  showTooltip,
 }: VerticalRangeSliderProps) => {
-  const rangeEl = useRef<HTMLInputElement | null>(null);
   const ticksEl = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(0);
@@ -276,18 +286,7 @@ export const VerticalRangeSlider = ({
 
   useLayoutEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
-    if (showTicks) {
-      const tickList = ticksEl.current?.children;
-      let labelList = [];
-      for (let i = 0; i < tickList!.length; i++) {
-        const tickText = tickList![i]?.firstChild?.firstChild?.textContent
-          ?.length;
-        showLabels &&
-          tickText !== undefined &&
-          labelList.push(tickText);
-      }
-    }
-  }, [min, max, value, showLabels, showTicks]);
+  }, [min, max, value]);
 
   // For collecting tick marks
   function createLabels() {
@@ -307,19 +306,18 @@ export const VerticalRangeSlider = ({
                 return (
                   n === Number(Object.keys(label)[0]) && (
                     <Label key={n}>
-                      <label htmlFor={n.toString()}>{Object.values(label)}</label>
-                      <Tick showLabels={showLabels} showTicks={showTicks} />
+                      {/* {showLabels && <label htmlFor={n.toString()}>{Object.values(label)}</label>}
+                      <Tick showLabels={showLabels} showTicks={showTicks} /> */}
                     </Label>
                   )
                 );
               })
               : // if there are not custom labels, show the default labels (n)
-              showLabels && (
-                <Label key={n}>
-                  <label htmlFor={n.toString()}>{prefix + numberWithCommas(n.toFixed(decimals)) + suffix}</label>
-                  <Tick showLabels={showLabels} showTicks={showTicks} />
-                </Label>
-              )
+              <Label key={n}>
+                {showLabels}
+                <Tick value={value} min={min} step={step} tick={tick} showLabels={showLabels} showTicks={showTicks} />
+                {/* - */}
+              </Label>
           }
         </div>
       ));
@@ -333,9 +331,6 @@ export const VerticalRangeSlider = ({
     const ctrl = e.ctrlKey;
 
     switch (e.code) {
-      case "Escape": //Esc
-        // rangeEl.current.blur();
-        return;
       case "ArrowLeft": //Left
         (cmd || ctrl) && setValue(value - factor);
         return;
@@ -358,7 +353,7 @@ export const VerticalRangeSlider = ({
       showTicks={showTicks}
       height={height}
     >
-      <Ticks ref={ticksEl} wideTrack={wideTrack}>
+      <Ticks ref={ticksEl} wideTrack={wideTrack} min={min}>
         {labels}
       </Ticks>
       <div>
@@ -387,7 +382,6 @@ export const VerticalRangeSlider = ({
           aria-valuemax={max}
           tabIndex={0}
           height={300}
-          ref={rangeEl}
           min={min}
           max={max}
           step={snap ? step : 0}
