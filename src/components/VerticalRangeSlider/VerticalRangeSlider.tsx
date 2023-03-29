@@ -14,10 +14,9 @@ const RangeWrap = styled.div<{
   transform-origin: top left;
   margin-top: ${(p) => p.height + "px"};
   font-family: inherit;
-  border: 1px dotted red;
 `;
 
-const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
+const RangeOutput = styled.output<{ focused: boolean; wideTrack: boolean }>`
   user-select: none;
   position: relative;
   display: flex;
@@ -27,15 +26,14 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
   span {
     writing-mode: vertical-lr;
     border: ${(p) =>
-    p.focused
-      ? `1px solid var(--color-primary)`
-      : `1px solid var(--color-dark)`};
+      p.focused
+        ? `1px solid var(--color-primary)`
+        : `1px solid var(--color-dark)`};
     border-radius: 5px;
     font-weight: ${(p) => (p.focused ? "bold" : "normal")};
-    color: ${(p) =>
-    p.focused ? "var(--color-light)" : "var(--color-dark)"};
+    color: ${(p) => (p.focused ? "var(--color-light)" : "var(--color-dark)")};
     background: ${(p) =>
-    p.focused ? "var(--color-primary)" : "var(--color-light)"};
+      p.focused ? "var(--color-primary)" : "var(--color-light)"};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     padding: 0.5em;
     white-space: nowrap;
@@ -44,7 +42,10 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `14px solid var(--color-dark)`};
+      border-top: ${(p) =>
+        p.focused
+          ? `12px solid var(--color-primary)`
+          : `14px solid var(--color-dark)`};
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       bottom: 100%;
@@ -52,12 +53,16 @@ const RangeOutput = styled.output<{ focused: boolean, wideTrack: boolean }>`
       margin-top: -1px;
       transform: rotate(180deg);
       transform-origin: 75%;
-    }&::after {
+    }
+    &::after {
       content: "";
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid var(--color-primary)` : `12px solid ${"var(--color-light)"}`};
+      border-top: ${(p) =>
+        p.focused
+          ? `12px solid var(--color-primary)`
+          : `12px solid ${"var(--color-light)"}`};
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       bottom: 100%;
@@ -75,19 +80,23 @@ const Progress = styled.div<{ focused: boolean; wideTrack: boolean }>`
   height: ${(p) => (p.wideTrack ? "12px" : "5px")};
   width: 100%;
   z-index: 0;
-  border-bottom: ${p => p.wideTrack ? "1px solid var(--color-transparent-gray)" : "none"};
-  box-shadow: ${p => p.wideTrack ? "inset 1px 1px 1px 0.5px var(--color-transparent-gray)" : "none"}
-  `;
+  border-bottom: ${(p) =>
+    p.wideTrack ? "1px solid var(--color-transparent-gray)" : "none"};
+  box-shadow: ${(p) =>
+    p.wideTrack
+      ? "inset 1px 1px 1px 0.5px var(--color-transparent-gray)"
+      : "none"};
+`;
 
 const StyledRangeSlider = styled.input.attrs({
   type: "range",
   role: "slider",
-}) <{ focused: boolean; wideTrack: boolean; height: number }>`
+})<{ focused: boolean; wideTrack: boolean; height: number }>`
   cursor: pointer;
   appearance: none;
   position: absolute;
   width: 100%;
-  height: ${p => p.wideTrack ? "12px" : "8px"};
+  height: ${(p) => (p.wideTrack ? "12px" : "8px")};
   border-radius: 15px;
   background: transparent;
   margin: 0;
@@ -99,67 +108,73 @@ const StyledRangeSlider = styled.input.attrs({
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "36px" : "20px"};
-    height: ${p => p.wideTrack ? "36px" : "20px"};
-    top: ${p => p.wideTrack ? "0" : "-1.5px"};
+    width: ${(p) => (p.wideTrack ? "36px" : "20px")};
+    height: ${(p) => (p.wideTrack ? "36px" : "20px")};
+    top: ${(p) => (p.wideTrack ? "0" : "-1.5px")};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? p.focused ? "1px solid var(--color-primary)" : `1px solid var(--color-lightgray)` : "none"};
+    border: ${(p) =>
+      p.wideTrack
+        ? p.focused
+          ? "1px solid var(--color-primary)"
+          : `1px solid var(--color-lightgray)`
+        : "none"};
     box-shadow: -1px 0 5px 0 rgba(0, 0, 0, 0.25);
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
-    p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 20%,var(--color-primary) 25%,var(--color-primary) 100%)`
+      p.wideTrack
+        ? !p.focused
+          ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+          : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+        : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 20%,var(--color-primary) 25%,var(--color-primary) 100%)`};
   }
-  }
-  
+
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    background: ${p =>
-    !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
+    background: ${(p) =>
+      !p.focused
+        ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+        : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
-  
+
   &::-moz-range-thumb {
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: ${p => p.wideTrack ? "3em" : "1.5em"};
-    height: ${p => p.wideTrack ? "3em" : "1.5em"};
+    width: ${(p) => (p.wideTrack ? "3em" : "1.5em")};
+    height: ${(p) => (p.wideTrack ? "3em" : "1.5em")};
     border-radius: 50%;
-    border: ${p => p.wideTrack ? `1px solid var(--color-dark)` : "none"};
-    box-shadow: ${p => p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
+    border: ${(p) => (p.wideTrack ? `1px solid var(--color-dark)` : "none")};
+    box-shadow: ${(p) =>
+      p.wideTrack ? "0 1px 5px 0 rgba(0, 0, 0, 0.25)" : "none"};
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
-    p.wideTrack ? !p.focused
-      ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-      : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
-  }
+      p.wideTrack
+        ? !p.focused
+          ? `-webkit-radial-gradient(center, ellipse cover,  var(--color-primary) 0%,var(--color-primary) 35%,${"var(--color-light)"} 40%,${"var(--color-light)"} 100%)`
+          : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`
+        : `-webkit-radial-gradient(center, ellipse cover,  ${"var(--color-light)"} 0%,${"var(--color-light)"} 35%,var(--color-primary) 40%,var(--color-primary) 100%)`};
   }
 `;
 
-const Ticks = styled.ol<{ wideTrack: boolean, min: number }>`
+const Ticks = styled.ol<{ wideTrack: boolean; min: number }>`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin: ${(p) => (p.wideTrack ? "10.5px" : "-25px 0")};
-  counter-reset: ${p => `rangeCounter ${p.min}`};
-  `;
+  margin: ${(p) => (p.wideTrack ? "24px" : "16px 0")};
+  counter-reset: ${(p) => `rangeCounter ${p.min}`};
+`;
 
 const Tick = styled.li<{
-  showTicks: boolean,
-  showLabels: boolean,
-  value: number,
-  step: number,
-  min: number,
-  tick: string,
+  showTicks: boolean;
+  showLabels: boolean;
+  value: number;
+  step: number;
+  min: number;
+  tick: string;
 }>`
-  list-style-image: ${p => `url(${p.tick})`};
+  list-style-image: ${(p) => `url(${p.tick})`};
   list-style-position: inside;
   /* align-self: center; */
   width: 5px;
@@ -176,7 +191,7 @@ const Label = styled.div`
   writing-mode: vertical-lr;
   margin-bottom: 0.5rem;
   white-space: nowrap;
-  &::before{
+  &::before {
     content: counter(rangeCounter);
     position: relative;
     top: -0.25em;
@@ -202,11 +217,11 @@ interface VerticalRangeSliderProps {
   */
   min: number;
   /**
-    The maximum value. 
+    The maximum value.
   */
   max: number;
   /**
-    The amount of decimal points to be rounded to. 
+    The amount of decimal points to be rounded to.
   */
   decimals: number;
   /**
@@ -218,7 +233,7 @@ interface VerticalRangeSliderProps {
    */
   snap: boolean;
   /**
-    For creating custom labels. 
+    For creating custom labels.
    */
   customLabels: Array<Record<number, string>>;
   /**
@@ -230,7 +245,7 @@ interface VerticalRangeSliderProps {
   */
   showTicks: boolean;
   /**
-    Optional text displayed before value. 
+    Optional text displayed before value.
    */
   prefix?: string;
   /**
@@ -249,7 +264,6 @@ interface VerticalRangeSliderProps {
     Show or hide tooltip.
   */
   showTooltip?: boolean;
-
 }
 
 export const VerticalRangeSlider = ({
@@ -300,8 +314,8 @@ export const VerticalRangeSlider = ({
         <div key={n}>
           {
             // if there are custom labels, show them!
-            customLabels?.length > 0
-              ? showLabels &&
+            customLabels?.length > 0 ? (
+              showLabels &&
               customLabels.map((label) => {
                 return (
                   n === Number(Object.keys(label)[0]) && (
@@ -312,12 +326,21 @@ export const VerticalRangeSlider = ({
                   )
                 );
               })
-              : // if there are not custom labels, show the default labels (n)
+            ) : (
+              // if there are not custom labels, show the default labels (n)
               <Label key={n}>
                 {showLabels}
-                <Tick value={value} min={min} step={step} tick={tick} showLabels={showLabels} showTicks={showTicks} />
+                <Tick
+                  value={value}
+                  min={min}
+                  step={step}
+                  tick={tick}
+                  showLabels={showLabels}
+                  showTicks={showTicks}
+                />
                 {/* - */}
               </Label>
+            )
           }
         </div>
       ));
@@ -349,10 +372,7 @@ export const VerticalRangeSlider = ({
   }
 
   return (
-    <RangeWrap
-      showTicks={showTicks}
-      height={height}
-    >
+    <RangeWrap showTicks={showTicks} height={height}>
       <Ticks ref={ticksEl} wideTrack={wideTrack} min={min}>
         {labels}
       </Ticks>
@@ -363,15 +383,19 @@ export const VerticalRangeSlider = ({
           style={
             !isFocused && wideTrack
               ? {
-                background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${newPosition * 2
-                  }px), var(--color-light) calc(${newValue}% + ${newPosition * 0.75
+                  background: `-webkit-linear-gradient(left, var(--color-secondary) 0%, var(--color-secondary) calc(${newValue}% + ${
+                    newPosition * 2
+                  }px), var(--color-light) calc(${newValue}% + ${
+                    newPosition * 0.75
                   }px), var(--color-light) 100%)`,
-              }
+                }
               : {
-                background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${newPosition * 2
-                  }px), var(--color-secondary) calc(${newValue}% + ${newPosition * 0.75
+                  background: `-webkit-linear-gradient(left, var(--color-primary) 0%, var(--color-primary) calc(${newValue}% + ${
+                    newPosition * 2
+                  }px), var(--color-secondary) calc(${newValue}% + ${
+                    newPosition * 0.75
                   }px), var(--color-secondary) 100%)`,
-              }
+                }
           }
         />
         <StyledRangeSlider
